@@ -65,8 +65,9 @@
   \space \number\year}
 \usepackage{setspace}
 \onehalfspacing
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{2.0ex plus0.5ex minus0.2ex}
+\setlength{\parindent}{15pt}
+% \setlength{\parskip}{\baselineskip}
+% \setlength{\parskip}{2.0ex plus0.5ex minus0.2ex}
 \usepackage{vmargin}
 %----------------------------------------------------------------------------------------
 %	MARGINS
@@ -149,7 +150,7 @@
         stringstyle=\color[rgb]{0.7,0,0} }
 \usepackage[pdfpagemode={UseOutlines},bookmarks=true,bookmarksopen=true,
    bookmarksopenlevel=0,bookmarksnumbered=true,hypertexnames=false,
-   colorlinks,linkcolor={blue},citecolor={blue},urlcolor={red},
+   colorlinks,linkcolor={black},citecolor={black},urlcolor={black},
    pdfstartview={FitV},unicode,breaklinks=true]{hyperref}
 \pdfstringdefDisableCommands{
    \let\\\space

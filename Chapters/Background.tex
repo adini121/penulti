@@ -1,0 +1,62 @@
+\chapter{Background}
+\label{Chapter2}
+% Main chapter title
+\lhead{Chapter 2. \emph{Background}}
+
+This chapter introduces the background and terminology necessary to understand the ideas and methods presented in this research. Within the context of the model presented in Chapter 1, important terms are explained throughout the subsequent sections.
+
+As web-applications are traditionally client-facing, a large part of their functionality is accessed through the GUI layer. Thus it is customary to test important functional use-cases on the AUT through the GUI layer. Section 2.1 gives a brief insight about automated GUI testing mechanisms.
+
+In recent years, Selenium FOOTNOTE has been a popular browser test automation tool of choice among software developers and testers. Section 2.2 gives the necessary background about Selenium framework, including its implementation technique as well as salient features.
+
+The THIRD step of the model leverages existing Selenium tests to capture the behaviour of the AUT in terms of trace-level and GUI level models. For this purpose, the tool WEBMATE, presented by Dallmeier et al. has been used. WebMate can systematically explore the AUT to extract its behavioral usage model by implementing state abstraction for distinguishing similar GUI states of the AUT. Further details about WEBMATE are discussed in Section 2.3.
+
+Section 2.4 presents the statistical background required to process and analyze the results and apply evaluation metrics, as presented in Section 5 Evaluation.
+As mentioned in Section 1, testing web applications at system (GUI) level abstracts away finer grained internal details and helps developers to identify the undesired functionality changes in the AUT.  In the area of automated GUI testing, current approaches such as  1,2,3.
+
+use crawling based techniques for automated testing and exploration of AUT. However, in comparison to traditional command-line applications or Application Programming Interfaces (APIs), automated GUI testing of modern web 2.0 applications built with multiple languages and platforms such as HTML, CSS, JavaScript, Ajax and other server-side technologies poses new challenges in the areas of test-input generation, test-output verification and state space exploration.
+
+To begin with, automatically generating and selecting inputs for a GUI is difficult since depending upon the type of the application, different applications might require a specific combination of inputs and values. 
+Current practices for automated test input generation include techniques such as symbolic execution (http://users.ece.utexas.edu/~khurshid/papers/2008/08ast-barad.pdf), using random input generation (P. Godefroid, N. Klarlund, and K. Sen, “Dart: Directed automated random testing,” SIGPLAN Not., vol. 40, no. 6, pp. 213–223, Jun. 2005.) or search based techniques. (http://www.specmate.org/papers/2012-06-EXSYST-Search-BasedGUITesting.pdf))
+
+Furthermore, automated input generation is not trivial for a web applications, since the GUI test automation tool needs to be aware of the context of the AUT. Although test inputs can be generated using functional specifications, concrete specifications along with different input combinations may not be available in practice and desired functional coverage of the AUT is not achieved.Thus in many cases, input generation is often left to the test developer to explore the desired states of the AUT hidden behind input forms and elements.
+
+In addition, even in cases when a testing tool can generate different input combinations automatically, it still needs to verify the correct behavior of the AUT. This is usually doneby applying appropriate test assertions and oracles on the test outputs (http://ix.cs.uoregon.edu/~michal/pubs/oracles.html). Capture/replay tools (http://www.cc.gatech.edu/~orso/papers/joshi.orso.TR06.pdf) require the tester to first manually capture the behavior of the AUT by performing different events, recording them and storing the expected output as a part of the test-case. In the replay phase, recorded tests are replayed on the AUT and the output is checked against the captured expected output to assert the application behavior. Such approach requires manual effort to record each test and is not suitable for regression testing as every time the AUT changes, there is a need to re-record the tests in order to generate new expected outputs. 
+
+Moreover, as the size of the AUT increases, the number of possible actions on the GUI increases exponentially. This is especially an issue in case of regression testing since as possible number of paths and sequences increases, covering the entire possible number of state space and executions becomes infeasible. 
+
+On the other hand, as opposed to the automated crawlers, humans possess the domain knowledge of the AUT required to generate valid test inputs and apply precise oracles on the test outputs, many developers often choose to identify the core functionality of the AUT and automate their regression testing using frameworks such as  Selenium, as detailed in section 2.2.
+
+Selenium is a browser automation framework designed to automate the system testing of web applications FOOTNOTE-URL. While the Selenium project offers a different set of tools depending upon the type of application, the Selenium Webdriver project is of particular the interest for laying the foundation of this thesis. On the higher level, Selenium WebDriver provides an API to test dynamic web 2.0 applications. The API ‘drives’ (controls) the browser in a manner that it emulates all possible end users interactions with the browser, such as clicks, form-inputs, drag-drops, file up- loads etc. Selenium WebDriver tests can thus explore the possible set of functionalities of the AUT 
+
+Selenium project provides the Webdriver API to test dynamic web 2.0 applications. The WebDriver-API supports various modern programming languages including Java, Python, C\#, Ruby etc. by providing language level bindings along with a set of browser specific drivers, such as the firefox driver. Certain drivers also provide the capability to run the tests headlessly or against a remote machine. Fig. gives a brief overview of the architecture of Selenium webdriver. 
+
+Language level script <-> webdriver API <-> driver
+
+The Webdriver communicates directly with the browser specific driver using a common wire protocol. The protocol transfers commands coded in language specific bindings by encoding them as UTF-8 encoded JSON data. The API uses  HTTP as a transport mechanism to transfer these commands to the driver and to return the response from the driver to the language specific code. 
+
+<insert image webdriver archi>
+
+As an example, 
+language specific command (Java in this case) 
+
+driver.get("http://www.somewebsite.com");
+This command is translated as a JSON object to be transferred using the wire protocol as following: 
+
+{"url": "http://www.somewebsite.com" }
+
+The JSON object is then sent over HTTP (using POST request in this case)
+
+HTTP Method : POST, Path: session/{session-id}/url
+
+The resultant URL is :
+http://localhost:7055/hub/session/{session-id}/url
+
+To identify and associate each request/response session uniquely to the session-specific commands, Webdriver uses a unique handle in terms of the SessionId, which is especially useful in case of the RemoteWebdriver implementation. RemoteWebdriver is a specific implementation of webdriver which allows us to execute selenium tests on a remote machine. In essence, RemoteWebdriver is comprised of a client-server architecture, where client is the language specific test-case and and server is a Java servlet. Remotewebdriver server acts as a multiplexer, by connecting the client to the specific browsers and system configurations requested by her. The browser and other configurations are provided in terms of capabilities, via command-line or directly from the language specific code. As detailed in SECTION XXX, this thesis uses remotewebdriver during PHASE XXX OF FIGURE XXX.
+
+In order to locate GUI elements such as input forms, buttons, checkboxes etc. in the DOM (Document Object Model), Webdriver specifies "Find Element" and "Find Elements" methods for locating a single element and a list of elements, respectively. Each language specific binding has its own command to invoke these methods by providing the UI locator object, such as the css selector or xpath expression. The the element locator strategies are listed in TABLE XXX. As we will see in CHAPTER XXX ROBUSTNESS, influence of these UI locator strategies is discussed 
+% (https://w3c.github.io/webdriver/webdriver-spec.html#sessions)
+
+\label{Chapter2} % For referencing the chapter elsewhere, use \ref{Chapter1} 
+
+\lhead{Chapter 2. \emph{Background}}
