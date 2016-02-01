@@ -3,13 +3,13 @@
 % Main chapter title
 \lhead{Chapter 2. \emph{Background}}
 
-This chapter introduces the background and terminology necessary to understand the ideas and methods presented in this research. Within the context of the model presented in Chapter 1, important terms are explained throughout the subsequent sections.
+This chapter introduces the background and terminology necessary to understand the concepts and methods presented in this research. Within the context of the model presented in Chapter 1, important terms are explained throughout the subsequent sections.
 
-As web-applications are traditionally client-facing, a large part of their functionality is accessed through the GUI layer. Thus it is customary to test important functional use-cases on the AUT through the GUI layer. Section 2.1 gives a brief insight about automated GUI testing mechanisms.
+As majority of web applications' functionality is accessed through the GUI layer, it becomes customary to test important functional use-cases on the AUT through the GUI layer. Section 2.1 gives a brief insight about automated GUI testing mechanisms.
 
-In recent years, Selenium FOOTNOTE has been a popular browser test automation tool of choice among software developers and testers. Section 2.2 gives the necessary background about Selenium framework, including its implementation technique as well as salient features.
+In recent years, Selenium\footnote{\url{http://www.seleniumhq.org/}} has been a popular browser test automation tool of choice among software developers and testers. Section 2.2 gives the necessary background about Selenium framework, including its implementation technique as well as salient features.
 
-The THIRD step of the model leverages existing Selenium tests to capture the behaviour of the AUT in terms of trace-level and GUI level models. For this purpose, the tool WEBMATE, presented by Dallmeier et al. has been used. WebMate can systematically explore the AUT to extract its behavioral usage model by implementing state abstraction for distinguishing similar GUI states of the AUT. Further details about WEBMATE are discussed in Section 2.3.
+The THIRD step of the model leverages existing Selenium tests to capture the behavior of the AUT in terms of trace-level and GUI level models. For this purpose, the tool \texttt{webmate}, presented by Dallmeier et al. has been used. \texttt{webmate} can systematically explore the AUT to extract its behavioral usage model by implementing state abstraction for distinguishing similar GUI states of the AUT. Further details about WEBMATE are discussed in Section 2.3.
 
 Section 2.4 presents the statistical background required to process and analyze the results and apply evaluation metrics, as presented in Section 5 Evaluation.
 As mentioned in Section 1, testing web applications at system (GUI) level abstracts away finer grained internal details and helps developers to identify the undesired functionality changes in the AUT.  In the area of automated GUI testing, current approaches such as  1,2,3.
@@ -29,7 +29,7 @@ On the other hand, as opposed to the automated crawlers, humans possess the doma
 
 Selenium is a browser automation framework designed to automate the system testing of web applications FOOTNOTE-URL. While the Selenium project offers a different set of tools depending upon the type of application, the Selenium Webdriver project is of particular the interest for laying the foundation of this thesis. On the higher level, Selenium WebDriver provides an API to test dynamic web 2.0 applications. The API ‘drives’ (controls) the browser in a manner that it emulates all possible end users interactions with the browser, such as clicks, form-inputs, drag-drops, file up- loads etc. Selenium WebDriver tests can thus explore the possible set of functionalities of the AUT 
 
-Selenium project provides the Webdriver API to test dynamic web 2.0 applications. The WebDriver-API supports various modern programming languages including Java, Python, C\#, Ruby etc. by providing language level bindings along with a set of browser specific drivers, such as the firefox driver. Certain drivers also provide the capability to run the tests headlessly or against a remote machine. Fig. gives a brief overview of the architecture of Selenium webdriver. 
+Selenium project provides the \texttt{webdriver} API to test dynamic web 2.0 applications. The API supports various modern programming languages including Java, Python, C\#, Ruby etc. by providing language level bindings along with a set of browser specific drivers, such as the firefox driver. Certain drivers also provide the capability to run the tests headlessly or against a remote machine. Fig. gives a brief overview of the architecture of Selenium webdriver. 
 
 Language level script <-> webdriver API <-> driver
 
