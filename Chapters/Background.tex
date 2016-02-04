@@ -3,6 +3,7 @@
 % Main chapter title
 \lhead{Chapter 2. \emph{Background}}
 
+
 This chapter introduces the background and terminology necessary to understand the concepts and methods presented in this research. Within the context of the model presented in Chapter 1, important terms are explained throughout the subsequent sections.
 
 As majority of web applications' functionality is accessed through the GUI layer, it becomes customary to test important functional use-cases on the AUT through the GUI layer. Section 2.1 gives a brief insight about automated GUI testing mechanisms.
@@ -12,6 +13,9 @@ In recent years, Selenium\footnote{\url{http://www.seleniumhq.org/}} has been a 
 The THIRD step of the model leverages existing Selenium tests to capture the behavior of the AUT in terms of trace-level and GUI level models. For this purpose, the tool \texttt{webmate}, presented by Dallmeier et al. has been used. \texttt{webmate} can systematically explore the AUT to extract its behavioral usage model by implementing state abstraction for distinguishing similar GUI states of the AUT. Further details about WEBMATE are discussed in Section 2.3.
 
 Section 2.4 presents the statistical background required to process and analyze the results and apply evaluation metrics, as presented in Section 5 Evaluation.
+
+\section{Automated GUI Testing}
+\label{sec:AutomatedGUITesting}
 As mentioned in Section 1, testing web applications at system (GUI) level abstracts away finer grained internal details and helps developers to identify the undesired functionality changes in the AUT.  In the area of automated GUI testing, current approaches such as  1,2,3.
 
 use crawling based techniques for automated testing and exploration of AUT. However, in comparison to traditional command-line applications or Application Programming Interfaces (APIs), automated GUI testing of modern web 2.0 applications built with multiple languages and platforms such as HTML, CSS, JavaScript, Ajax and other server-side technologies poses new challenges in the areas of test-input generation, test-output verification and state space exploration.
@@ -27,12 +31,15 @@ Moreover, as the size of the AUT increases, the number of possible actions on th
 
 On the other hand, as opposed to the automated crawlers, humans possess the domain knowledge of the AUT required to generate valid test inputs and apply precise oracles on the test outputs, many developers often choose to identify the core functionality of the AUT and automate their regression testing using frameworks such as  Selenium, as detailed in section 2.2.
 
+\section{SeleniumTesting}
+\label{sec:SeleniumTesting}
+
 Selenium is a browser automation framework designed to automate the system testing of web applications FOOTNOTE-URL. While the Selenium project offers a different set of tools depending upon the type of application, the Selenium Webdriver project is of particular the interest for laying the foundation of this thesis. On the higher level, Selenium WebDriver provides an API to test dynamic web 2.0 applications. The API ‘drives’ (controls) the browser in a manner that it emulates all possible end users interactions with the browser, such as clicks, form-inputs, drag-drops, file up- loads etc. Selenium WebDriver tests can thus explore the possible set of functionalities of the AUT 
 
 Selenium project provides the \texttt{webdriver} API to test dynamic web 2.0 applications. The API supports various modern programming languages including Java, Python, C\#, Ruby etc. by providing language level bindings along with a set of browser specific drivers, such as the firefox driver. Certain drivers also provide the capability to run the tests headlessly or against a remote machine. Fig. gives a brief overview of the architecture of Selenium webdriver. 
-
+\begin{verbatim}
 Language level script <-> webdriver API <-> driver
-
+\end{verbatim}
 The Webdriver communicates directly with the browser specific driver using a common wire protocol. The protocol transfers commands coded in language specific bindings by encoding them as UTF-8 encoded JSON data. The API uses  HTTP as a transport mechanism to transfer these commands to the driver and to return the response from the driver to the language specific code. 
 
 <insert image webdriver archi>
@@ -57,6 +64,9 @@ To identify and associate each request/response session uniquely to the session-
 In order to locate GUI elements such as input forms, buttons, checkboxes etc. in the DOM (Document Object Model), Webdriver specifies "Find Element" and "Find Elements" methods for locating a single element and a list of elements, respectively. Each language specific binding has its own command to invoke these methods by providing the UI locator object, such as the css selector or xpath expression. The the element locator strategies are listed in TABLE XXX. As we will see in CHAPTER XXX ROBUSTNESS, influence of these UI locator strategies is discussed 
 % (https://w3c.github.io/webdriver/webdriver-spec.html#sessions)
 
-\label{Chapter2} % For referencing the chapter elsewhere, use \ref{Chapter1} 
 
-\lhead{Chapter 2. \emph{Background}}
+
+\section{WebMate}
+\label{sec:WebMate}
+WebMate is a system-level automated testing and analysis framework. It can leverage existing Selenium tests in order to remote control the browser to interact with the dynamic web 2.0 applications involving JavaScript and Ajax elements. By doing so, it can systematically explore the AUT in order to extract its behavioral usage-model. To do so, it implements state abstraction in order to distinguish similar GUI states of the AUT. The usage model is a finite state automaton, which captures the exploration graph of the possible ways to interact with the AUT. The states of the behavioral model correspond to different states of the GUI, connected by transitions corresponding to different interactions with the AUT. 
+To this date, WebMate primarily functions for checking cross-browser compatibility. It can detect functional as well as GUI differences across the browsers. WebMate is able to identify the GUI elements and compare their positions, sizes and inconsistencies across the GUIs to generate a report visualizing the differences. Moreover, WebMate makes it possible to recognize functional differences (e.g. missing button) by comparing the usage models and presenting the XPath representation of the changed element

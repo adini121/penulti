@@ -3,3 +3,56 @@
 \label{Chapter4} % For referencing the chapter elsewhere, use \ref{Chapter1} 
 
 \lhead{Chapter 4. \emph{Robustness of Selenium Tests}}
+
+Selenium tests are robust if these tests are able to cover same functionality for different versions of the AUT. Consequently, given tests are not robust if they do not achieve the same behavioral coverage as they do for the version the tests are originally written for.
+
+\section{Factors responsible for varying robustness:}
+\label{sec:RobustnessFactors}
+As mentioned in Chapter XXXX, the stability and effectiveness of Selenium tests decreases over time across the regression cycles. In this section, we attempt to acknowledge the attributes of varying robustness of Selenium tests and further recognize the reasons behind the test failures. 
+
+\subsection{Undesired functionality changes:}
+\label{sec:FuncChanges}
+Selenium tests are not robust if they are unable to cover the expected behavior when certain functionality is modified or removed as a result of regression changes. Such modified functionality might not be covered by the existing tests unless they are modified, since the same test inputs can lead to the behavior different than expected.
+
+\subsection{Modifying structural markup and GUI elements:}
+\label{sec:GUIChanges}
+GUI level modifications and changes can affect the state changing elements such as clickable objects, buttons, forms etc. Thus, Selenium tests can be broken if the manner in which a functionality can be accessed (e.g. via clickable elements) is modified. Moreover, when content such as the element ‘id’, ‘CSS-selectors’ or ‘Xpath’ attributes etc. are modified or incorrectly selected, the test cases might be unable to find the object on the page as these attributes can no longer be valid.
+
+\subsection{Page loading times and timing issues:}
+\label{sec:PageLoadingTimes}
+Depending upon various factors, different pages and page-objects of an AUT can load with different speeds. If such pages and objects do not load properly or have poor timing issues, the Selenium API can be unable to find them. The API returns an element as soon as it is available in the DOM. However, due to the timing issues the elements might not yet be ready to interact with. Such issues can result in sporadic failures during the test execution, making the tests less robust. We further identify the factors responsible for timing issues as follows: 
+
+\begin{itemize}
+  \item Server side requests such as Ajax and JavaScript calls can contribute towards random loading times. Recognizing when such calls are finished can be intricate for Selenium WebDriver. In order to mitigate this problem, practices such as implicit and explicit wait commands etc. are implemented. While these practices help, they are not always reliable.
+  
+  \item Network latency and bandwidth bottlenecks can also result in delayed, improper or partial loading of the AUT state. Such problems can make the tests fail due to the unavailability of certain objects.
+  
+  \item Database related issues such as database connectivity, database fragmentation, database size, and number of database requests can also affect the server response times.
+\end{itemize}
+
+\subsection{Test-case dependencies: }
+\label{sec:TestDependency}
+Tests can exhibit varying robustness when certain assumptions or preconditions required for them to execute become invalid. In case of synchronous tests, a test case can tend to be broken if it waits on the expected execution of some previous test and the execution does not occur as expected. In case of asynchronous tests, if the application fails to load to the initial state required for test execution, the tests can be broken.
+
+\subsection{Size and complexity of the test suites: }\label{sec:TestComplexity}
+If a single test case attempts to cover multiple functionalities, it can be less robust as opposed to a modular test case covering individual functionality. Moreover, in case of tests involving multiple steps, a failure during initial steps can result in following tests not being able to reach the subsequent functionality.
+
+\subsection{Concurrent multi-user scenarios: }
+Tests can be broken in concurrent multi-user sessions due to the factors such as server-loads and database-loads etc. In such cases certain functionality might be rendered unavailable at a particular instance; hence as a result the tests would not be able to explore such functionality.
+
+\subsection{Testing flash and embedded content using Selenium: }
+\label{sec:FlashChanges}
+Flash objects are rendered as closed files encompassed in a container, such as Flash players on Firefox or ActiveX control on Internet Explorer. Thus, objects such as flash, ActiveX controls, Java applets etc. are not accessible using the likes of XPath or HTML element locators. The Selenium WebDriver itself has no direct interface to interact with such content and is unable to test the these objects unless third party projects are implemented (e.g. XXXX Such third party projects might not be fully reliable or compatible with our implementation and hence our approach is likely to inherit these limitations and will not be able to cover Flash related functionality.
+
+\section{Defining Robustness}
+\label{sec:DefiningRobustness}
+Our notion of the robustness of a Selenium test-suite considers the degree of its stability and effectiveness across different versions of the AUT. It takes into account the extent to which the given test suite covers the same intended functionality across different versions. Intuitively, we acknowledge that a given test-suite is robust if it is able to achieve the same behavioral coverage across different versions of the AUT. In order to concretize our approach, we propose to measure the robustness of a Selenium test-suite for a \textit{test version} of the AUT against its \textit{reference version}. The reference version acts as a comparative oracle and it corresponds to the version for which the test-suite is originally written and the states (functionalities) covered by these tests are identified. The test versions represent the versions for which we intend to measure the robustness of given Selenium test-suite. Formally, we define the term \textit{
+robustness metric} to determine the robustness of test-suite T for test version V$_{1}$ compared against the reference version V$_{0}$. It can be calculated as follows:
+
+% Robustness equation%
+
+$$Robustness \thinspace Metric \thinspace R_{V_{0}V_{1}} = \displaystyle \frac{Number\thinspace of \thinspace same \thinspace states \thinspace reached \thinspace for \thinspace version \thinspace V_{1}}{Number \thinspace of \thinspace same \thinspace states \thinspace reached  \thinspace for \thinspace  version \thinspace V_{0}}\normalsize$$
+
+The robustness metric for a test version indicates the robustness of given test-suite and the functionality covered by it for that particular test version. The details of our approach to identify the state reached and functionalities covered across different versions are explained in Section XXX. As a starting point, we assume that the state extraction points for the reference version as well as subsequent versions remain the same as the test-suites remain unchanged. Correspondingly, if the tests written for the reference version cover the given functionalities as expected for the test version; the robustness metric for the test version (R$_{V_{0}V_{1}}$) is 100\%. A robustness metric of ‘100\%’ indicates that given tests are fully robust across these two versions and that they achieve similar behavioral state coverage. On the contrary, robustness metric less than 100\% deems that the given tests might not be fully robust. Such a metric indicates that these tests might be unable to cover the same application states or perhaps they trigger different application behavior for different versions. 
+
+Our robustness measurement considers two kinds of versioning of the AUT: major versions (stable releases) where significant changes in functionality are done and minor revisions/commits where minor feature changes and bug fixes have been implemented.  In the first step we would measure the robustness metric for the major versions of the AUT to identify the changed functionality and perform the robustness analysis. Afterwards, for major versions with decreased robustness scores we plan to fix/modify the tests corresponding to the changed functionality for the subsequent major versions of the AUT. Second step would be to measure the robustness metric for the minor revisions of each major version to identify the regression changes. Our rationale behind this approach is that due to the significant functionality changes across the major versions, Selenium tests are less likely to fully cover the same behavioral states for all major versions unless they are modified. Utilizing the robustness scores for different versions of AUT we plan to investigate the reasons behind the varying robustness, and fix the broken Selenium tests in case of major versions. Further details about the robustness analysis  can be found in Section XXX
