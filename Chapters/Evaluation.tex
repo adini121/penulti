@@ -2,4 +2,28 @@
 
 \label{Chapter6} % For referencing the chapter elsewhere, use \ref{Chapter1} 
 
-\lhead{Chapter 6. \emph{Approach and Evaluation}}
+\lhead{Chapter 6. \emph{Evaluation}}
+Now we see the table!
+
+\begin{savenotes}
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+Application&  Language&  Page-objects&  \#Test classes&  \#Test methods&  LOC\footnote{Without omments and blank lines using the tool CLOC (\url{cloc.sourceforge.net})}  \\
+\hline
+ Jenkins\footnote{\url{https://github.com/jenkinsci/acceptance-test-harness}}&  Java&56&  &  &    \\
+\hline
+Moodle\footnote{\url{https://github.com/moodlehq/functional-test-suite}}&  Java&  13&  &  &    \\
+\hline
+Mozilla Addons\footnote{\url{https://github.com/mozilla/Addon-Tests/}} &  Python&  17&  &  &    \\
+\hline
+Mozilla Marketplace\footnote{\url{https://github.com/mozilla/marketplace-tests}} &  Python&  12&  3&  &  \\
+\hline
+Mozilla.org\footnote{\url{https://github.com/mozilla/mcom-tests}} &  Python&  16&  16&  &   \\
+\hline
+\end{tabular}
+\caption{My caption}
+\label{my-label}
+\end{table}
+\end{savenotes}
