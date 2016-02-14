@@ -65,7 +65,7 @@ As an example, to test the \textit{login} functionality of AUT as depicted in Fi
 
 Compared to manual tests, Selenium tests can be run automatically and repeatedly. Typically, such tests can be combined with Continuous Integration tools to be run after the code changes are pushed to the version control repository. When AUT evolves from version $V_{0}$ to a newer version $V_{1}$, existing Selenium tests are executed on $V_{1}$. Ideally, if one or more tests executed successfully on $V_{0}$ fail to achieve the same result on $V_{1}$, the tests have found the possible software regressions in the AUT. In reality, this approach relies heavily on the quality and robustness of the existing tests. Robustness of Selenium tests implies their stability and effectiveness to achieve the same functional coverage across different versions of the AUT. 
 
-However, as the web application continues to evolve, robustness of Selenium tests decreases over time. For newer versions, existing Selenium tests do not achieve the same functional coverage as they do for the version the tests are originally written for. Consider the aforementioned example of \texttt{loginTest} where the outcome of code changes results in renaming of \textit{'Login'} button to \textit{'Sign In'} button in version $V_{1}$. When the \textit{Login test} is re-run on $V_{1}$, it is unable to locate the \textit{'Login'} button since the hyperlink-text "Login" is changed to "Sign in". As a result, the \texttt{loginTest} is broken and the desired functional coverage is not achieved unless this fragile test is repaired. 
+However, as the web application continues to evolve, robustness of Selenium tests decreases over time. For newer versions, existing Selenium tests do not achieve the same functional coverage as they do for the version the tests are originally written for. Consider the aforementioned example of \texttt{loginTest} where the outcome of code changes results in renaming of \textit{`Login'} button to \textit{`Sign In'} button in version $V_{1}$. When the \textit{Login test} is re-run on $V_{1}$, it is unable to locate the \textit{`Login'} button since the hyperlink-text ``Login'' is changed to ``Sign in''. As a result, the \texttt{loginTest} is broken and the desired functional coverage is not achieved unless this fragile test is repaired. 
 
 To repair such fragile tests, developers need to invest time and efforts to analyze the functionality changes, identify test failures manually and maintain such test-suites. The reasons for decreasing robustness and failures of Selenium tests can include changed functionality, modified GUI element locators and changed structural markup, timing issues etc. If the AUT changes frequently, fragile tests need to be repaired repeatedly to cope with these changes which can be an expensive and time consuming task for developers. If Selenium tests are not robust and resilient enough as the AUT evolves, desired functional coverage is not achieved and regression testing is likely to be ineffective.
 % Robustness of Selenium tests can be defined in terms of their stability and effectiveness to achieve the same functional coverage across different versions of the AUT. 
@@ -91,10 +91,13 @@ Considering the current state-of-the-art technologies to the extent of my knowle
 % \caption{A figure that contains three subfigures}\label{fig:1}
 % \end{figure}
 
+% \subcaptionbox{The left subfigure with a long caption spanning several lines and some more text}%
+%   [.4\linewidth]{\includegraphics[height=2cm]{example-image-a}}
+%% THIS ONE WORKS !!!!!
 \begin{figure}
 \centering     %%% not \center
-\subfigure[AUT version $V_{0}$]{\label{fig:a}\includegraphics[width=6.5cm,height=3cm]{./Figures/Login-button}}
-\vspace{-2mm}\subfigure[AUT version $V_{1}$]{\label{fig:b}\includegraphics[width=6.5cm,height=3cm]{./Figures/Sign-In-button}}
+\subfigure[AUT version $V_{0}$]{\label{fig:a}\includegraphics[width=5.6cm,height=2.8cm]{./Figures/newlogin}}
+\vspace{-2mm}\subfigure[AUT version $V_{1}$]{\label{fig:b}\includegraphics[width=5.6cm,height=2.8cm]{./Figures/newsignin}}
 \caption{my caption}
 \label{fig:loginTest}
 \end{figure} 
