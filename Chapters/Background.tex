@@ -30,9 +30,32 @@ On the other hand, as opposed to the automated crawlers, humans possess the doma
 \section{Test automation using Selenium}
 \label{sec:SeleniumTesting}
 \subsection{Selenium WebDriver}
-Selenium is a browser automation framework designed to automate the system testing of web applications. While the Selenium project offers a different set of tools depending upon the type of application, the  \texttt{webdriver}\footnote{\url{http://www.seleniumhq.org/projects/webdriver/}} project is of particular the interest for laying the foundation of this thesis. The \texttt{webdriver} project provides an API to test dynamic web 2.0 applications. The API \textit{drives} (controls) the browser in a manner that it emulates all possible end users interactions with the browser, such as clicks, form-inputs, drag-drops, file up- loads etc. Selenium \texttt{webdriver} tests can thus explore the possible set of functionalities of the AUT 
+Selenium is a browser automation framework designed to automate the system testing of web applications. While the Selenium project offers a different set of tools depending upon the type of application, the  \texttt{webdriver}\footnote{\url{http://www.seleniumhq.org/projects/webdriver/}} project is of particular the interest for laying the foundation of this thesis. The \texttt{webdriver} project provides an API to test dynamic web 2.0 applications. 
 
 The \texttt{webdriver} API supports various modern programming languages such as Java, Python, C\#, Ruby, PHP etc. by providing language level bindings along with a set of browser specific drivers. Figure \ref{fig:webdriverArchitecture} gives an overview of the architecture of Selenium \texttt{webdriver}.
+
+The API \textit{drives} (controls) the browser in a manner that it emulates all possible end users interactions with the browser, such as clicks, form-inputs, drag-drops, file uploads etc. Selenium \texttt{webdriver} tests can thus explore the possible set of functionalities of the AUT. As an example, Snippet \ref{code1} tests the \textit{login} functionality of AUT as depicted in Figure \ref{fig:a}.
+\begin{center}
+\begin{scriptsize}
+\centering
+\lstset{
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  keepspaces=true,
+%   frame=none,
+}
+% \verb|basicstyle=\ttfamily, columns=fullflexible, keepspaces=true|
+  
+\begin{lstlisting}[caption=Login test,label=code1]
+public void loginTest(){
+driver.get("http://www.application-under-test.com");
+driver.findElement(By.id("uname")).sendKeys("user");
+driver.findElement(By.id("pwd")).sendKeys("passwd");
+driver.findElement(By.linkText("Login")).click();
+}
+\end{lstlisting}
+\end{scriptsize} 
+\end{center}
  
 \begin{figure}[h!]
 \makeatletter 
