@@ -4,11 +4,11 @@
 \lhead{Chapter 2. \emph{Background}}
 
 
-This chapter introduces the background and terminology necessary to understand the concepts and methods presented in this thesis. Important terms are explained in corresponding sections.
+This chapter introduces the background necessary to understand the concepts and methods presented in this thesis. Important terminologies essential for the foundation of this thesis are explained in subsequent sections throughout this chapter.
 
-As majority of web applications' functionality is accessed through the GUI layer, it becomes customary to test important functional use-cases on the AUT through the GUI layer. Section \ref{sec:AutomatedGUITesting} gives a brief insight into automated GUI testing mechanisms.
+As majority of web applications' functionality is accessed through the GUI layer, it becomes customary to test important functional use-cases on the AUT through the GUI layer. For this purpose, there exists different set of mechanisms. Section \ref{sec:AutomatedGUITesting} gives a brief insight into these automated GUI testing mechanisms.
 
-In recent years, Selenium\footnote{\url{http://www.seleniumhq.org/}} has been a popular browser test automation tool of choice among software developers and testers. Section\ref{sec:SeleniumTesting} gives the necessary background about Selenium framework, including its implementation techniques as well as salient features.
+In recent years, Selenium\footnote{\url{http://www.seleniumhq.org/}} has been a popular browser test automation tool of choice among software developers and testers. Section \ref{sec:SeleniumTesting} gives the necessary background about Selenium framework, including its implementation techniques as well as salient features.
 
 This research leverages existing Selenium tests to capture the behavior of the AUT in terms of finite state models. For this purpose, the tool \texttt{webmate}, presented by Dallmeier et al.\cite{webmate} has been used. By leveraging existing Selenium tests, \texttt{webmate} can systematically explore the AUT to extract its behavioral usage model by implementing state-abstraction for comparing similar GUI states of the AUT. Further details about \texttt{webmate} are discussed in Section \ref{sec:WebMate}
 
@@ -219,10 +219,37 @@ The states of the usage-model correspond to different states of the GUI and the 
   \label{fig:webmateArchitecture} 
 \end{figure}
 
-\section{Automated Parallel Deployment}
+\section{Web Application Deployment}
 \label{sec:autoDeployment}
-To test and evaluate different versions of AUT, it is necessary to make these versions accessible for the Selenium testing setup. It is possible to install and deploy these versions locally since most of the open-source application vendors make older versions of their applications available for public usage. This is either done by releasing packaged binaries ready to deploy, such as \texttt{war} files for Java applications or by checking out the code from version control repositories such as git, subversion, mercurial etc.
+To measure and evaluate the robustness of Selenium tests across different versions of AUT, it is customary to make these versions accessible for the testing setup as shown in Figure \ref{fig:thesisoverview}. It is possible to accomplish this by installing and deploying these versions locally (without relying on external application server provider). Generally, most of the open-source application vendors make older versions of their applications available for public usage. The most common ways to release such web applications are either by releasing packaged versions ready to deploy, such as \texttt{war} (Web application ARchive) files in case of Java applications or by checking out the code from version control repositories such as git, subversion, mercurial etc.
 
-In order to expedite this process, we aim to deploy multiple versions of the AUT in parallel, on a remote server such as a Linux based virtual machine. Figure \ref{fig:deployment} depicts the overview of remote automatic deployment process; three versions of the AUT are running simultaneously against their individual database instances.
+\begin{figure}
+\makeatletter 
+\renewcommand{\thefigure}{\@arabic\c@figure}
+\makeatother
+% \setcounter{figure}{0}
+    \centering
+  \includegraphics[width=5.4in,height=2.6in]{./Figures/Deployment_Process_2.jpg}
+  \caption{Automatic parallel deployment process}
+  \label{fig:deployment} 
+\end{figure}
+
+Depending upon the type of the web application as well as the frameworks and programming languages used to create these application, different set of application servers need to be used. Java based packaged applications such as \texttt{war} archives can be deployed in Java containers such as Tomcat\footnote{\url{http://tomcat.apache.org/}}. Similarly, PHP based applications can be hosted inside Apache httpd\footnote{\url{https://httpd.apache.org/}} servers. 
+
+The AUT can be deployed as per the installation instructions provided by the application vendors. Such installation setup includes steps such as downloading the application source code or packaged binaries, creating databases and other configurations etc. Certain Selenium tests require the AUT to have some pre-configured features enabled, such as an \textit{administrative} user account setup which can also be accomplished in the installation phase. 
+
+In order to spare the manual effort of installing multiple versions of AUT, the deployment work-flow can be automated through means of deployment scripts such as automated shell scripts. To further expedite the testing process, we aim to deploy multiple versions of the AUT in parallel, sand-boxed inside a secure Linux based virtual machine for security reasons. Figure \ref{fig:deployment} depicts the overview of remote automatic deployment process; three versions of the AUT are running simultaneously against their individual database instances.
+
+% \begin{figure}
+% \makeatletter 
+% \renewcommand{\thefigure}{\@arabic\c@figure}
+% \makeatother
+% % \setcounter{figure}{0}
+%     \centering
+%   \includegraphics[width=5.4in,height=2.6in]{./Figures/Deployment_Process_2.jpg}
+%   \caption{Automatic parallel deployment process}
+%   \label{fig:deployment} 
+% \end{figure}
+
 \section{Statistical Background}
 \label{sec:Statistical}
