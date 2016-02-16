@@ -14,16 +14,7 @@ During the development of the Selenium tests, we aim to locally execute and test
 
 \section{Generating Behavioral State Models}
 \label{sec:BehavModels}
-\begin{figure}[h!]
-\makeatletter 
-\renewcommand{\thefigure}{\@arabic\c@figure}
-\makeatother
-% \setcounter{figure}{0}
-    \centering
-  \includegraphics[width=5.4in,height=2.6in]{./Figures/Deployment_Process_2.jpg}
-  \caption{Automatic parallel deployment process}
-  \label{fig:deployment} 
-\end{figure}
+
 \vspace{-2mm}
 Subsequently, in the second phase we plan to integrate these tests with \textit{WebMate} in order to identify the behavioral and GUI state level differences between the reference version and the subsequent versions of the AUT. In order to expedite this process, we aim to deploy multiple versions of the AUT in parallel, on a remote server such as a Linux based virtual machine. Figure  \ref{fig:deployment} depicts the overview of remote automatic deployment process; three versions of the AUT are running simultaneously against their individual database instances. The general test set-up to concurrently and independently execute tests across these versions and to extract behavioral state models is as depicted in figure \ref{fig:stateModelExtraction}.  \textit{WebMate} takes the Selenium test suite and the application’s base URL as input and executes the tests on different versions of the AUT to generate the behavioral state models. Afterwards we plan to detect the GUI level differences across these versions using \textit{WebMate}. During this phase, we provide \textit{WebMate} with the URLs for different application states as input. As output, \textit{WebMate} highlights the changed and/or missing GUI elements for different versions in comparison to the reference version of the AUT. Thereafter, we intend to map the behavioral state differences to GUI level differences to confirm whether changing active GUI elements (e.g. clickable fields, buttons) have manifested a changed application behavior.
 
