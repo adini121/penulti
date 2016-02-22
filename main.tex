@@ -25,7 +25,7 @@
 %	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
 %----------------------------------------------------------------------------------------
 
-\documentclass[12pt, a4paper, oneside]{Thesis} % Paper size, default font size and one-sided paper
+\documentclass[12pt, a4paper, twoside]{Thesis} % Paper size, default font size and one-sided paper
 \usepackage{pdfpages}
 \usepackage{footnote}
 \usepackage{graphicx}
@@ -274,11 +274,11 @@ The acknowledgements and the people to thank go here, don't forget to include yo
 \lhead{\emph{Contents}} % Set the left side page header to "Contents"
 \tableofcontents % Write out the Table of Contents
 
-% \lhead{\emph{List of Figures}} % Set the left side page header to "List of Figures"
-% \listoffigures % Write out the List of Figures
+\lhead{\emph{List of Figures}} % Set the left side page header to "List of Figures"
+\listoffigures % Write out the List of Figures
 
-% \lhead{\emph{List of Tables}} % Set the left side page header to "List of Tables"
-% \listoftables % Write out the List of Tables
+\lhead{\emph{List of Tables}} % Set the left side page header to "List of Tables"
+\listoftables % Write out the List of Tables
 
 %----------------------------------------------------------------------------------------
 %	ABBREVIATIONS
@@ -354,7 +354,7 @@ The acknowledgements and the people to thank go here, don't forget to include yo
 
 \input{./Chapters/Introduction} 
 \input{./Chapters/Background}
-\input{./Chapters/RelatedWork} 
+% \input{./Chapters/RelatedWork} 
 \input{./Chapters/Robustness} 
 \input{./Chapters/Approach} 
 \input{./Chapters/Evaluation}
