@@ -9,9 +9,9 @@ Since recent years, web applications are becoming a popular alternative to tradi
 % To access a web application, the end-user is only required to maintain a functioning web-browser, whereas the application vendor can deploy and update the application independent of end-users’ system configurations. 
 During the evolution of a web application, it is repeatedly modified to add new functionality, fix bugs or adapt the GUI (Graphical User Interface) to improve the user experience. After such modifications, it is not uncommon to encounter side-effects manifested in the form of new bugs or re-emergence of old bugs. Such side effects usually occur as a result of changing system or component configurations, improper version control, applying incorrect or incomplete bug fixes etc. and can negatively affect the quality of the existing functionality. 
 
-To ensure that after such modifications the application maintains its quality and still fulfills the existing specifications, regression tests are performed on the application under test (henceforth referred as AUT). Software developers typically re-run the existing test-suite\cite{rothermel2001prioritizing},\cite{elbaum2000prioritizing} along with a set of test inputs and test \textit{oracles} — mechanism to assess the test output\cite{KARSCH2012}, on a newly developed version to make sure that the code and functionality carried over from older version behaves as expected.
+To ensure that after such modifications the application maintains its quality and still fulfills the existing specifications, regression tests are performed on the application under test (henceforth referred as AUT). Software developers typically re-run the existing test-suite\cite{rothermel2001prioritizing},\cite{elbaum2000prioritizing} along with a set of test inputs and test \textit{oracles} — mechanism to assess the test output\cite{1240304}, on a newly developed version to make sure that the code and functionality carried over from older version behaves as expected.
 
-% Depending upon the development cycle, project size and available resources, regression tests can be performed at different abstraction levels, commonly as unit, integration and system testing. Unit tests are intended to test small pieces or modules of code, such as functions and classes, whereas integration tests are aimed to test the system as composition of different components. System level tests are performed at higher abstraction level similar to integration tests, however their goal is to check whether the software meets the functional specifications. 
+Depending upon the development cycle, project size and available resources, regression tests can be performed at different abstraction levels, commonly as unit, integration and system testing. Unit tests are intended to test small pieces or modules of code, such as functions and classes, whereas integration tests are aimed to test the system as composition of different components. System level tests are performed at higher abstraction level similar to integration tests, however their goal is to check whether the software meets the functional specifications. 
 
 Intuitively, in case of web applications the regression testing can be done at the GUI level, since majority of web applications’ functionality is accessed through this layer. In traditional sense, regression testing at GUI level abstracts away finer grained internal details by treating the AUT as a black-box. Such testing helps developers to identify the undesired  changes or an absence thereof in required functionality of the application.
 % , since the GUI might have changed significantly while the underlying application has not. 
@@ -63,21 +63,27 @@ As an example, to test the \textit{login} functionality of AUT as depicted in Fi
 % \end{center}
 % % \end{minipage}%
 
-Compared to manual tests, Selenium tests can be run automatically and repeatedly. Typically, such tests can be combined with Continuous Integration tools to be run after the code changes are pushed to the version control repository. When AUT evolves from version $V_{0}$ to a newer version $V_{1}$, existing Selenium tests are executed on $V_{1}$. Ideally, if one or more tests executed successfully on $V_{0}$ fail to achieve the same result on $V_{1}$, the tests have found the possible software regressions in the AUT. In reality, this approach relies heavily on the quality and robustness of the existing tests. Robustness of Selenium tests implies their stability and effectiveness to achieve the same functional coverage across different versions of the AUT. 
+Compared to manual tests, Selenium tests can be run automatically and repeatedly. Typically, such tests can be combined with Continuous Integration tools to be run after the code changes are pushed to the version control repository. When AUT evolves from version $V_{0}$ to a newer version $V_{1}$, existing Selenium tests are executed on $V_{1}$. Ideally, if one or more tests executed successfully on $V_{0}$ fail to achieve the same result on $V_{1}$, the tests have found the possible software regressions in the AUT. In reality, this approach relies heavily on the quality and robustness of the existing tests. Intuitively, robustness of Selenium tests implies their reliability and effectiveness to achieve the same functional coverage across different versions of the AUT. 
 
-However, as the web application continues to evolve, robustness of Selenium tests decreases over time. For newer versions, existing Selenium tests do not achieve the same functional coverage as they do for the version the tests are originally written for. Consider the aforementioned example of \texttt{loginTest} where the outcome of code changes results in changing the display text of \textit{`Login'} button's hyperlink to \textit{``Sign In''} in version $V_{1}$. When \texttt{loginTest} is re-run on $V_{1}$, it is unable to locate the \textit{`Login'} button since the hyperlink-text ``Login'' is changed to ``Sign in''. As a result, \texttt{loginTest} is broken and the desired functional coverage is not achieved unless this fragile test is repaired. 
+"""However, as the web application continues to evolve, robustness of Selenium tests decreases over time."""
 
-To repair such fragile tests, developers need to invest time and efforts to analyze the functionality changes, identify test failures manually and maintain such test-suites. The reasons for decreasing robustness and failures of Selenium tests can include changed functionality, modified GUI element locators and changed structural markup, timing issues etc. If the AUT changes frequently, fragile tests need to be repaired repeatedly to cope with these changes which can be an expensive and time consuming task for developers. If Selenium tests are not robust and resilient enough as the AUT evolves, desired functional coverage is not achieved and regression testing is likely to be ineffective.
-IF STRUCTURE BASED LOCATORS ARE USED, SLIGHT CHANGES IN PAGE STRUCTURE CAN MAKE THE TEST FRAGILE AND IF ATTRIBUTE BASED LOCATORS ARE USED THEN THEY WILL BE ROBUST AGAINST CHANGES 
+As the web application continues to evolve, existing Selenium tests might not achieve the same functional coverage as they do for the version the tests are originally written for. Consider the aforementioned example of \texttt{loginTest} where the outcome of code changes in AUT results in changing the display text of \textit{`Login'} button to ``Sign In'' in version $V_{1}$. When \texttt{loginTest} is re-run on $V_{1}$, it is unable to locate the \textit{`Login'} button since the hyperlink-text ``Login'' is changed to ``Sign in''. As a result, \texttt{loginTest} is broken and the desired functional coverage is not achieved unless this fragile (non-robust) test is repaired. If Selenium tests are not robust and resilient enough as the AUT evolves, desired functional coverage is not achieved and regression testing is likely to be inefficient.
+
+Unfortunately, such situations are not uncommon in agile development environments which involve frequent changes in the AUT. When the AUT changes frequently, fragile tests need to be repaired repeatedly to cope with these changes which can be an expensive and time consuming task for developers. 
+
+The reasons for decreasing robustness and failures of Selenium tests can include changed functionality, modified GUI element locators and changed structural markup, timing issues etc. To repair the fragile tests, developers need to invest time and efforts to analyze the functionality changes, identify test failures manually and maintain such test-suites. 
+
+As Selenium tests directly depend on GUI element locators for locating desired object (e.g. a button) on AUT, selection strategy for locating GUI elements plays vital role in dictating the robustness of Selenium tests. If a test implements structure based locators such as layout-dependent \texttt{xpath} expressions to find relative position of an element on the web-page, slight changes in the structure of the web-page can diminish the robustness of the test. Such situations can arise upon renaming the display text (Figure \ref{fig:b}) or changing the HTML structure, such as changing the structure of the page through \texttt{<div>} tags. On the contrary, element locators such as unique element \texttt{id} attributes are not affected by such changes and can be used to write robust tests. 
+
+Leotta et al \cite{leotta2015using} present an algorithm for selecting reliable \texttt{xpath} locators from a set of absolute and relative \texttt{xpath} expressions for the AUT. Another study by Leotta et al.\cite{leotta2013comparing} compares the effort required to maintain \texttt{id, xpath} and \texttt{link text} locators. Nevertheless, these approaches cover only a subset of available element locators and measure the stability of Selenium tests in terms of the effort required to maintain these locators. Apart from the UI element locators, test design considerations such as the number of actions performed by the test-case, mechanisms implemented to deal with timing issues (e.g. implementing \texttt{wait} commands) also dictate the robustness of Selenium tests. 
+
 % Robustness of Selenium tests can be defined in terms of their stability and effectiveness to achieve the same functional coverage across different versions of the AUT. 
 % The reasons for decreasing robustness and failures of Selenium tests can include changed functionality, modified GUI element locators and changed structural markup, timing issues etc. 
 % Such non-robust tests exhibiting decreased functional coverage are unsuitable for regression testing unless these tests are repaired. In order to modify such tests, developers need to invest time and efforts to analyze the undesired functionality changes, identify test failures manually and maintain such test-suites.
 
 % In other words, if the Selenium tests are not robust enough, the regression testing is likely to be ineffective.
 
-...........TILL HERE IS DONE .............
-
-Considering the current state-of-the-art technologies to the extent of my knowledge, thus far there has been no research in the area of assessing the stability of Selenium tests across different versions of the web application. Currently there is no such technique to determine the robustness of Selenium tests over the version history of web applications to help developers write more robust tests and to understand the reasons behind brittleness of Selenium regression tests. 
+Considering the current state-of-the-art technologies to the extent of my knowledge, thus far there has been no direct research in the area of assessing the robustness of Selenium tests over the version history of the web applications. Such an analysis would help developers to understand the common reasons behind varying robustness of Selenium regression tests and write more robust tests.
 
 % \begin{figure}
 % \begin{subfigure}[b]{0.31\textwidth} 
@@ -109,9 +115,10 @@ Considering the current state-of-the-art technologies to the extent of my knowle
 % 	\label{fig:loginTest}
 % \end{figure} 
 
-The primary goal and scope of this thesis is to measure the robustness of Selenium regression test suites in comparison to different versions of web applications to determine whether there exists a correlation between the robustness of Selenium tests and changes in the AUT. To formally evaluate the approach and to investigate the reasons behind the varying robustness of Selenium tests \textit{robustness metric} has been defined (see Chapter X). Using the \textit{robustness metric} this thesis aims to assess the quality of open source Selenium tests and investigate the factors contributing towards the varying robustness of these tests.
+The primary goal and scope of this thesis is to measure the robustness of Selenium test-suites over the version history of web applications and identify the factors affecting robustness. The first step is to formally establish and define \textit{robustness} in terms of a measurable metric \textit{`robustness grade'}. A test can be marked ``passed'' on the stack-trace but still land on different states of the AUT. Such test might not have covered the same functionality and cannot be considered robust. Furthermore, to identify the factors behind the varying robustness of Selenium tests, as mentioned earlier, a set of metrics has to be developed (Chapter \ref{Chapter4}). 
 
- By providing developers a platform to evaluate their regression tests, this research aims to answer the following research questions:
+The \textit{`robustness grade'} of a test allows us to determine its effectiveness for regression testing. On a coarser level, \textit{`robustness grade'} of a test-suite can indicate its overall quality and suitability for regression testing. If the proposed metrics are able to determine which factors impact robustness the most, developers can use these metrics to write more robust tests. This research aims to answer the following research questions:\\
+\\
 {\bfseries RQ1} How to determine the robustness of Selenium tests?
 {\bfseries RQ2} Is the change in robustness correlated to the changes of application’s structural elements?
 {\bfseries RQ4} Do tests with shorter execution traces tend to be more robust than tests with relatively longer traces?
@@ -119,12 +126,10 @@ The primary goal and scope of this thesis is to measure the robustness of Seleni
 {\bfseries RQ6} Can the robustness analysis improve or assist current regression testing practices?
 {\bfseries RQ7} Reasons of failure behind test cases?
 {\bfseries RQ8} Size and complexity of test suite?
+\\
 
-The Figure XXX depicts the setup model required for the robustness analysis. The first step is to select suitable testing candidates for the research and extract Selenium tests-suites for each candidate from their test repositories. The approach is to test setup and deploy different versions of test candidates AUT and run automated Selenium regression tests on them.
-In the next step, Selenium tests are leveraged to capture the application behavior as trace level and GUI level models, which are then compared with the output logs of Selenium tests.ADD MORE INFO.
-***Add what makes a test robust, how we detect the robustness, whats the assumption (equal actions) - how a test can pass and still not be robust
-In order to formally assess the changes in robustness of the tests, robustness metric is defined as detailed in section XXX. Using the robustness metric as well as the trace level and GUI level differences, robustness of Selenium tests analyzed.
-***If the presented model detects failures etc
+The Figure \ref{fig:thesisoverview} depicts the setup required for the robustness analysis. The first step is to select suitable testing candidates for this research and extract Selenium tests-suites from their test repositories. The approach is to deploy different versions of test candidates AUT and run automated Selenium regression tests on them. In the next step, Selenium tests are leveraged with the existing tool \texttt{webmate}\cite{webmate} to capture the application behavior in terms of behavioral state models. The \textit{states} of the state model represent the abstracted DOM states and transitions represent actions executed on AUT. Such a state model allows us to compare the outcome of Selenium tests on different releases with respect to the release for which the test-suite is written for. This step is essential for evaluating the functional behavior covered by the tests across different releases. Afterwards, \textit{`robustness grade'} is calculated for each test along with other metrics
+
 \begin{figure}
 % [htbp]
 	\centering	\includegraphics[width=\textwidth]{./Figures/thesisoverviewsmall.jpg}
@@ -134,6 +139,8 @@ In order to formally assess the changes in robustness of the tests, robustness m
 	\label{fig:thesisoverview}
 \end{figure} 
 
+\texttt{>>>>>>>>>>>}\\
+
 …..ORGANIZATION….
 Introduction 4 pages
 Chapter 2 discusses the background automated GUI testing, WebMate, Statistical analysis background, 4 pages
@@ -141,10 +148,7 @@ Chapter 3 discusses Factors affecting Robustness of Selenium tests, sample error
 Chapter 4 discusses Approach and Evaluation : 20 pages
 Approach: Candidate selection, deployment, modifying selenium tests to fit to remotewebdriver, using sessionIDs to track, explaining how the entire grid works, extraction of state-models, comparison of GUI sequences, major minor versions,
 Evaluation: Experimental setup, test results, robustness metrics calculation, graphs, results
-For evaluating the approach and answer the research questions, the idea was to assess publicly available Selenium tests, in order to eliminate the possible bias introduced by writing one’s own Selenium tests as such are written from a single person’s design approach. In the same spirit, the presented model is tested on six different open source projects, from different domains as follows: (MAKE A TABLE)
-Name: website:domain
-Jenkins LTS, Jenkins, Mozilla Addons, Mozilla Marketplace, mozilla.org, moodle
-All of these projects feature open source Selenium tests written in Java as well as Python and the presented approach leverages these tests for the purpose of this research. (Add connectors)
+For evaluating the approach and answer the research questions, the idea was to assess publicly available Selenium tests, in order to eliminate the possible bias introduced by writing one’s own Selenium tests as such are written from a single person’s design approach. In the same spirit, the presented model is tested on six different open source projects, from different domains as follows.
 Chapter 5 discusses threats to validity 2 pages
 Chapter 6 discusses conclusion and future work 2 pages
  
