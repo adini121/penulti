@@ -96,15 +96,16 @@ Each browser specific driver implementation such as the \texttt{Firefox Driver}\
 
 The \texttt{RemoteWebDriver} implementation provides the capability to run the Selenium tests against a remote machine. In essence, \texttt{RemoteWebDriver} is comprised of a client-server architecture, where client is the language specific test-case and and server is a simple Java servlet. The \texttt{RemoteWebDriver} servlet acts as a multiplexer, by connecting the client to the specific browser(s) and system configurations requested by the client. The browser and other configurations are provided in terms of capabilities, via command-line or directly from the language specific code.
 \subsection{Test design practices}
+\label{testDesignPractices}
 As illustrated in Section \ref{ssec:webdriverArchitecture}, a Selenium test can emulate various user-actions on AUT. In order to so, a test needs to perform various steps such as navigating to the AUT, locating the UI elements on which user-actions are to be emulated on and finally performing these actions. This section gives an overview about the basic building blocks of a Selenium test. 
-\subsubsection{Locating UI Elements}
+\subsubsection*{Locating UI Elements}
 \label{ssec:locatingUIElements}
 In order to locate GUI elements such as input forms, buttons, checkboxes etc. in the DOM (Document Object Model), \texttt{webdriver} specifies \textit{``Find Element''} and \textit{``Find Elements''} methods for locating a single element and a list of elements, respectively. Within the scope of these methods it is also possible to traverse the DOM tree to locate the \textit{Child Elements} i.e. children nodes of a parent element in the tree. Each language specific binding has its own command to invoke these methods by providing the UI-element locator object, such as\begin{small} HTML\end{small} \texttt{id}, the \texttt{css selector} or \texttt{xpath} expressions.
 
 \begin{verbatim}
-\#Classification : STRUCTURAL VS NON-STRUCTURAL
-\#ADVANTAGE/PROPERTIES IN SHORT
-\#IMPLEMENTATION EXAMPLE,
+% \#Classification : STRUCTURAL VS NON-STRUCTURAL
+% \#ADVANTAGE/PROPERTIES IN SHORT
+% \#IMPLEMENTATION EXAMPLE,
 \end{verbatim}
 
 The most commonly  used\footnote{\url{http://www.seleniumhq.org/docs/03_webdriver.jsp\#locating-ui-elements-webelements}} UI locators and their implementation in Java is listed as following:
@@ -199,10 +200,11 @@ Locates the UI Element using the \texttt{xpath} expressions as it supports navig
 }
 \end{footnotesize}
 \end{itemize}
-Depending upon the GUI structure of AUT and the applicability of UI element locators, different location strategies can be used in combination. The Influence of these UI locator strategies on the robustness of Selenium tests is discussed in Chapter \ref{Chapter4}.
+Depending upon the GUI structure of AUT and the applicability of UI element locators, different location strategies can be used in combination. The Influence of these UI locator strategies on the robustness of Selenium tests is discussed in Chapter \ref{Chapter3}.
 % (https://w3c.github.io/webdriver/webdriver-spec.html#sessions)
-\subsubsection{Emulating user actions}
-Upon locating the desired UI element, \texttt{webdriver} API allows us to emulate various user actions on it depending on the element type. These actions can be classified into state-changing actions, assertions and requesting additional information about the AUT, such as cookies. The most common ways are to emulate the mouse and keyboard based actions by the user, such as clicking and form-filling. Moreover, the API makes it possible to perform assertions on the AUT supported by native language scripts. Assertions can include examples such as getting the title or heading of the web page to ensure that correct page has been navigated. 
+\subsubsection*{Emulating user actions}
+\label{sssec:emulatingActions}
+Upon locating the desired UI element, \texttt{webdriver} API allows us to emulate various user actions on it depending on the element type. These actions can be classified into \textit{state-changing actions}, assertions and requesting additional information about the AUT, such as cookies. A state-changing action signifies a change in the DOM state of the AUT. The most common ways are to emulate the mouse and keyboard based actions by the user, such as clicking (e.g. \texttt{click} element) and form-filling (e.g. \texttt{SendKeys} to element). Moreover, the API makes it possible to perform assertions on the AUT supported by native language scripts. Assertions can include examples such as getting the title or heading of the web page to ensure that correct page has been navigated. 
 
 State changing actions trigger a change the GUI state of the application. Such change does not necessarily navigate the user to another web-page, but nonetheless change the contents or the information of the AUT at a given instant.
 
@@ -254,18 +256,18 @@ HomePage homepage = loginpage.performLogin("uname","passwd");
  
 As illustrated in Listing \ref{code2}, the page-object pattern allows us to model the UI in the test cases in an object-oriented manner. Although such an approach seems verbose at first, it helps to reduce the possible duplication of the test code. In situations when user login is to be performed multiple times, which is typically required for many websites performing user validation, page-object backed \texttt{loginTest} serves a more modular implementation. 
 
-Moreover, page-object pattern contributes towards the maintainability and robustness of tests\cite{leottaPObs}, as mentioned in Chapter \ref{Chapter4}.
+Moreover, page-object pattern contributes towards the maintainability and robustness of tests\cite{leottaPObs}, as mentioned in Chapter \ref{Chapter3}.
 
 
 \section{WebMate}
 \label{sec:WebMate}
 As mentioned in Chapter \ref{Chapter1}, \texttt{webmate}\cite{webmate} is a system-level automated testing and analysis framework. Primarily developed as a cross-browser compatibility testing tool,\texttt{webmate} supports different browsers and platforms. It can leverage existing Selenium tests in order to remote control the browser to interact with the dynamic web 2.0 applications involving JavaScript and Ajax elements. 
 
-By leveraging the Selenium tests, \texttt{webmate} explores the AUT and extracts a behavioral usage-model. The usage-model is essentially a finite state automaton which captures the exploration graph of the different actions performed by the Selenium test on the AUT. 
+By leveraging the Selenium tests, \texttt{webmate} explores the AUT and extracts a behavioral usage-model. The usage-model is essentially a behavioral finite state model which captures the exploration graph of the different actions performed by the Selenium test on the AUT. The states of the usage-model correspond to different states of the GUI and the transitions correspond to different interactions with the AUT such as clicks, form-inputs etc. For each state of the usage-model, \texttt{webmate} is able to record its visual (GUI) state, in the form of a screen-shot of the AUT.
 
-Figure \ref{fig:webmateArchitecture} gives an example of \texttt{webmate} leveraging the \texttt{loginTest} (Snippet \ref{code1}) to generate the usage-model. For security reasons, Selenium tests are integrated with \texttt{webmate} inside a virtual machine. The virtual machine hosts a Selenium hub\footnote{\url{http://www.seleniumhq.org/docs/07_selenium_grid.jsp}} infrastructure, along with a set of browsers. Existing Selenium tests can be executed with \texttt{webmate} by using the \texttt{RemoteWebDriver} capabilities, such as by specifying browser name, security credentials for \texttt{webmate} etc. \texttt{webmate} generates the usage-model without affecting the underlying Selenium tests.
+Figure \ref{fig:webmateArchitecture} gives an example of \texttt{webmate} leveraging the \texttt{loginTest} (Snippet \ref{code1}) to generate the usage-model. In this example, the states of the model are application's DOM states and edges represent actions such as getting the URL, finding UI element and clicks. For security reasons, Selenium tests are integrated with \texttt{webmate} inside a virtual machine. The virtual machine hosts a Selenium hub\footnote{\url{http://www.seleniumhq.org/docs/07_selenium_grid.jsp}} infrastructure, along with a set of browsers. Existing Selenium tests can be executed with \texttt{webmate} by using the \texttt{RemoteWebDriver} capabilities, such as by specifying browser name, security credentials for \texttt{webmate} etc. \texttt{webmate} generates the usage-model without interfering with the underlying Selenium tests.
 
-The states of the usage-model correspond to different states of the GUI and the transitions correspond to different interactions with the AUT such as clicks, form-inputs etc. For each state of the usage-model, \texttt{webmate} is able to record its visual (GUI) state, in the form of a screen-shot of the AUT. \texttt{webmate} makes it possible to recognize functional differences (e.g. missing button) by assessing the usage models to compare GUI state and trace level differences. Due to these features of \texttt{webmate}, it is used as a tool of choice in this thesis for establishing the ground truth for the robustness analysis, as detailed in Chapter \ref{Chapter6}
+ \texttt{webmate} makes it possible to recognize functional differences (e.g. missing button) by assessing the usage models to compare GUI state and trace level differences. Due to these features of \texttt{webmate}, it is used as a tool of choice in this thesis for establishing the ground truth for the robustness analysis, as detailed in Chapter \ref{Chapter6}
 
 \begin{figure}
 \makeatletter 
@@ -311,7 +313,69 @@ In order to spare the manual effort of installing multiple versions of AUT, the 
 
 \section{Statistical Background}
 \label{sec:Statistical}
+Adhering to the goals of this thesis, the metrics influencing robustness of Selenium tests are to be developed (see Chapter \ref{Chapter3}). To identify which metrics impact robustness of Selenium tests the most, it is important to statistically evaluate the significance of these metrics. This section presents the statistical background and terminologies necessary for this evaluation.
 
+\subsection*{Representation of robustness metrics}
+For the statistical analysis, the robustness metrics are represented in terms of a \textit{feature matrix} \cite{li2005lasso}. Within the confines of this thesis, a feature matrix is an $i\times j$ array representation of \textit{i} samples and \textit{j} features. Each feature \textit{j} uniquely represents a robustness metric, and  
+\textit{i} samples correspond to \textit{i} number of Selenium tests. To assess the influence each metric has on robustness, the feature matrix is annexed by a \textit{solution vector} column as depicted in Figure \ref{fig:featurematrix}. A \textit{solution vector} is the ground truth established by executing Selenium tests with the \texttt{webmate} setup, as mentioned in Section \ref{sec:WebMate}.
+
+\begin{figure}[ht]
+\[
+Feature\smallskip Matrix_{i,j} = 
+\begin{pmatrix}
+  a_{1,1} & a_{1,2} & \cdots & a_{1,j} & | & \textit{$sv_{1}$}\\
+  a_{2,1} & a_{2,2} & \cdots & a_{2,j} & | & \textit{$sv_{2}$}\\
+  \vdots  & \vdots  & \ddots & \vdots  & \vdots & \vdots \\
+  a_{i,1} & a_{i,2} & \cdots & a_{i,j} & | & \textit{$sv_{i}$}
+\end{pmatrix}
+\]
+\caption{Feature Matrix with Solution Vector}
+\label{fig:featurematrix}
+\end{figure}
+
+\subsection*{Correlation}
+After developing the feature matrix, it would be interesting to know which of the presented metrics has highest influence on the robustness of Selenium tests. The term \textit{`correlation'} indicates a statistical relationship between two experimental variables. Although it is important to note that \textit{`correlation'} does not necessarily imply causation, i.e., it is not a sufficient condition to indicate causality \cite{corrcausality}. For the statistical evaluation purpose of this thesis, \textit{rank correlation} is suitable for applying correlation between \textit{j} features (robustness metrics) and the solution vector (ground truth) of the feature matrix, as it takes into account \textit{i} different observations of each metric. 
+
+This thesis uses \textit{Spearman rank correlation} as a chosen correlation method (see Definition \ref{def:spearman}). A linear relationship between two variables is not a requisite for Spearman rank correlation. The value of Spearman's correlation coefficient falls in the range [-1,1]. A high positive correlation coefficient indicates that when value of one experimental variable increases, value of other variable increases as well. On the other hand, a high negative value (absolute) indicates that when value of one variable increases, value of other variable decreases. A value close to zero indicates that the two variables are statistically independent. 
+\theoremstyle{definition}
+\begin{definition}{Spearman rank correlation coefficient $\rho$ for a sample size \textit{n} is calculated by converting \textit{n} raw data points \textit{$X_i,Y_i$} to ranks \textit{$x_i,y_i$} as follows:}
+
+\begin{center}\Large
+$\rho = \frac{\sum\limits_{i=1}^{n}(x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum\limits_{i=1}^{n}(x_i - \bar{x})^2\Sigma(y_i - \bar{y})^2}}$
+\end{center}
+\label{def:spearman}
+\end{definition}
+
+\subsection*{Standard deviation}
+Standard deviation $\sigma$ represents the extent of variation of values in a data set (Definition \ref{def:sd}). In other words, it indicates how far do the individual data points \textit{deviate} from the mean. Standard deviation can be used to assess the nature distribution of given metrics. 
+\theoremstyle{definition}
+\begin{definition}{For a sample size of \textit{n} raw data points \textit{$x_1,...,x_i$} with arithmetic mean of $\bar{x}$, standard deviation is expressed as follows:  }
+\begin{center}\Large
+$\sigma = \sqrt\frac{\sum\limits_{i=1}^{n}(x_i - \bar{x})^2} {n - 1}$
+\label{def:sd}
+\end{center}
+\end{definition}
+
+\subsection*{Data set standardization}
+In statistical analysis, standardization is often used as a pre-processing step before performing linear regression. As each predictor (metric) can differ in terms of units and scales, standardizing data sets helps us to compare the regression coefficients of these predictors. In the feature matrix, each column is standardized according to Definition \ref{def:standardization}.
+
+\theoremstyle{definition}
+\begin{definition}{For a sample size of \textit{n} raw data points \textit{$x_1,...,x_i$} with arithmetic mean of $\bar{x}$, and standard deviation $\sigma$, standardized \textit{z} score of a raw score \textit{x} is expressed as follows: }
+\begin{center}\Large
+$z_{i} = {x_{i}- \bar{x} \over \sigma}$
+\label{def:standardization}
+\end{center}
+\end{definition}
+
+\subsection*{Linear regression}
+% Correlation quantifies the degree to which two variables are statistically related. 
+
+Linear regression models a predictive relationship between a dependent (observed) variable and one or more independent variables (predictors). The given feature matrix can be expressed as a \textit{linear model} on which regression is to be applied to discard highly correlated metrics for better interpretation of the model. In the scope of this thesis, the solution vector of the feature matrix represents the dependent variable and \textit{j} features represent predictors. 
+
+To identify which of the metrics have the highest impact on the robustness, a \textit{shrinkage method} can be applied. In regression analysis, a \textit{shrinkage method} is used for identifying the most influential predictors. Although it is not possible to provide a detailed description of these methods, the appropriate details can be found in \textit{Chapter 3, ``Elements of Statistical Learning''} by Hastie et al. \cite{hastie01statisticallearning}. This thesis implements \textit{lasso} (least absolute shrinkage and selection operator) shrinkage method \cite{tibshirani1996regression}. Such a shrinkage method tells us which subset of the presented metrics has highest impact on robustness of Selenium tests.
+
+\subsection*{Statistical evaluation setup}
+For conducting the statistical experiments, this thesis uses the tool \textit{R} \cite{Rtool} which provides an environment for statistical computing. For computing \textit{lasso} regression, package \texttt{lars} \cite{larspack} is used. 
 \section{Related Work}
 \label{sec:relatedWork}
 % MAIN AREAS I WANT TO WRITE ABOUT:(IN NO ORDER)
