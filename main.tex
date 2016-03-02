@@ -32,11 +32,15 @@
 \usepackage{xcolor}
 \usepackage{xparse}
 \usepackage{listings}
+% \usepackage{arydshln}
 % \usepackage{subfig}
 \usepackage{hyperref}
+\usepackage{tabularx}
 % \usepackage{subcaption}
 \usepackage{caption}
+\usepackage{capt-of}
 % \usepackage{subcaption}
+\usepackage{mathtools}
 \graphicspath{{./Pictures/}} % Specifies the directory where pictures are stored
 \usepackage[utf8]{inputenc}
 \usepackage[square, numbers, comma, sort&compress]{natbib} % Use the natbib reference package - read up on this to edit the reference style; if you want text (e.g. Smith et al., 2012) for the in-text references (instead of numbers), remove 'numbers'
@@ -152,47 +156,31 @@ Software Engineering Chair \\Saarland University\\[1cm] % Research group name an
 \Large\textbf{Eidesstattliche Erklärung} \\
 \end{center}
 \noindent
-\begin{itemize}
-\item
 Ich erkläre hiermit an Eides Statt, dass ich die vorliegende Arbeit selbstständig verfasst und keine
 anderen als die angegebenen Quellen und Hilfsmittel verwendet habe.
-\item
-Ich erkläre hiermit an Eides Statt, dass die vorliegende Arbeit mit der elektronischen Version
-übereinstimmt. 
-\end{itemize}
+ 
 \begin{center}
 \Large\textbf{Statement in Lieu of an Oath} \\
 \end{center}
 \noindent
-\begin{itemize}
-\item
 I hereby confirm that I have written this thesis on my own and that I have not used any other media or
 materials than the ones referred to in this thesis.
-\item
-I hereby confirm the congruence of the contents of the printed data and the electronic version of
-the thesis. 
-\end{itemize}
 \begin{center}
 \Large\textbf{Einverständniserklärung} \\
 \end{center}
 \noindent
-\begin{itemize}
-\item
 Ich bin damit einverstanden, dass meine (bestandene) Arbeit in beiden Versionen in die Bibliothek der
 Informatik aufgenommen und damit veröffentlicht wird.
-\end{itemize}
 \begin{center}
 \Large\textbf{Declaration of Consent} \\
 \end{center}
 \noindent
-\begin{itemize}
-\item
 I agree to make both versions of my thesis (with a passing grade) accessible to the public by having
 them added to the library of the Computer Science Department.
-\end{itemize}
-\vspace{2cm}
+
+\vspace{4cm}
 Saarbrücken, $\rule{3cm}{0.15mm}$\hspace{4cm}$\rule{5cm}{0.15mm}$ \newline
-\hspace*{2.5cm}(Datum / Date) \hspace{4cm}(Unterschrift / Signature)
+\hspace*{2.7cm}(Datum / Date) \hspace{4cm}(Unterschrift / Signature)
 % \addtocontents{toc}{\vspace{1em}} % Add a gap in the Contents, for aesthetics
 
 % Eidesstattliche Erklärung
@@ -355,7 +343,7 @@ The acknowledgements and the people to thank go here, don't forget to include yo
 \input{./Chapters/Introduction} 
 \input{./Chapters/Background}
 % \input{./Chapters/RelatedWork} 
-\input{./Chapters/Robustness} 
+% \input{./Chapters/Robustness} 
 \input{./Chapters/Approach} 
 \input{./Chapters/Evaluation}
 \input{./Chapters/ThreatsToValidity}
