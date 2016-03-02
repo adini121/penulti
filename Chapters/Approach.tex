@@ -1,73 +1,165 @@
-\chapter{Approach and Implementation} % Main chapter title
+\chapter{Approach} % Main chapter title
 
 \label{Chapter3} % For referencing the chapter elsewhere, use \ref{Chapter1} 
 
-\lhead{Chapter 5. \emph{Approach and Implementation}}
-\section{Approach}
-To evaluate robustness of Selenium tests and to identify which factors contribute towards the robustness, a set of measurable metrics needs to be developed. This section introduces the rationale behind these metrics and highlights their significance.
+\lhead{Chapter 5. \emph{Approach}}
 
-\subsection{Robustness of Selenium tests}
+This chapter presents the scope and approach behind the research questions raised earlier and develops a set of metrics for answering these questions.
+
+\section{Challenges of Selenium test automation}
+\label{challengesSelenium}
+The purpose of test automation using Selenium framework is to spare the time and effort involved in executing regression tests manually. However, as with every test automation techniques, test automation with Selenium has its own limitations. This section gives a brief overview about the commonly faced challenges in Selenium testing.
+
+Selenium tests can fail if certain functionalities are modified or the order in which the functionality has to be accessed is altered.
+Such changed functionality cannot be covered by the existing tests unless the tests are modified, since the same test inputs can lead to different application behavior. Tests can encounter failures when certain assumptions or preconditions required for them to execute become invalid, such as loading the application to a particular \textit{initial state}.
+
+If a single test case attempts to cover more than one functionality through multiple steps, a failure during initial steps can result in following test not being able to reach the subsequent functionality.
+
+Modifying the structural markup and GUI elements of a web page can affect the performance of the tests. Selenium tests can be broken if the manner in which a functionality is accessed (such as clickable objects, buttons, forms etc.) is modified. Moreover, if GUI element locators (e.g. \texttt{id, xpath, css selectors} etc.) are changed or incorrectly selected, the test cases might be unable to find the object on the page as these attributes can no longer be valid.
+
+Depending upon various factors, different pages of the AUT can load with different speeds. If not load properly, Selenium tests would not be able to explore the desired web page. Moreover, server side requests such as Ajax and JavaScript calls can contribute towards random loading times. Recognizing when such calls are finished can be intricate for Selenium \texttt{webdriver} API. Network latency, bandwidth bottlenecks and database related issues can also result in delayed, improper or partial loading of the AUT state. Such problems can make the tests fail due to the unavailability of certain objects.
+
+Flash related objects are rendered as closed files encompassed in a container and are not accessible using the likes of \texttt{xpath} or \texttt{HTML} based element locators. Selenium \texttt{webdriver} itself has no direct interface to interact with such content. 
+
+In order to detect and mitigate the aforementioned issues, different problems may need different methods. Within the scope of this research, it might not be possible to detect non-deterministic and sporadic failures occurring due to server side problems, random timing issues, network latency etc. which might be difficult to reproduce or analyze. Moreover, our approach will not be able to cover Flash-related functionality due to the limitations inherited from Selenium \texttt{webdriver} itself.
+
+On the other hand, the approach presented in this thesis is suitable for the identification of the most important factors contributing towards the robustness of Selenium tests, such as the design of the test-suite, choice of GUI element locators, number of steps executed by the test etc. In the subsequent sections, details of our approach are presented as follows -- Section \ref{robustnessOfSeleniumTests} develops the concept of robustness in the area of Selenium testing and formally introduces the metric \textit{robustness grade}. The metrics for the assessment of the most important factors contributing towards the \textit{robustness}, namely the design and composition of the test-suite are presented in Section \ref{robfactors}. The effort required to repair a test-suite according to the changes in the AUT can also given an indication of its robustness. Section \ref{locatorMaintenance} discusses the effect of test-suite's design considerations on its maintenance. 
+
+\section{Robustness of Selenium tests (RQ1)}
 \label{robustnessOfSeleniumTests}
-Software development is a continuous and iterative process where an application undergoes through numerous changes. The commencing idea of this thesis is to assess whether Selenium tests are robust against these changes as the application evolves over time. As a starting point, it is essential to define the term \textit{robustness} within the context of Selenium testing. This section explains the notion behind robustness of Selenium tests and introduces the metric for measuring the robustness over different software revisions.
+% This section explains the notion behind robustness of Selenium tests and introduces the metric for measuring the robustness over different software revisions.
 
-The purpose of test automation using Selenium framework is to spare the time and effort involved in executing regression tests manually every time the AUT changes. As mentioned in Chapter \ref{Chapter1}, such approach relies heavily on the robustness of underlying test-suite. Within the premise of this thesis, robustness of a Selenium test considers the degree of its stability and effectiveness to cover the intended functionality across different versions of the AUT. If a test is robust, it would ideally cover the same functionality across different revisions of the AUT and in cases where it fails, possible software \textit{regression} related to that functionality is found. In addition, a robust test also implies that it does not need to be constantly repaired as the AUT evolves. In practice, however, this characteristic may not always hold true since Selenium tests are built on top of the GUI layer of the application. Triggering certain behavior can involve multiple underlying functionalities and layers such as input validation, database operations etc.
+% Selenium tests are robust if they can cover (explore) the same functionality even as the AUT changes over time.  
+% In practice, however, the robustness of a test decreases over time and the tests needs to be maintain as the application evolves, as mentioned in Chapter \ref{Chapter1}. 
+The primary objective of thesis is to assess how robust Selenium tests are against the changes in the application. As a starting point, it is essential to define the \textit{robustness} of Selenium tests. 
+
+Within the scope of this thesis, the \textit{robustness} of a Selenium test considers the degree of its stability and effectiveness to cover the intended functionality across different versions of the AUT. A robust test covers the same functionality across different revisions of the AUT and in cases where it fails, possible software \textit{regression} related to that functionality is found. Intuitively, if a test is robust against the changes in the AUT, it does not need to be constantly repaired.
+
+% Triggering certain behavior can involve multiple underlying functionalities and layers such as input validation, database operations etc.
 % When the GUI of the application evolves over time, it usually evolves with other layers as opposed to changing in a standalone manner. As a result, the success of a test to cover the same functionality each time the application evolves depends on changes in other layers as well.
-As an example, consider the \textit{click `Login' button} scenario from the \texttt{loginTest} in Listing \ref{code1}. If the new changes in AUT delays the time required for the GUI element locator of \textit{`Login'} button to be available in the DOM, the \texttt{loginTest} can fail randomly due to timing issues. Without specifying additional \texttt{wait} conditions in the test, desired functional coverage is not achieved and regression testing is likely to be ineffective. This rationale leads to the hypothesis that as the application evolves over time, the robustness of a test decreases and the test needs to be frequently repaired to maintain its robustness.  
+% As an example, consider the \textit{click `Login' button} scenario from the \texttt{loginTest} in Listing \ref{code1}. If the new changes in AUT delays the time required for the GUI element locator of \textit{`Login'} button to be available in the DOM, the \texttt{loginTest} can fail randomly due to timing issues. Without specifying additional \texttt{wait} conditions in the test, 
+
+
+  
 
 % A test-suite is robust if it is able to cover the same functionality as the application changes over time.  
 
-To evaluate how robust Selenium test \textit{T} is over time, it is possible to measure whether the test is able to cover the same functionality on different versions of AUT. As mentioned in Chapter \ref{Chapter2}, such a functionality coverage can be captured in terms of behavioral state models \cite{marchettoStateBased}, \cite{SchurMiningBehavModels}. If a test execution on different application versions results the same states of the behavioral model, such test can be considered robust.
+When developing automated tests, usually a test-suite (\textit{TS}) comprising several tests (\textit{$T_1$,$T_2$..,$T_n$}) is developed for some \textit{base version} (\textit{$V_{0}$}) of the AUT. This test-suite is then modified and maintained over time according to the changes in AUT. Farther the AUT evolves from the \textit{base version}, the lesser number of tests still remain robust. To evaluate how robust any test \textit{T} is over time, it is important to measure whether the test is able to cover the same functionality across different versions of AUT. As mentioned in Chapter \ref{Chapter2}, such a functionality coverage can be captured in terms of behavioral state models \cite{marchettoStateBased}, \cite{SchurMiningBehavModels}. If a test execution on different application versions results the same states of the behavioral model, such test can be considered robust.
 
-This thesis proposes to measure the robustness of  \textit{T} for \textit{new version $V_{1}$} of the AUT against a \textit{reference version} \textit{$V_{0}$}. The \textit{reference version} of an application is the version for which the test \textit{T} is originally written and the states (functionalities) covered by \textit{T} are identified. The \textit{new version} correspond to iterative revisions of the application over time. The approach is straightforward -- the result of executing \textit{T} on reference version V$_{0}$ acts as a \textit{comparative oracle}, a benchmark against which performance of \textit{T} on new version V$_{1}$ can be measured. 
-
-Formally, we define the term \textit{
-robustness grade} to determine the robustness of test-suite T for test version V$_{1}$ compared against the reference version V$_{0}$. It can be calculated as follows:
+Our approach proposes to measure the robustness of test \textit{T} for a \textit{new version $V_{1}$} of the AUT against a \textit{reference version} \textit{$V_{0}$}. The \textit{reference version} of the AUT is the \textit{base version} for which the test \textit{T} is originally written and the states (functionalities) covered by \textit{T} are identified. The \textit{new version} corresponds to an iterative revision of the AUT. The approach is straightforward -- the result of executing \textit{T} on reference version \textit{$V_{0}$} acts as a \textit{comparative oracle}, a benchmark against which performance of \textit{T} on new version \textit{V$_{1}$} can be measured. Formally, we define the term \textit{
+robustness grade} to determine the robustness of test \textit{T} for version \textit{$V_{1}$} compared against the reference version \textit{$V_{0}$} as follows:
 
 % Robustness equation%
+\begin{equation}
+robustness \thinspace \thinspace grade \thinspace (R_{T_{V_{0}V_{1}}}) = \displaystyle \frac{\#\thinspace of \thinspace same \thinspace states \thinspace reached \thinspace for \thinspace V_{1} \thinspace using \thinspace \thinspace T}{\# \thinspace of \thinspace same \thinspace states \thinspace reached  \thinspace for \thinspace V_{0} \thinspace using \thinspace \thinspace T}\normalsize
+\label{test-case-robustness}
+\vspace{0.5cm}
+\end{equation}
 
-$$Robustness \thinspace Metric \thinspace (R_{T_{V_{0}V_{1}}}) = \displaystyle \frac{\#\thinspace of \thinspace same \thinspace states \thinspace reached \thinspace for \thinspace V_{1} \thinspace using \thinspace T}{\# \thinspace of \thinspace same \thinspace states \thinspace reached  \thinspace for \thinspace V_{0} \thinspace using \thinspace T}\normalsize$$
+As a starting point, we assume that the state extraction points for the reference version as well as subsequent versions remain the same as the test-suites remain unchanged. Consequently, \textit{
+robustness grade} lies in the interval [0,1]. A value of \textit{
+robustness grade} equal to one ($R_{T_{V_{0}V_{1}}}=1$) indicates that the test covers same functionality across versions \textit{$V_{0}$} and \textit{$V_{1}$}. A value other than one ($R_{T_{V_{0}V_{1}}}\neq 1$) indicates that the test is not robust, as it does not cover same states across two different versions. This step establishes the \textit{ground truth} of robustness analysis. The details of our approach to identify the states reached and functionalities covered across different versions are explained in Section \ref{Implement}.
 
-The robustness metric for a test version indicates the robustness of given test-suite and the functionality covered by it for that particular test version. The details of our approach to identify the state reached and functionalities covered across different versions are explained in Section XXX. As a starting point, we assume that the state extraction points for the reference version as well as subsequent versions remain the same as the test-suites remain unchanged. Correspondingly, if the tests written for the reference version cover the given functionalities as expected for the test version; the robustness metric for the test version (R$_{V_{0}V_{1}}$) is 100\%. A robustness metric of ‘100\%’ indicates that given tests are fully robust across these two versions and that they achieve similar behavioral state coverage. On the contrary, robustness metric less than 100\% deems that the given tests might not be fully robust. Such a metric indicates that these tests might be unable to cover the same application states or perhaps they trigger different application behavior for different versions. 
+For measuring the robustness of Selenium tests, our approach considers two kinds of versions of the AUT, as follows: (i) major versions (stable releases) where significant changes in functionality are made and (ii) minor revisions (e.g. commits to the version control repository) where minor feature changes and bug fixes have been implemented. Throughout this thesis, the major versions of the AUT treated as a \textit{reference version} against which robustness of Selenium tests for future revisions (minor versions) is compared. 
+% In a traditional software development environment, there can be multiple minor revisions for each major version. 
 
-Our robustness measurement considers two kinds of versioning of the AUT: major versions (stable releases) where significant changes in functionality are done and minor revisions/commits where minor feature changes and bug fixes have been implemented.  In the first step we would measure the robustness metric for the major versions of the AUT to identify the changed functionality and perform the robustness analysis. Afterwards, for major versions with decreased robustness scores we plan to fix/modify the tests corresponding to the changed functionality for the subsequent major versions of the AUT. Second step would be to measure the robustness metric for the minor revisions of each major version to identify the regression changes. Our rationale behind this approach is that due to the significant functionality changes across the major versions, Selenium tests are less likely to fully cover the same behavioral states for all major versions unless they are modified. Utilizing the robustness scores for different versions of AUT we plan to investigate the reasons behind the varying robustness, and fix the broken Selenium tests in case of major versions. Further details about the robustness analysis  can be found in Section XXX
-% In practice this is may not be the case, 
-\texttt{==========================================================}
+% As web applications evolve from one revision to another, it is pertinent to assess the robustness of a Selenium test over time, i.e., across multiple minor revisions. This step establishes the \textit{ground truth} for the robustness analysis. Across \textit{i} minor revisions of the AUT, the \textit{ground truth} of test \textit{T} (\textit{$G_T$})is calculated as follows:
 
-As described in Section \ref{testDesignPractices}, there are various \textit{building blocks} that compose a Selenium test. This composition can be broadly classified into UI locators, page-objects and \textit{actions} performed by the test. Depending upon how the test-suite is constructed, robustness of the tests can change -- as an example, consider number of state-changing \textit{actions} performed by the test. Recalling from Section \ref{sssec:emulatingActions}, a state-changing action such as a \textit{click} changes the DOM state. After this change, the page might not load all the elements of the DOM immediately -- which might cause interruption in the next action. In this manner, higher the number of state-changing actions a test executes, the more probability of it being fragile. Hence it would be interesting to know whether the composition of the test-suites affects the robustness of the tests. These factors are described in terms of measurable metrics in section \ref{robustnessFactors}.
+
+% The rationale behind this approach is that because there can be significant functionality changes between different major versions, there exists different versions of Selenium test-suites for different major versions.
+
+%### GROUND TRUTH
+% \begin{equation}
+% robustness \thinspace ground\thinspace  truth\thinspace (R_{T_{V_{0}V_{1}}}) = \displaystyle \frac{\#\thinspace of \thinspace same \thinspace states \thinspace reached \thinspace for \thinspace V_{1} \thinspace using \thinspace \thinspace T}{\# \thinspace of \thinspace same \thinspace states \thinspace reached  \thinspace for \thinspace V_{0} \thinspace using \thinspace \thinspace T}\normalsize
+% \label{test-case-robustness}
+% \vspace{0.5cm}
+% \end{equation}
+
+Additionally, it would be interesting to know the \textit{
+robustness grade} at test-suite level. Correspondingly, Equation \ref{test-suite-robustness} formulates the \textit{
+robustness grade} for given test-suite \textit{TS} comprising \textit{n} tests (\textit{$T_1$,$T_2$..,$T_n$}) and executed on version \textit{$V_{1}$}. 
+
+\begin{equation}
+robustness \thinspace \thinspace grade \thinspace (R_{TS_{V_{0}V_{1}}}) = \displaystyle \frac{\#\thinspace of \thinspace robust \thinspace tests \thinspace for \thinspace V_{1} \thinspace using \thinspace \thinspace TS}{\# \thinspace of \thinspace robust \thinspace tests \thinspace for  \thinspace V_{0} \thinspace using \thinspace \thinspace TS}\normalsize
+\label{test-suite-robustness}
+\vspace{0.5cm}
+\end{equation}
+
+If the result of executing \textit{TS} on \textit{$V_{1}$} yields the same number of robust tests as it does for \textit{$V_{0}$}, test-suite \textit{TS} is fully robust ($R_{TS_{V_{0}V_{1}}} =1$). On the contrary, \textit{
+robustness grade} less than one ($R_{TS_{V_{0}V_{1}}} < 1$) deems that one or more tests in \textit{TS} are not be fully robust and that the test-suite might be unable to cover the same application behavior for different versions. 
+
+Using the metric \textit{robustness grade} at test as well as at test-suite level, it is now possible to quantitatively measure how robust Selenium tests are against the changes of the AUT.
+
+\section{Design and composition of tests (RQ2)}
+\label{robfactors}
+There are various \textit{building blocks} that compose a Selenium \texttt{webdriver} based test, which are described in Section \ref{testDesignPractices}. This composition can be broadly classified into GUI element locators and various \textit{actions} performed by the test on the underlying application. Since different test can have different set of \textit{building blocks}, it would be beneficial for the developers to know whether the the manner in which the test-suite is constructed, such as the type and distribution of the these blocks test-suites affects the robustness of the tests. This section presents the metrics for determining whether there is a relation between these building blocks and robustness of Selenium tests.  
+
+\subsubsection*{Actions}
+As mentioned in Section \ref{sssec:emulatingActions}, the \texttt{webdriver} API offers a rich set of \textit{actions} to be emulated on the AUT. The actions are a sequence of GUI events executed by the test on the AUT. Broadly, these actions can be classified into \textit{state-changing actions}, assertions and requesting additional information about the AUT, such as page resources. 
+
+As the number of actions increases, the number of GUI sequences increases as well. Many times a test can be written to cover \textit{too much} of functionality, which can be a bad sign for its robustness. Consider an example when a test-case is required to test whether an administrative user can access certain administrative privilege (such as adding new users). The test-case should not be required to test additional functionality, such as first creating an administrative user and then testing the administrative privileges. Hence, the number of actions executed by a test can be an indication of how \textit{atomic} the test is. The number of actions as a robustness metric is denoted by \textit{\#actions} in table \ref{rq2metrics}. 
+
+Thus if a test tries to cover multiple functionalities - if it succeeds in the first test but fails in the second one, the test is still not robust as it did not cover the intended functionality in the latter part. On the other hand, if tests are \textit{atomic} i.e. smal 
+Consider a state-changing action -- the \textit{click `Login' button} scenario from the \texttt{loginTest} in Listing \ref{code1}. Recalling from Section \ref{sssec:emulatingActions}, a state-changing action causes the AUT to load into some \textit{next state} (e.g. new web page) on which some \textit{next action} can be executed. Triggering this \textit{click} event can invoke multiple underlying functionality layers such as input validation, database operations etc.
+Nevertheless, after the \textit{click} event the AUT needs to load all the GUI element so that the test can execute the \textit{next action}. If the \textit{next state} of the application is not loaded in a timely manner or not loaded at all, \textit{next action} would not be executed, and as a result the test is broken. In this manner, given next action higher the number of state-changing actions a test executes, the more probability of it being fragile. This metric is formally expressed as number of \textit{actions}
+
+\subsubsection*{GUI element locators}
+
+Our hypothesis: More structure independent locators should affect the tests more positively, while others (eg. xpath) should affect the robustness negatively. 
+
+Why Jenkins tests pass -> Uses xpath but still ? Relative vs absolute xpath expressions. 
+
+To measure the influence each metric has on the robustness of Selenium test, the robustness grade from section XXX is used for determining the ground truth. Ground truth indicates robustness of a test over all minor versions. It can be calculated as follows:
+sum of rob grades / total number of minor revisions. 
+
+1. CORRELATION
+2. LINEAR REGRESSION
+
+These factors are described in terms of measurable metrics in section \ref{robustnessFactors}.
+
+\begin{center}
+\begin{table}[h]
+\centering
+\begin{tabular}{l*{6}{c}r}
+\hline
+Robustness Metric              &Description \\
+\hline
+\#actions & Java  \\
+\#get      & Java\\
+\#sendKeys & Python   \\
+\#clickElement     & Python  \\
+\#implicitlyWait    & Python   \\
+\hline
+\#xpath    & Python   \\
+\#partiallinktext    & Python   \\
+\#classname    & Python   \\
+\#linktext    & Python   \\
+\#name    & Python   \\
+\#cssselector    & Python   \\
+\#tagname    & Python   \\
+\#id    & Python   \\
+\hline
+% \caption{Application Candidates}
+\end{tabular}
+
+\caption{First part shows actions, second part shows locator requests}
+\label{rq2metrics}
+\end{table}
+\end{center}
+
+\section{Factors affecting robustness of Selenium tests (RQ2)}
+\label{robustnessFactors}
+\section{Maintenance and repairing effort ((RQ3)}
+\label{locatorMaintenance}
 
 Each GUI locator differs in their characteristics such as availability and their susceptibility towards changes in GUI structure. A structure dependent locator is likely to be broken by minor changes in the application's GUI and needs to be repaired repeatedly if the AUT has frequent GUI changes. This process adds additional overhead in terms of the time required and costs incurred with the maintenance of the test-suite. If developers know which locators are robust and do not need to be frequently repaired, they can improve their element location strategy to write more robust tests. Section \ref{locatorMaintenance} defines the metrics required to assess the maintenance effort for each locator type. 
 
-\subsection{Factors affecting robustness of Selenium tests}
-\label{robustnessFactors}
-\subsection{Maintenance and repairing effort}
-\label{locatorMaintenance}
-
-\begin{figure}
-\makeatletter 
-\renewcommand{\thefigure}{\@arabic\c@figure}
-\makeatother
-% \setcounter{figure}{0}
-    \centering
-  \includegraphics[width=4in,height=3.5in]{./Figures/lassotest.png}
-  \caption{Lassotest}
-  \label{fig:lassotest} 
-\end{figure}
-
-\begin{figure}
-\makeatletter 
-\renewcommand{\thefigure}{\@arabic\c@figure}
-\makeatother
-% \setcounter{figure}{0}
-    \centering
-  \includegraphics[width=3in,height=2.6in]{./Figures/lassotest.png}
-  \caption{Lassotest}
-  \label{fig:lassotest} 
-\end{figure}
-\begin{figure}
-\makeatletter 
-\renewcommand{\thefigure}{\@arabic\c@figure}
-\makeatother
-% \setcounter{figure}{0}
-    \centering
-  \includegraphics[width=6in,height=2.6in]{./Figures/moodlerq1pic.png}
-\end{figure}
+\section{Implementation}
+\label{Implement}
+\section{Candidate Selection}
+\section{Selenium tests-suites}
+\section{Automatic parallel deployment}
+\section{Behavioral State Models}
+\section{State mapping (RQ1)}
+\section{Feature selection (RQ2)}
+\section{Analyzing changes in test suites (RQ3)}

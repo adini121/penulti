@@ -5,25 +5,56 @@
 \lhead{Chapter 6. \emph{Evaluation}}
 Now we see the table!
 
-\begin{savenotes}
-\begin{table}[h!]
-\centering
-\begin{tabular}{|c|c|c|c|c|c|}
+% \begin{tabulary}{\textwidth}{|c|c|c|c|c|c|}
+% \hline
+% Application&  Language&  Page-objects&  \#Test classes&  \#Test methods&  LOC\footnote{Without comments and blank lines using the tool CLOC (\url{cloc.sourceforge.net})}  \\
+% \hline
+%  Jenkins\footnote{\url{https://github.com/jenkinsci/acceptance-test-harness}}&  Java&56&  &  &    \\
+% \hline
+% Moodle\footnote{\url{https://github.com/moodlehq/functional-test-suite}}&  Java&  13&  &  &    \\
+% \hline
+% Mozilla Addons\footnote{\url{https://github.com/mozilla/Addon-Tests/}} &  Python&  17&  &  &    \\
+% \hline
+% Mozilla Marketplace\footnote{\url{https://github.com/mozilla/marketplace-tests}} &  Python&  12&  3&  &  \\
+% \hline
+% Mozilla.org\footnote{\url{https://github.com/mozilla/mcom-tests}} &  Python&  16&  16&  &   \\
+% \hline
+% \caption{Application Candidates}
+% \label{app-candidates}
+% \end{tabulary}
+\resizebox{10cm}{!}{
+\begin{tabular}{l*{6}{c}r}
+\\
 \hline
-Application&  Language&  Page-objects&  \#Test classes&  \#Test methods&  LOC\footnote{Without omments and blank lines using the tool CLOC (\url{cloc.sourceforge.net})}  \\
+Application              & Language & \#Page-objects & \#Tests & \#LOC\footnote{Without comments and blank lines using the tool CLOC (\url{cloc.sourceforge.net})} & F  \\
 \hline
- Jenkins\footnote{\url{https://github.com/jenkinsci/acceptance-test-harness}}&  Java&56&  &  &    \\
+Jenkins & Java & 4 & 0 & 2 & 10  \\
+Moodle            & Java & 3 & 0 & 3 &  8 \\
+Addons           & Python & 2 & 1 & 3 &  7  \\
+Marketplace     & Python & 2 & 1 & 3 &  5   \\
+Mozilla.org     & Python & 2 & 1 & 3 &  5   \\
 \hline
-Moodle\footnote{\url{https://github.com/moodlehq/functional-test-suite}}&  Java&  13&  &  &    \\
+% \caption{Application Candidates}
+\label{app-candidates}
+\end{tabular}}
+
+\begin{flushleft}
+\resizebox{14cm}{!}{
+\begin{tabular}{l*{6}{c}r}
 \hline
-Mozilla Addons\footnote{\url{https://github.com/mozilla/Addon-Tests/}} &  Python&  17&  &  &    \\
+Application              & Jenkins &Moodle & Mozilla-Addons & Firefox-Marketplace\footnote{Without comments and blank lines using the tool CLOC (\url{cloc.sourceforge.net})} & Mozilla.org  \\
 \hline
-Mozilla Marketplace\footnote{\url{https://github.com/mozilla/marketplace-tests}} &  Python&  12&  3&  &  \\
+Jenkins & 1 & 4 & 0 & 2 & 10  \\
+Moodle            & 1 & 3 & 0 & 3 &  8 \\
+Addons           & 1 & 2 & 1 & 3 &  7  \\
+Marketplace     & 1 & 2 & 1 & 3 &  5   \\
+% \hdashline 
+Mozilla.org     & 1 & 2 & 1 & 3 &  5   \\
 \hline
-Mozilla.org\footnote{\url{https://github.com/mozilla/mcom-tests}} &  Python&  16&  16&  &   \\
-\hline
-\end{tabular}
-\caption{My caption}
-\label{my-label}
-\end{table}
-\end{savenotes}
+% \caption{Application Candidates}
+\label{app-candidates}
+\end{tabular}}
+\end{flushleft}
+% \end{table}
+% \end{tiny}
+% \end{savenotes}
