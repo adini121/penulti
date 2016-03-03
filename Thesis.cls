@@ -302,8 +302,8 @@
   \vfil\vfil\vfil\null
   \cleardoublepage
 }
-\addtocounter{secnumdepth}{1}
-\setcounter{tocdepth}{6}
+\addtocounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
 \newcounter{dummy}
 \newcommand\addtotoc[1]{
 \refstepcounter{dummy}

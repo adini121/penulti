@@ -97,20 +97,20 @@ The resultant URL is :\\
 Each browser specific driver implementation such as the \texttt{Firefox Driver}\footnote{\url{https://code.google.com/p/selenium/wiki/FirefoxDriver}} or the \texttt{RemoteWebDriver}\footnote{\url{https://code.google.com/p/selenium/wiki/RemoteWebDriver}} has its own mechanism for carrying out the above-mentioned communication. 
 
 The \texttt{RemoteWebDriver} implementation provides the capability to run the Selenium tests against a remote machine. In essence, \texttt{RemoteWebDriver} is comprised of a client-server architecture, where client is the language specific test-case and and server is a simple Java servlet. The \texttt{RemoteWebDriver} servlet acts as a multiplexer, by connecting the client to the specific browser(s) and system configurations requested by the client. The browser and other configurations are provided in terms of capabilities, via command-line or directly from the language specific code.
-\subsection{Test design practices}
+\subsection{Test design and composition}
 \label{testDesignPractices}
 As illustrated in Section \ref{ssec:webdriverArchitecture}, a Selenium test can emulate various user-actions on AUT. In order to so, a test needs to perform various steps such as navigating to the AUT, locating the UI elements and finally performing these user-actions. This section gives an overview about the basic building blocks of a Selenium test. 
-\subsubsection*{Locating UI Elements}
-\label{ssec:locatingUIElements}
+\subsubsection{Locating UI Elements}
+\label{sssec:locatingUIElements}
 In order to locate GUI elements such as input forms, buttons, checkboxes etc. in the DOM (Document Object Model), \texttt{webdriver} specifies \textit{``Find Element''} and \textit{``Find Elements''} methods for locating a single element and a list of elements, respectively. 
 % Within the scope of these methods it is also possible to traverse the DOM tree to locate the \textit{Child Elements} i.e. children nodes of a parent element in the tree. 
 Each language specific binding has its own command to invoke these methods by providing the UI-element locator object, such as\begin{small} HTML\end{small} \texttt{id}, the \texttt{css selector} or \texttt{xpath} expressions.
 
-\begin{verbatim}
-% \#Classification : STRUCTURAL VS NON-STRUCTURAL
-% \#ADVANTAGE/PROPERTIES IN SHORT
-% \#IMPLEMENTATION EXAMPLE,
-\end{verbatim}
+% \begin{verbatim}
+% % \#Classification : STRUCTURAL VS NON-STRUCTURAL
+% % \#ADVANTAGE/PROPERTIES IN SHORT
+% % \#IMPLEMENTATION EXAMPLE,
+% \end{verbatim}
 
 The most commonly  used\footnote{\url{http://www.seleniumhq.org/docs/03_webdriver.jsp\#locating-ui-elements-webelements}} UI locators and their implementation in Java is listed as following:
 \begin{itemize}
@@ -195,7 +195,7 @@ Locates the UI Element using the \texttt{css selector} representing the \begin{f
 % # xpath
 \item 
 By \texttt{xpath}:
-Locates the UI Element using the \texttt{xpath} expressions as it supports navigating XML as well as xHTML element tree.Similar to \texttt{css selectors}, the \texttt{xpath} expressions also allow locating parent and children nodes of a DOM tree. 
+Locates the UI Element using the \texttt{xpath} expressions as it supports navigating XML as well as xHTML element tree. Similar to \texttt{css selectors}, the \texttt{xpath} expressions also allow locating parent and children nodes of a DOM tree. 
 \newline
 \begin{footnotesize}
 \framecolorbox[\linewidth][l]{gray}{white}{\texttt{<input id="login"/>
@@ -206,13 +206,32 @@ Locates the UI Element using the \texttt{xpath} expressions as it supports navig
 \end{itemize}
 Depending upon the GUI structure of AUT and the applicability of UI element locators, different location strategies can be used in combination. The Influence of these UI locator strategies on the robustness of Selenium tests is discussed in Chapter \ref{Chapter3}.
 % (https://w3c.github.io/webdriver/webdriver-spec.html#sessions)
-\subsubsection*{Emulating user actions}
+\subsubsection{Emulating user actions}
 \label{sssec:emulatingActions}
 Upon locating the desired UI element, \texttt{webdriver} API allows us to emulate various user actions on it depending on the element type. These actions can be classified into \textit{state-changing actions}, assertions and requesting additional information about the AUT, such as cookies. A state-changing action signifies a change in the DOM state of the AUT. The most common ways are to emulate the mouse and keyboard based actions by the user, such as clicking (e.g. \texttt{click} element) and form-filling (e.g. \texttt{SendKeys} to element). Moreover, the API makes it possible to perform assertions on the AUT supported by native language scripts such as getting the title or heading of the web page to ensure that correct page has been navigated. 
 
 State changing actions trigger a change the GUI state of the application. Such change does not necessarily navigate the user to another web-page, but nonetheless change the contents or the information of the AUT at a given instant.
 
-\subsubsection*{Page-Object pattern}
+\subsubsection{Selenium Waits}
+\label{sssec:seleniumwaits}
+The Selenium \texttt{webdriver} API provides the possibility to introduce \textit{wait} conditions in the tests when the test needs to wait for a response from the AUT. These commands can instruct the \texttt{webdriver} to wait after loading a page or before locating a GUI element. The wait commands can be classified as implicit and explicit wait commands. 
+
+When locating an element in the DOM, implicit wait tells the \texttt{webdriver} to wait for a certain amount of time while locating an element. If the element is not found, \texttt{webdriver} waits for the amount of time specified by the implicit wait before throwing an exception. Implicit waits can be defined in the setup methods of the tests and are set for the entire duration of the browser session. Following example shows the usage of implicit wait:
+\begin{footnotesize}
+\texttt{ driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS); 
+}
+\end{footnotesize}
+
+Explicit waits specify the test to wait until certain condition is satisfied. In comparison to implicit waits where the test halts for the specified time duration, test with explicit wait proceeds the next step of the test as soon as the expected condition is met. In the following example, the test would click the ``Login'' button as soon as the \texttt{webdriver} finds that the element is clickable.
+\begin{footnotesize}
+\begin{verbatim}
+WebDriverWait wait = new WebDriverWait(driver, 10);
+WebElement element = wait.until(ExpectedConditions.
+                     elementToBeClickable(By.linkText("Login"))));
+\end{verbatim}
+\end{footnotesize}
+
+\subsubsection{Page-Object pattern}
 \label{page-object}
 Since its inception, the page-object design pattern\footnote{\url{http://www.seleniumhq.org/docs/06_test_design_considerations.jsp\#page-object-design-pattern}} has been a widely used \textit{de-facto} standard for designing Selenium \texttt{webdriver} tests. 
 Page-object pattern encapsulates pages of an application as a series of objects and essentially provides a logical coupling between the test-code and the page-specific code, such as the UI locators. Such a design pattern reduces code duplication and improves readability of tests. The test in Listing \ref{code1} can be designed using the page-object pattern as following: 
@@ -365,7 +384,7 @@ In statistical analysis, standardization is often used as a pre-processing step 
 \theoremstyle{definition}
 \begin{definition}{For a sample size of \textit{n} raw data points \textit{$x_1,...,x_n$} with arithmetic mean of $\bar{x}$, and standard deviation $\sigma$, the standardized score \begin{large}
 $\tilde{x_{i}}$
-\end{large} of a raw score \textit{x} is expressed as follows: }
+\end{large} of a raw score \textit{$x_{i}$} is expressed as follows: }
 \begin{center}\Large
 $\begin{tiny}
 \tilde{x_{i}}
