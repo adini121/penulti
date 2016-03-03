@@ -62,7 +62,7 @@ driver.findElement(By.linkText("Login")).click();
 \end{scriptsize} 
 \end{center}
  
-\begin{figure}[h!]
+\begin{figure}[h! ]
 \makeatletter 
 % \renewcommand{\thefigure}{\@arabic\c@figure}
 \makeatother
@@ -103,7 +103,7 @@ As illustrated in Section \ref{ssec:webdriverArchitecture}, a Selenium test can 
 \subsubsection{Locating UI Elements}
 \label{sssec:locatingUIElements}
 In order to locate GUI elements such as input forms, buttons, checkboxes etc. in the DOM (Document Object Model), \texttt{webdriver} specifies \textit{``Find Element''} and \textit{``Find Elements''} methods for locating a single element and a list of elements, respectively. 
-% Within the scope of these methods it is also possible to traverse the DOM tree to locate the \textit{Child Elements} i.e. children nodes of a parent element in the tree. 
+Within the scope of these methods it is also possible to traverse the DOM tree to locate the \textit{Child Elements} i.e. children nodes of a parent element in the tree. 
 Each language specific binding has its own command to invoke these methods by providing the UI-element locator object, such as\begin{small} HTML\end{small} \texttt{id}, the \texttt{css selector} or \texttt{xpath} expressions.
 
 % \begin{verbatim}
@@ -251,7 +251,9 @@ Page-object pattern encapsulates pages of an application as a series of objects 
 // Page-objects (POs)
 public class HomePage(){ // home page PO
 Webdriver driver;
-public HomePage(WebDriver driver){this.driver=driver;}}
+public HomePage(WebDriver driver){
+this.driver=driver;
+}}
 
 public class LoginPage(){ // login page PO
 Webdriver driver;
@@ -302,26 +304,6 @@ Using \texttt{webmate} it is possible to recognize functional differences (e.g. 
   \label{fig:webmateArchitecture} 
 \end{figure}
 
-\section{Web Application Deployment}
-\label{sec:autoDeployment}
-To measure the robustness of Selenium tests across different versions of AUT, it is necessary to make these versions accessible for the testing setup as shown in Figure \ref{fig:thesisoverview}. It is possible to accomplish this by installing and deploying these versions locally (without relying on external application server provider). Generally, most of the open-source application vendors make older versions of their applications available for public usage. The most common ways to release such web applications are either by releasing packaged versions ready to deploy, such as \texttt{war} (Web application ARchive) files in case of Java applications or by checking out the code from version control repositories such as git, subversion, mercurial etc.
-
-\begin{figure}
-\makeatletter 
-\renewcommand{\thefigure}{\@arabic\c@figure}
-\makeatother
-% \setcounter{figure}{0}
-    \centering
-  \includegraphics[width=5.4in,height=2.6in]{./Figures/Deployment_Process_2.jpg}
-  \caption{Automatic parallel deployment process}
-  \label{fig:deployment} 
-\end{figure}
-
-Depending upon the type of the web application as well as the frameworks and programming languages used to create these application, different set of application servers need to be used. Java based packaged applications such as \texttt{war} archives can be deployed in Java containers such as Tomcat\footnote{\url{http://tomcat.apache.org/}}. Similarly, PHP based applications can be hosted inside Apache httpd\footnote{\url{https://httpd.apache.org/}} servers. 
-
-The AUT can be deployed as per the installation instructions provided by the application vendors. The installation setup includes steps such as downloading the application source code or packaged binaries, creating databases and other configurations etc. Certain Selenium tests require the AUT to have some pre-configured features enabled, such as an \textit{administrative} user account setup which can also be accomplished in the installation phase. 
-
-In order to spare the manual effort of installing multiple versions of AUT, the deployment work-flow can be automated through means of deployment scripts such as automated shell scripts. To further expedite the testing process, we aim to deploy multiple versions of the AUT in parallel, sand-boxed inside a secure Linux based virtual machine for security reasons. Figure \ref{fig:deployment} depicts the overview of remote automatic deployment process; three versions of the AUT are running simultaneously against their individual database instances.
 
 % \begin{figure}
 % \makeatletter 
@@ -429,7 +411,7 @@ To detect the functionality covered by the test, approaches such as using assert
 As mentioned in Chapter \ref{Chapter1}, the effort required for the maintenance of Selenium tests can indicate the quality of the underlying test-suite. By far the closest approach to the work proposed in this thesis is presented by Leotta et al \cite{leotta2013comparing} as a case-study in the area of assessing the maintainability of GUI element locators. Leotta et al. developed four equivalent test-suites which only differ in terms of the GUI element locators (\texttt{id, xpath} and \texttt{link text}) for assessing their maintenance cost. The maintenance costs are measured as the time required for repairing changed GUI element locators and number of lines of code changed. 
 
 Another approach by Leotta et al. presents an algorithm for selecting reliable \texttt{xpath} locators from a set of absolute and relative \texttt{xpath} expressions. 
-Both of these approaches confine their analysis to a comparative study of GUI element locators Selenium \texttt{webdriver} API (see Section \ref{ssec:locatingUIElements}. do not include other test design considerations such as the number of actions performed by the test-case, implementing \texttt{wait} commands etc. that are responsible for the instability of Selenium tests. 
+Both of these approaches confine their analysis to a comparative study of GUI element locators Selenium \texttt{webdriver} API (see Section \ref{sssec:locatingUIElements}) do not include other test design considerations such as the number of actions performed by the test-case, implementing \texttt{wait} commands etc. that can contribute towards the robustness of Selenium tests. 
 
 This thesis incorporates the aforementioned existing techniques and principles such as using cross-browser analysis, behavioral state models and GUI level comparisons to evaluate the robustness of Selenium tests. Considering the current state-of-the-art technologies to the best of my knowledge, there are no similar approaches to perform the robustness analysis of Selenium tests. Moreover, this thesis evaluates the robustness of Selenium test-suites over the version history of web applications to identify the factors affecting the robustness. 
 
