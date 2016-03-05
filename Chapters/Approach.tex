@@ -6,7 +6,7 @@
 
 This chapter presents the scope and approach behind the research questions raised earlier and develops a set of metrics for answering these questions.
 
-\section{Challenges of Selenium test automation}
+\section{Challenges of Selenium Test Automation}
 \label{challengesSelenium}
 The purpose of test automation using Selenium framework is to spare the time and effort involved in executing regression tests manually. However, as with every test automation techniques, test automation with Selenium has its own limitations. This section gives a brief overview about the commonly faced challenges in Selenium testing.
 
@@ -25,7 +25,7 @@ In order to detect and mitigate the aforementioned issues, different problems ma
 
 On the other hand, the approach presented in this thesis is suitable for the identification of the most important factors contributing towards the robustness of Selenium tests, such as the design of the test-suite, choice of GUI element locators, number of steps executed by the test etc. In the subsequent sections, details of our approach are presented as follows -- Section \ref{robustnessOfSeleniumTests} develops the concept of robustness in the area of Selenium testing and formally introduces the metric \textit{robustness grade}. The metrics for the assessment of the most important factors contributing towards the \textit{robustness}, namely the design and composition of the test-suite are presented in Section \ref{robfactors}. The effort required to repair a test-suite according to the changes in the AUT can also given an indication of its robustness. Section \ref{locatorMaintenance} discusses the effect of test-suite's design considerations on its maintenance. 
 
-\section{Robustness of Selenium tests (RQ1)}
+\section{Robustness of Selenium Tests (RQ1)}
 \label{robustnessOfSeleniumTests}
 % This section explains the notion behind robustness of Selenium tests and introduces the metric for measuring the robustness over different software revisions.
 
@@ -119,11 +119,11 @@ Where, \textit{$R_{T_{V_{0}V_{1}}},..,R_{T_{V_{0}V_{n}}}$} are the
 
 Using the metric \textit{robustness grade} at test as well as at test-suite level (Definitions \ref{test-case-robustness}, \ref{test-suite-robustness}, \ref{robustness-ground-truth}), it is now possible to quantitatively measure how robust Selenium tests are against the changes of the AUT. 
 
-\section{Design and composition of tests (RQ2)}
+\section{Design and Composition of Tests (RQ2)}
 \label{robfactors}
 There are various \textit{building blocks} that compose a Selenium \texttt{webdriver} based test, which are described in Section \ref{testDesignPractices}. This composition can be broadly classified into GUI element locators and various \textit{actions} performed by the test on the underlying application. Since different test can have different set of \textit{building blocks}, it would be beneficial for the developers to know whether the the manner in which the test-suite is constructed, such as the type and distribution of the these blocks test-suites affects the robustness of the tests. This section presents the metrics for determining whether there is a relation between these building blocks and robustness of Selenium tests.  
 
-\subsection{Actions executed by tests}
+\subsection{Actions Executed by Tests}
 \label{test-actions}
 The \texttt{webdriver} API offers a rich set of \textit{actions} to be emulated on the AUT. The actions are a sequence of GUI events executed by the test on the AUT. These actions can be classified into state-changing actions, assertions and requesting additional information about the AUT, such as page resources. 
 
@@ -167,11 +167,11 @@ Robustness Metric              &Description \\
 % AJAX Scripts - send a first key - get an image sayign your pw is weak, credit card numbers. Form data validation is a severe part of web testing. Complexity of form filling are thoroughly tested. 
 % Consider a state-changing action -- the \textit{click `Login' button} scenario from the \texttt{loginTest} in Listing \ref{code1}. Recalling from Section \ref{sssec:emulatingActions}, a state-changing action causes the AUT to load into some \textit{next state} (e.g. new web page) on which some \textit{next action} can be executed. Triggering this \textit{click} event can invoke multiple underlying functionality layers such as input validation, database operations etc.
 % Nevertheless, after the \textit{click} event the AUT needs to load all the GUI element so that the test can execute the \textit{next action}. If the \textit{next state} of the application is not loaded in a timely manner or not loaded at all, \textit{next action} would not be executed, and as a result the test is broken. In this manner, given next action higher the number of state-changing actions a test executes, the more probability of it being fragile. This metric is formally expressed as number of \textit{actions}
-\subsection{Wait conditions in tests}
+\subsection{Wait Conditions in Tests}
 \label{selenium-waits-metric}
-The Selenium \texttt{webdriver} API provides the possibility to insert \texttt{wait} conditions in the tests, as mentioned in Section \ref{sssec:seleniumwaits}. The \texttt{wait} commands can be used as a method for synchronizing between the action performed by the test and the response received from the \texttt{webdriver}. If the AUT implements server side technologies such as Ajax calls, the tests can have varied response time since knowing when the Ajax calls are finished is intricate for the \texttt{webdriver}. High number of \texttt{wait} commands might be an indication that the test requires many synchronization points to work reliably, which can make the tests brittle. The number of waits as a robustness metric is expressed as \textit{\#wait} in Table \ref{rq2metrics}.
+The Selenium \texttt{webdriver} API provides the possibility to insert \texttt{wait} conditions in the tests, as mentioned in Section \ref{sssec:seleniumwaits}. The \texttt{wait} commands can be used as a method for synchronizing between the action performed by the test and the response received from the \texttt{webdriver}. If the AUT implements server side technologies such as Ajax calls, the tests can have varied response time since knowing when the Ajax calls are finished is intricate for the \texttt{webdriver}. If a test uses \texttt{sleep} commands each time before locating a GUI element or performing an action on the AUT, its overall performance can reduce significantly. A high number of \texttt{wait} commands might be an indication that the test requires many synchronization points to work reliably, which can make the tests brittle. The number of waits as a robustness metric is expressed as \textit{\#wait} in Table \ref{rq2metrics}.
 
-\subsection{GUI element locators in tests}
+\subsection{GUI Element Locators in Tests}
 % \label{sssec:GUIelementlocators}
 As described in Section \ref{sssec:locatingUIElements}, Selenium \texttt{webdriver} offers eight primary locator strategies for locating GUI elements. In this section we propose the metrics to assess the influence of these GUI element locator strategies on the robustness of tests.
 
@@ -211,9 +211,9 @@ In addition to the reliability of the locator strategies, the time required to l
 % These factors are described in terms of measurable metrics in section \ref{robustnessFactors}.
 
 
-\section{Maintenance of Selenium tests (RQ3)}
+\section{Maintenance of Selenium Test-suites (RQ3)}
 \label{locatorMaintenance}
-The robustness Selenium tests can vary depending upon its design considerations and poorly designed tests can be fragile against structural changes of the AUT. To repair the fragile tests, developers need to invest time and efforts to analyze changes in the AUT and maintain such test-suites. When the AUT changes frequently, fragile tests need to be repaired repeatedly to cope with these changes. 
+The robustness Selenium tests can vary depending upon its design considerations and poorly designed tests can be fragile against the changes in the AUT. To repair the fragile tests, developers need to invest time and efforts to analyze changes in the AUT and maintain such test-suites. When the AUT changes frequently, fragile tests need to be repaired repeatedly to cope with these changes. 
 
 \begin{figure}[ht!]
 \centering     %%% not \center
@@ -228,8 +228,12 @@ In order to explore this issue, let us revisit the introductory example repeated
 \end{small}
 As the AUT evolves from version $V_{0}$ to $V_{1}$, the hyperlink text for ``Login'' button changes to ``Sign In''. This change does not alter the functionality of the AUT, rather its look-and-feel. According to the definition of robustness which we have developed in the penultimate section (Definition \ref{test-case-robustness}), a robust test should be able to explore the same functionality of the AUT regardless of the changes in the look-and-feel of the AUT. However in this example, \texttt{loginTest} is broken due to the the structural change and it cannot explore the \texttt{login} functionality of the AUT anymore. 
 
-If the \texttt{loginTest} were to use a structure independent locator such as \texttt{id}, it would not have been susceptible to the renaming of ``Login'' button. Thus, choosing a suitable locator strategy plays a vital part for the robustness of the test. Each GUI locator differs in their characteristics such as availability and their susceptibility towards changes in GUI structure. A structure dependent locator is likely to be broken by minor changes in the application's GUI and needs to be repaired repeatedly if the AUT has frequent GUI changes. This process adds additional overhead in terms of the time required and costs incurred with the maintenance of the test-suite. The \textit{effort} of maintaining a test-suite can be measured in terms of the number of GUI locators repaired during two subsequent revisions $V_{0}$ and $V_{1}$ of the AUT. If developers know which type of locators are robust and do not need to be frequently repaired, they can improve their element location strategy to write more robust tests. 
+If the \texttt{loginTest} in aforementioned example were to use a robust and structure independent locator, it might not have been susceptible to the renaming of ``Login'' button. Thus, choosing a suitable locator strategy plays a vital part for the robustness of the test. Each GUI locator differs in their characteristics such as availability and their susceptibility towards changes in GUI structure. A structure dependent locator is likely to be broken by minor changes in the application's GUI and needs to be repaired repeatedly if the AUT has frequent GUI changes. This process adds additional overhead in terms of the effort needed for the maintenance of the test-suite.  
 
-To facilitate the maintenance of tests, the Page-object pattern (see Section \ref{page-object}) is helpful for the design of Selenium test-suites. This pattern provides a logical separation between the tests-code and the page-objects. Every time the test-suite needs to be repaired, e.g. changing the locator for ``Login'' button, only the \texttt{LoginPage} page-object needs to be changed as opposed to changing the locator for ``Login'' button in all tests. This minimizes the human error of forgetting to update a few tests. 
+In this manner, the design strategy of a test-suite can also impact its maintenance effort. The \textit{effort} of maintaining a test-suite can be measured in terms of the number of GUI locators changed, added, and removed during two subsequent revisions $V_{0}$ and $V_{1}$ of the AUT. If developers know which type of locators are robust and do not need to be frequently repaired, they write more robust tests by improving the test design.
+
+To facilitate the maintenance of tests, the Page-object pattern (see Section \ref{page-object}) is helpful for the design of Selenium test-suites. This pattern provides a logical separation between the tests-code and the page-objects. Every time the test-suite needs to be repaired, such as changing the GUI element locator or changing the \texttt{wait} periods, developers can simply update the page-object as opposed to updating all tests. 
+
+
 
 
