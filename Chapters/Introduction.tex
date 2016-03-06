@@ -148,13 +148,13 @@ Considering the current state-of-the-art technologies to the best of my knowledg
 % \end{figure} 
 
 
-The first step is to formally establish and define \textit{robustness} in terms of a measurable metric. A test can be marked as ``passed'' in the output logs but still land on different web pages of the AUT. Such test might not have covered the same functionality and cannot be considered robust. Furthermore, to identify the factors behind the varying robustness of Selenium tests, as mentioned earlier, a set of metrics has to be developed (Chapter \ref{Chapter3}). 
+The first step is to formally establish and define \textit{robustness} in terms of a measurable metric. A test can be marked as ``passed'' in the output logs but still land on different web pages of the AUT. Such test might not have covered the same functionality and cannot be considered robust. Furthermore, to identify the factors behind the varying robustness of Selenium tests, as mentioned earlier, a set of metrics have been developed. 
 
 This thesis proposes the metric \textit{`robustness grade'} of a test which allows us to determine its effectiveness for regression testing. On a coarser level, \textit{`robustness grade'} of a test-suite can indicate its overall quality and suitability for regression testing. A high robustness can be another indication of the maintainability of the test-suite, since robust tests do not need to be repaired and maintained as frequently. If the proposed metrics are able to determine which factors impact robustness the most, developers can use these metrics to write more robust tests. This research aims to answer the following research questions:
 \newline
-{\bfseries RQ1} How robust are Selenium tests over time as the underlying application evolves?  \newline
+{\bfseries RQ1} How robust are selenium tests against changes of the application under test? \newline
 {\bfseries RQ2} Is robustness correlated to the design and composition of the tests?\newline
-{\bfseries RQ3} Which GUI element locator requires the least maintenance effort over time?\newline
+{\bfseries RQ3} Does the design of the test-suite influence the maintenance effort?\newline
 {\bfseries RQ4} Can the robustness analysis improve current Selenium testing practices?\newline
 
 % \\
@@ -179,7 +179,7 @@ The first step is to select suitable testing candidates for this research and ex
 	\label{fig:thesisoverview}
 \end{figure} 
 
-This thesis is structured in following manner: Chapter 2 discusses the background terminologies. Chapter 3 discusses the research questions in detail and provides necessary implementation details. Chapter 4 presents the evaluation and results. Chapter 5 discusses threats to validity. Chapter 6 discusses conclusion and future
+This thesis is structured in following manner: Chapter 2 discusses the background terminologies. Chapter 3 discusses the approach for answering research questions. Chapter 4 provides the necessary implementation details of our approach. Chapter 5 presents the results and the evaluation of our approach. Chapter 5 discusses threats to validity. Chapter 6 discusses conclusion and future work. 
 % \texttt{This section needs to be re-written}\newline
 % \noindent This thesis is structured in following manner:
 % \begin{itemize}

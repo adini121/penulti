@@ -31,7 +31,7 @@ Moreover, as the size of the AUT increases, the number of possible actions on th
 
 In comparison to automated testing tools such as crawlers and test generators, humans possess the domain knowledge of the AUT required to generate valid test inputs and apply precise oracles on the test outputs. Thus, many developers often choose to identify the core functionality of the AUT and automate their regression tests using frameworks such as Selenium\cite{websiteSelenium}, as detailed in Section 2.2.
 
-\section{Test automation using Selenium}
+\section{Test Automation with Selenium}
 \label{sec:SeleniumTesting}
 \subsection{Architecture}
 \label{ssec:webdriverArchitecture}
@@ -62,7 +62,7 @@ driver.findElement(By.linkText("Login")).click();
 \end{scriptsize} 
 \end{center}
  
-\begin{figure}[h!]
+\begin{figure}[h! ]
 \makeatletter 
 % \renewcommand{\thefigure}{\@arabic\c@figure}
 \makeatother
@@ -97,13 +97,13 @@ The resultant URL is :\\
 Each browser specific driver implementation such as the \texttt{Firefox Driver}\footnote{\url{https://code.google.com/p/selenium/wiki/FirefoxDriver}} or the \texttt{RemoteWebDriver}\footnote{\url{https://code.google.com/p/selenium/wiki/RemoteWebDriver}} has its own mechanism for carrying out the above-mentioned communication. 
 
 The \texttt{RemoteWebDriver} implementation provides the capability to run the Selenium tests against a remote machine. In essence, \texttt{RemoteWebDriver} is comprised of a client-server architecture, where client is the language specific test-case and and server is a simple Java servlet. The \texttt{RemoteWebDriver} servlet acts as a multiplexer, by connecting the client to the specific browser(s) and system configurations requested by the client. The browser and other configurations are provided in terms of capabilities, via command-line or directly from the language specific code.
-\subsection{Test design and composition}
+\subsection{Test Design and Composition}
 \label{testDesignPractices}
 As illustrated in Section \ref{ssec:webdriverArchitecture}, a Selenium test can emulate various user-actions on AUT. In order to so, a test needs to perform various steps such as navigating to the AUT, locating the UI elements and finally performing these user-actions. This section gives an overview about the basic building blocks of a Selenium test. 
 \subsubsection{Locating UI Elements}
 \label{sssec:locatingUIElements}
 In order to locate GUI elements such as input forms, buttons, checkboxes etc. in the DOM (Document Object Model), \texttt{webdriver} specifies \textit{``Find Element''} and \textit{``Find Elements''} methods for locating a single element and a list of elements, respectively. 
-% Within the scope of these methods it is also possible to traverse the DOM tree to locate the \textit{Child Elements} i.e. children nodes of a parent element in the tree. 
+Within the scope of these methods it is also possible to traverse the DOM tree to locate the \textit{Child Elements} i.e. children nodes of a parent element in the tree. 
 Each language specific binding has its own command to invoke these methods by providing the UI-element locator object, such as\begin{small} HTML\end{small} \texttt{id}, the \texttt{css selector} or \texttt{xpath} expressions.
 
 % \begin{verbatim}
@@ -206,7 +206,7 @@ Locates the UI Element using the \texttt{xpath} expressions as it supports navig
 \end{itemize}
 Depending upon the GUI structure of AUT and the applicability of UI element locators, different location strategies can be used in combination. The Influence of these UI locator strategies on the robustness of Selenium tests is discussed in Chapter \ref{Chapter3}.
 % (https://w3c.github.io/webdriver/webdriver-spec.html#sessions)
-\subsubsection{Emulating user actions}
+\subsubsection{Emulating User Actions}
 \label{sssec:emulatingActions}
 Upon locating the desired UI element, \texttt{webdriver} API allows us to emulate various user actions on it depending on the element type. These actions can be classified into \textit{state-changing actions}, assertions and requesting additional information about the AUT, such as cookies. A state-changing action signifies a change in the DOM state of the AUT. The most common ways are to emulate the mouse and keyboard based actions by the user, such as clicking (e.g. \texttt{click} element) and form-filling (e.g. \texttt{SendKeys} to element). Moreover, the API makes it possible to perform assertions on the AUT supported by native language scripts such as getting the title or heading of the web page to ensure that correct page has been navigated. 
 
@@ -231,7 +231,7 @@ WebElement element = wait.until(ExpectedConditions.
 \end{verbatim}
 \end{footnotesize}
 
-\subsubsection{Page-Object pattern}
+\subsubsection{Page-Object Pattern}
 \label{page-object}
 Since its inception, the page-object design pattern\footnote{\url{http://www.seleniumhq.org/docs/06_test_design_considerations.jsp\#page-object-design-pattern}} has been a widely used \textit{de-facto} standard for designing Selenium \texttt{webdriver} tests. 
 Page-object pattern encapsulates pages of an application as a series of objects and essentially provides a logical coupling between the test-code and the page-specific code, such as the UI locators. Such a design pattern reduces code duplication and improves readability of tests. The test in Listing \ref{code1} can be designed using the page-object pattern as following: 
@@ -251,7 +251,9 @@ Page-object pattern encapsulates pages of an application as a series of objects 
 // Page-objects (POs)
 public class HomePage(){ // home page PO
 Webdriver driver;
-public HomePage(WebDriver driver){this.driver=driver;}}
+public HomePage(WebDriver driver){
+this.driver=driver;
+}}
 
 public class LoginPage(){ // login page PO
 Webdriver driver;
@@ -284,13 +286,13 @@ Moreover, page-object pattern contributes towards the maintainability and robust
 
 \section{WebMate}
 \label{sec:WebMate}
-As mentioned in Chapter \ref{Chapter1}, \texttt{webmate}\cite{webmate} is a system-level automated testing and analysis framework. Primarily developed as a cross-browser compatibility testing tool,\texttt{webmate} supports different browsers and platforms. It can leverage existing Selenium tests in order to remote control the browser to interact with the dynamic web 2.0 applications involving JavaScript and Ajax elements. 
+As mentioned in Chapter \ref{Chapter1}, \texttt{webmate} \cite{webmate} is a system-level automated testing and analysis framework. Primarily developed as a cross-browser compatibility testing tool, \texttt{webmate} supports different browsers and platforms. It can leverage existing Selenium tests in order to remote control the browser to interact with the dynamic web 2.0 applications involving JavaScript and Ajax elements. 
 
-By leveraging the Selenium tests, \texttt{webmate} explores the AUT and extracts a behavioral usage-model. The usage-model represents a behavioral finite state model which captures the exploration graph of the different actions performed by the Selenium test on the AUT. The states of the usage-model correspond to different states of the GUI and the transitions correspond to different interactions with the AUT such as clicks, form-inputs etc. For each state of the usage-model, \texttt{webmate} is able to record its visual (GUI) state, in the form of a screen-shot of the AUT.
+By leveraging the Selenium tests, \texttt{webmate} explores the AUT and extracts a \textit{usage-model}. The usage-model represents a finite state model which captures various actions performed by the Selenium test on the AUT. The states of the usage-model correspond to different states of the GUI and the transitions correspond to different interactions with the AUT such as clicks, form-inputs etc. For each state of the usage-model, \texttt{webmate} is able to record its visual (GUI) state, in the form of a screen-shot of the AUT.
 
-Figure \ref{fig:webmateArchitecture} gives an example of \texttt{webmate} leveraging the \texttt{loginTest} (Snippet \ref{code1}) to generate the usage-model. In this example, the states of the model are application's DOM states and edges represent actions such as getting the URL, finding UI element and clicks. For security reasons, Selenium tests are integrated with \texttt{webmate} inside a virtual machine. The virtual machine hosts a Selenium hub\footnote{\url{http://www.seleniumhq.org/docs/07_selenium_grid.jsp}} infrastructure, along with a set of browsers. Existing Selenium tests are executed with \texttt{webmate} by using the \texttt{RemoteWebDriver} capabilities, such as specifying browser name, security credentials for \texttt{webmate} etc. The usage-models are generated by \texttt{webmate} without interfering with the underlying Selenium tests. 
+Figure \ref{fig:webmateArchitecture} gives an example of \texttt{webmate} to leverage the \texttt{loginTest} (see Listing \ref{code1}) to generate the usage-model. In this example, the states of the model represent the DOM states of the AUT and edges represent \textit{actions} executed by the test, such as a \textit{click} action. For security reasons, Selenium tests are integrated with \texttt{webmate} inside a virtual machine. The virtual machine hosts a Selenium hub\footnote{\url{http://www.seleniumhq.org/docs/07_selenium_grid.jsp}} infrastructure, along with a set of browsers. Existing Selenium tests are executed with \texttt{webmate} by using the \texttt{RemoteWebDriver} capabilities, such as specifying browser name, security credentials for \texttt{webmate} etc. The usage-models are generated by \texttt{webmate} without interfering with the underlying Selenium tests. 
 
-Using \texttt{webmate} it is possible to recognize functional differences (e.g. missing button) by assessing the usage-models to compare GUI state and trace level differences. Due to the aforementioned features of \texttt{webmate}, it is used as a tool of choice in this thesis for establishing the ground truth for the robustness analysis, as detailed in Chapter \ref{Chapter6}
+Using \texttt{webmate} it is possible to recognize functional differences (e.g. missing button) by comparing the usage-models. As we will see in Chapter \ref{Chapter3}, this comparison is essential for our analysis and \texttt{webmate} fits our requirement of a testing tool which can leverage existing Selenium tests to capture test execution in terms of behavioral state models. Therefore, \texttt{webmate} is used as a tool of choice in this thesis for establishing the ground truth for the robustness analysis, as detailed in Chapter \ref{Chapter6}
 
 \begin{figure}
 \makeatletter 
@@ -302,26 +304,6 @@ Using \texttt{webmate} it is possible to recognize functional differences (e.g. 
   \label{fig:webmateArchitecture} 
 \end{figure}
 
-\section{Web Application Deployment}
-\label{sec:autoDeployment}
-To measure the robustness of Selenium tests across different versions of AUT, it is necessary to make these versions accessible for the testing setup as shown in Figure \ref{fig:thesisoverview}. It is possible to accomplish this by installing and deploying these versions locally (without relying on external application server provider). Generally, most of the open-source application vendors make older versions of their applications available for public usage. The most common ways to release such web applications are either by releasing packaged versions ready to deploy, such as \texttt{war} (Web application ARchive) files in case of Java applications or by checking out the code from version control repositories such as git, subversion, mercurial etc.
-
-\begin{figure}
-\makeatletter 
-\renewcommand{\thefigure}{\@arabic\c@figure}
-\makeatother
-% \setcounter{figure}{0}
-    \centering
-  \includegraphics[width=5.4in,height=2.6in]{./Figures/Deployment_Process_2.jpg}
-  \caption{Automatic parallel deployment process}
-  \label{fig:deployment} 
-\end{figure}
-
-Depending upon the type of the web application as well as the frameworks and programming languages used to create these application, different set of application servers need to be used. Java based packaged applications such as \texttt{war} archives can be deployed in Java containers such as Tomcat\footnote{\url{http://tomcat.apache.org/}}. Similarly, PHP based applications can be hosted inside Apache httpd\footnote{\url{https://httpd.apache.org/}} servers. 
-
-The AUT can be deployed as per the installation instructions provided by the application vendors. The installation setup includes steps such as downloading the application source code or packaged binaries, creating databases and other configurations etc. Certain Selenium tests require the AUT to have some pre-configured features enabled, such as an \textit{administrative} user account setup which can also be accomplished in the installation phase. 
-
-In order to spare the manual effort of installing multiple versions of AUT, the deployment work-flow can be automated through means of deployment scripts such as automated shell scripts. To further expedite the testing process, we aim to deploy multiple versions of the AUT in parallel, sand-boxed inside a secure Linux based virtual machine for security reasons. Figure \ref{fig:deployment} depicts the overview of remote automatic deployment process; three versions of the AUT are running simultaneously against their individual database instances.
 
 % \begin{figure}
 % \makeatletter 
@@ -368,7 +350,7 @@ $\rho = \frac{\sum\limits_{i=1}^{n}(x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum\li
 \label{def:spearman}
 \end{definition}
 
-\subsection*{Standard deviation}
+\subsection*{Standard Deviation}
 Standard deviation $\sigma$ of a variable represents the extent of variation of values the variable takes (Definition \ref{def:sd}). In other words, it indicates how far the individual data points \textit{deviate} from the mean. Standard deviation can be used to assess the nature distribution of given metrics. 
 \theoremstyle{definition}
 \begin{definition}{For a sample size of \textit{n} raw data points \textit{$x_1,...,x_n$} with arithmetic mean of $\bar{x}$, the standard deviation is expressed as follows:  }
@@ -378,7 +360,7 @@ $\sigma = \sqrt\frac{\sum\limits_{i=1}^{n}(x_i - \bar{x})^2} {n - 1}$
 \end{center}
 \end{definition}
 
-\subsection*{Data set standardization}
+\subsection*{Data Set Standardization}
 In statistical analysis, standardization is often used as a pre-processing step before performing linear regression. As each predictor (metric) can differ in terms of units and scales, standardizing data sets helps us to compare the regression coefficients of these predictors. In the feature matrix, each column is standardized according to Definition \ref{def:standardization}.
 
 \theoremstyle{definition}
@@ -393,14 +375,14 @@ $\begin{tiny}
 \end{center}
 \end{definition}
 
-\subsection*{Linear regression}
+\subsection*{Linear Regression}
 % Correlation quantifies the degree to which two variables are statistically related. 
 
 Linear regression models a predictive relationship between a dependent variable (response) and one or more independent variables (predictors). The given feature matrix can be expressed as a \textit{linear model} on which regression is to be applied to discard highly correlated features and the for better interpretation of the model. In the scope of this thesis, the solution vector of the feature matrix represents the dependent variable and \textit{j} features represent predictors. 
 
 To identify which of the metrics have the highest impact on the robustness, a \textit{shrinkage method} can be applied. In regression analysis, a \textit{shrinkage method} is used for identifying the most influential predictors as well as identifying the correlation between the predictors. It is not possible to provide a detailed description of these methods. The relevant details can be found in \textit{Chapter 3, ``Elements of Statistical Learning''} by Hastie et al. \cite{hastie01statisticallearning}. This thesis implements \textit{lasso} (least absolute shrinkage and selection operator) shrinkage method \cite{tibshirani1996regression}. Such a shrinkage method tells us which subset of the presented metrics has highest impact on robustness of Selenium tests.
 
-\subsection*{Statistical evaluation tools}
+\subsection*{Statistical Evaluation Tools}
 For conducting the statistical experiments, this thesis uses the tool \textit{R} \cite{Rtool} which provides an environment for statistical computing. For computing \textit{lasso} regression, package \texttt{lars} \cite{larspack} is used. 
 \section{Related Work}
 \label{sec:relatedWork}
@@ -429,7 +411,7 @@ To detect the functionality covered by the test, approaches such as using assert
 As mentioned in Chapter \ref{Chapter1}, the effort required for the maintenance of Selenium tests can indicate the quality of the underlying test-suite. By far the closest approach to the work proposed in this thesis is presented by Leotta et al \cite{leotta2013comparing} as a case-study in the area of assessing the maintainability of GUI element locators. Leotta et al. developed four equivalent test-suites which only differ in terms of the GUI element locators (\texttt{id, xpath} and \texttt{link text}) for assessing their maintenance cost. The maintenance costs are measured as the time required for repairing changed GUI element locators and number of lines of code changed. 
 
 Another approach by Leotta et al. presents an algorithm for selecting reliable \texttt{xpath} locators from a set of absolute and relative \texttt{xpath} expressions. 
-Both of these approaches confine their analysis to a comparative study of GUI element locators Selenium \texttt{webdriver} API (see Section \ref{ssec:locatingUIElements}. do not include other test design considerations such as the number of actions performed by the test-case, implementing \texttt{wait} commands etc. that are responsible for the instability of Selenium tests. 
+Both of these approaches confine their analysis to a comparative study of GUI element locators Selenium \texttt{webdriver} API (see Section \ref{sssec:locatingUIElements}) do not include other test design considerations such as the number of actions performed by the test-case, implementing \texttt{wait} commands etc. that can contribute towards the robustness of Selenium tests. 
 
 This thesis incorporates the aforementioned existing techniques and principles such as using cross-browser analysis, behavioral state models and GUI level comparisons to evaluate the robustness of Selenium tests. Considering the current state-of-the-art technologies to the best of my knowledge, there are no similar approaches to perform the robustness analysis of Selenium tests. Moreover, this thesis evaluates the robustness of Selenium test-suites over the version history of web applications to identify the factors affecting the robustness. 
 
