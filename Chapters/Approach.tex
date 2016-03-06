@@ -1,4 +1,4 @@
-\chapter{Approach} % Main chapter title
+\chapter{Approach- state HYPOTHESIS AND ASSUMPTIONS LIKE YOU SAW, DON'T SAY ANYTHING FOR SURE!!  } % Main chapter title
 \addtocontents{toc}{\protect\setcounter{tocdepth}{1}}
 \label{Chapter3} % For referencing the chapter elsewhere, use \ref{Chapter1} 
 
@@ -63,7 +63,7 @@ $(R_{T_{V_{0}V_{1}}}) = \displaystyle \frac{\#\thinspace of \thinspace same \thi
 
 As a starting point, we assume that the state extraction points for the reference version as well as subsequent versions remain the same as the test-suites remain unchanged. Consequently, \textit{
 robustness grade} lies in the interval [0,1]. A value of \textit{
-robustness grade} equal to one ($R_{T_{V_{0}V_{1}}}=1$) indicates that the test covers same functionality across versions \textit{$V_{0}$} and \textit{$V_{1}$}. A value other than one ($R_{T_{V_{0}V_{1}}}\neq 1$) indicates that the test is not robust, as it does not cover same states across two different versions. This step establishes the \textit{ground truth} of robustness analysis. The details of our approach to identify the states reached and functionalities covered across different versions are explained in Chapter \ref{Chapter4}.
+robustness grade} equal to one ($R_{T_{V_{0}V_{1}}}=1$) indicates that the test covers same functionality across versions \textit{$V_{0}$} and \textit{$V_{1}$}. A value other than one ($R_{T_{V_{0}V_{1}}}\neq 1$) indicates that the test is not robust, as it does not cover same states across two different versions. The details of our approach to identify the states reached and functionalities covered across different versions are explained in Chapter \ref{Chapter4}.
 
 Additionally, it would be interesting to know the \textit{
 robustness grade} at test-suite level. Correspondingly, Definition \ref{test-suite-robustness} formulates the \textit{
@@ -160,7 +160,9 @@ Robustness Metric              &Description \\
 \hline
 % \caption{Application Candidates}
 \end{tabular}}
-\caption{Overview of the robustness metrics. First part shows actions, second part shows locator requests}
+\captionsetup{justification=justified,
+singlelinecheck=false}
+\caption{Overview of the robustness metrics of a test. The first part represents the number of actions executed by the test, the second part represents the number of \texttt{wait} conditions in the test, the third part represents the number of GUI element locator requests in the test.}
 \label{rq2metrics}
 \end{table}
 \end{center}
@@ -169,7 +171,7 @@ Robustness Metric              &Description \\
 % Nevertheless, after the \textit{click} event the AUT needs to load all the GUI element so that the test can execute the \textit{next action}. If the \textit{next state} of the application is not loaded in a timely manner or not loaded at all, \textit{next action} would not be executed, and as a result the test is broken. In this manner, given next action higher the number of state-changing actions a test executes, the more probability of it being fragile. This metric is formally expressed as number of \textit{actions}
 \subsection{Wait Conditions in Tests}
 \label{selenium-waits-metric}
-The Selenium \texttt{webdriver} API provides the possibility to insert \texttt{wait} conditions in the tests, as mentioned in Section \ref{sssec:seleniumwaits}. The \texttt{wait} commands can be used as a method for synchronizing between the action performed by the test and the response received from the \texttt{webdriver}. If the AUT implements server side technologies such as Ajax calls, the tests can have varied response time since knowing when the Ajax calls are finished is intricate for the \texttt{webdriver}. If a test uses \texttt{sleep} commands each time before locating a GUI element or performing an action on the AUT, its overall performance can reduce significantly. A high number of \texttt{wait} commands might be an indication that the test requires many synchronization points to work reliably, which can make the tests brittle. The number of waits as a robustness metric is expressed as \textit{\#wait} in Table \ref{rq2metrics}.
+The Selenium \texttt{webdriver} API provides the possibility to insert \texttt{wait} conditions in the tests, as mentioned in Section \ref{sssec:seleniumwaits}. The \texttt{wait} commands can be used as a method for synchronizing between the action performed by the test and the response received from the \texttt{webdriver}. If the AUT implements server side technologies such as Ajax calls, the tests can have varied response time since knowing when the Ajax calls are finished is intricate for the \texttt{webdriver}. If a test uses \texttt{sleep} commands each time before locating a GUI element or performing an action on the AUT, its overall performance can reduce significantly. A high number of \texttt{wait} commands might be an indication that the test requires many synchronization points to work reliably, which can make the tests brittle. The number of waits as a robustness metric is expressed as \textit{\#waits} in Table \ref{rq2metrics}.
 
 \subsection{GUI Element Locators in Tests}
 % \label{sssec:GUIelementlocators}
@@ -186,7 +188,9 @@ Structure dependent locator strategies such as \texttt{xpath} and \texttt{css se
  
 In addition to the reliability of the locator strategies, the time required to locate the element in the DOM can also vary significantly depending upon the choice of locator. Finding unique elements should be much faster than finding a list of element by navigating the hierarchy in DOM tree. If the element is not found within the specified amount of time, \texttt{webdriver} can throw an exception or return an empty list of elements. It would be interesting to know whether a test using unique and structure independent locators tends be more robust against the changes in the AUT as compared to a test heavily relying on structure based GUI element locators. All of these locator strategies as robustness metrics are expressed in the third part of Table \ref{rq2metrics}.  
 
-
+\begin{Large}
+It is important to note that it might be possible to extract the robustness metrics is through static analysis of the test-scripts. However, a static analysis can be complicated in case of test-suites which implement the Page-object pattern since the metrics such as the GUI element locators can be encapsulated inside the Page-objects.  of the \texttt{loginTest} using Page-object pattern shown in Listing \ref{code2}, loginpage.performLogin("uname","passwd"); 
+\end{Large}
 
 
 % To test our hypothesis and to examine whether there is a correlation between the proposed metrics and robustness of Selenium tests, it is possible to measure the correlation between the proposed metrics and the ground truth established in Section \ref{robustnessOfSeleniumTests}. 
@@ -219,7 +223,9 @@ The robustness Selenium tests can vary depending upon its design considerations 
 \centering     %%% not \center
 \subfigure[AUT version $V_{0}$]{\label{fig:3a}\includegraphics[width=5.6cm,height=2.8cm]{./Figures/newlogin}}
 \vspace{-2mm}\subfigure[AUT version $V_{1}$]{\label{fig:3b}\includegraphics[width=5.6cm,height=2.8cm]{./Figures/newsignin}}
-\caption{Evolution of the AUT from $V_{0}$ to $V_{1}$ breaks the fragile \texttt{loginTest} }
+  \captionsetup{justification=justified,
+singlelinecheck=false}
+\caption{Evolution of the AUT from $V_{0}$ to $V_{1}$. Changing the GUI element locator for ``Login'' button breaks the fragile \texttt{loginTest}.}
 \label{fig:3loginTest}
 \end{figure} 
 
@@ -230,10 +236,37 @@ As the AUT evolves from version $V_{0}$ to $V_{1}$, the hyperlink text for ``Log
 
 If the \texttt{loginTest} in aforementioned example were to use a robust and structure independent locator, it might not have been susceptible to the renaming of ``Login'' button. Thus, choosing a suitable locator strategy plays a vital part for the robustness of the test. Each GUI locator differs in their characteristics such as availability and their susceptibility towards changes in GUI structure. A structure dependent locator is likely to be broken by minor changes in the application's GUI and needs to be repaired repeatedly if the AUT has frequent GUI changes. This process adds additional overhead in terms of the effort needed for the maintenance of the test-suite.  
 
-In this manner, the design strategy of a test-suite can also impact its maintenance effort. The \textit{effort} of maintaining a test-suite can be measured in terms of the number of GUI locators changed, added, and removed during two subsequent revisions $V_{0}$ and $V_{1}$ of the AUT. If developers know which type of locators are robust and do not need to be frequently repaired, they write more robust tests by improving the test design.
-
 To facilitate the maintenance of tests, the Page-object pattern (see Section \ref{page-object}) is helpful for the design of Selenium test-suites. This pattern provides a logical separation between the tests-code and the page-objects. Every time the test-suite needs to be repaired, such as changing the GUI element locator or changing the \texttt{wait} periods, developers can simply update the page-object as opposed to updating all tests. 
 
+In this manner, the design strategy of a test-suite can also impact its maintenance effort. Intuitively, the two prominent building blocks where a test-suite needs to be frequently repaired are the GUI element locators and \texttt{wait} commands. A repairing procedure usually involves \textit{changing, adding, and removing} different parts of these building blocks. The \textit{effort} of maintaining a test-suite can be measured in terms of \textit{maintenance metrics}. The maintenance metrics of a test-suite indicate number of  GUI element locators and \texttt{wait} commands repaired during two subsequent revisions of the AUT. These metrics are formally expressed in Table \ref{rq3metrics}. 
 
+This approach aims to assess how frequently are the test-suites maintained in comparison to the changes in the AUT. If the test-suites do not need to be maintained to cope with minor revisions in the application, this can be an indication that the test-suite is relatively robust. If the developers know which of the presented maintenance metrics requires the least maintenance effort, they can write more robust tests by emphasizing the use of these metrics in the test design. 
 
-
+\begin{center}
+\begin{table}
+\centering
+\resizebox{13cm}{!}{
+\begin{tabular}{l*{6}{l}r}
+\hline
+Maintenance Metric              &Description \\
+\hline
+% \hline
+\textit{\#waitsRepaired}    & Number of \texttt{wait} commands repaired   \\
+\hline
+\textit{\#xpathRepaired}    & Number of \texttt{xpath} locators repaired\\
+\textit{\#partialLinkTextRepaired}    & Number of \texttt{partial link text} locators repaired \\
+\textit{\#classNameRepaired}    & Number of \texttt{class name} locators repaired \\
+\textit{\#linkTextRepaired}    & Number of \texttt{link text} locators repaired  \\
+\textit{\#nameRepaired}    & Number of \texttt{name} locators repaired \\
+\textit{\#cssSelectorRepaired}    & Number of \texttt{css selector} locators repaired \\
+\textit{\#tagNameRepaired}    & Number of \texttt{tag name} locators  repaired \\
+\textit{\#idRepaired}    & Number of  \texttt{id} locators repaired \\
+\hline
+% \caption{Application Candidates}
+\end{tabular}}
+  \captionsetup{justification=justified,
+singlelinecheck=false}
+\caption{Overview of the test-suite maintenance metrics. The first part shows the number of repaired \texttt{wait} conditions, the second part shows the number of repaired GUI element locators.}
+\label{rq3metrics}
+\end{table}
+\end{center}
