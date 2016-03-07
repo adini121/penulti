@@ -3,10 +3,11 @@
 \label{Chapter6} % For referencing the chapter elsewhere, use \ref{Chapter1} 
 
 \lhead{Chapter 5. \emph{Evaluation}}
-This chapter presents the answers to the proposed research questions and evaluates the metrics presented in Chapter XXX. Section XXX describes the evaluation setup and a list of web applications candidates for the analysis. 
-Section XXX attempts to answer RQ1-RQ4. 
+This chapter presents evaluates the metrics presented in Chapter \ref{Chapter3} and attempts to answer the proposed research questions. 
 
-This research evaluates 5 open source web applications. Table XXX presents a short overview of them.  Selecting suitable candidates which satisfy the project requirement has been a challenge, since not many organizations have open source Selenium test repositories. 
+\section{Evaluation setup}
+\label{evalsetup}
+This research evaluates 5 open source web applications as described in Table \ref{appcandidates}. Selecting suitable candidates which satisfy the project requirement has been a challenge, since not many organizations have open source Selenium test repositories. 
 
 
 % \begin{tabulary}{\textwidth}{|c|c|c|c|c|c|}
@@ -27,36 +28,35 @@ This research evaluates 5 open source web applications. Table XXX presents a sho
 % \label{app-candidates}
 % \end{tabulary}
 \resizebox{10cm}{!}{
-\begin{tabular}{l*{6}{c}r}
+\begin{tabular}{l*{6}{l}r}
 \\
 \hline
 Application              & Language & \#Page-objects & \#Tests & \#LOC\footnote{Without comments and blank lines using the tool CLOC (\url{cloc.sourceforge.net})} & F  \\
 \hline
 Jenkins & Java & 4 & 0 & 2 & 10  \\
 Moodle            & Java & 3 & 0 & 3 &  8 \\
-Addons           & Python & 2 & 1 & 3 &  7  \\
-Marketplace     & Python & 2 & 1 & 3 &  5   \\
+Mozilla Addons           & Python & 2 & 1 & 3 &  7  \\
+Mozilla Marketplace     & Python & 2 & 1 & 3 &  5   \\
 Mozilla.org     & Python & 2 & 1 & 3 &  5   \\
 \hline
 % \caption{Application Candidates}
 \label{app-candidates}
 \end{tabular}}
-
 \begin{flushleft}
 \resizebox{14cm}{!}{
-\begin{tabular}{l*{6}{c}r}
+\begin{tabular}{l*{6}{l}r}
+\\
 \hline
-Application              & Jenkins &Moodle & Mozilla-Addons & Firefox-Marketplace\footnote{Without comments and blank lines using the tool CLOC (\url{cloc.sourceforge.net})} & Mozilla.org  \\
+Application              & Domain & \#Major Versions & \#Minor Versions \\
 \hline
-Jenkins & 1 & 4 & 0 & 2 & 10  \\
-Moodle            & 1 & 3 & 0 & 3 &  8 \\
-Addons           & 1 & 2 & 1 & 3 &  7  \\
-Marketplace     & 1 & 2 & 1 & 3 &  5   \\
-% \hdashline 
-Mozilla.org     & 1 & 2 & 1 & 3 &  5   \\
+Jenkins & Continuous Integration tool & 4 & 0   \\
+Moodle            & Course Management System & 1 & 12  \\
+Addons           & Software Add-ons vendor & 3 & 1  \\
+Marketplace     & Software Apps vendor  & 4 & 1   \\
+Mozilla.org     & Mozilla Project Homepage & 2 & 1   \\
 \hline
 % \caption{Application Candidates}
-\label{app-candidates}
+\label{appcandidates}
 \end{tabular}}
 \end{flushleft}
 % \end{table}

@@ -4,11 +4,12 @@
 \lhead{Chapter 2. \emph{Background}}
 
 
-This chapter introduces the background necessary to understand the concepts and methods presented in this thesis. Important terminologies essential for the foundation of this thesis are explained in subsequent sections throughout this chapter.
+This chapter introduces the background necessary to understand the concepts and methods presented in this thesis. 
+% Important terminologies essential for the foundation of this thesis are explained in subsequent sections throughout this chapter.
 
-As majority of web applications' functionality is accessed through the GUI layer, it is beneficial to test important functional use-cases on the AUT through the GUI layer. For this purpose, there exists different set of mechanisms. Section \ref{sec:AutomatedGUITesting} gives a brief insight into these automated GUI testing mechanisms.
+As a majority of web applications' functionality is accessed through the GUI layer, it is beneficial to test important functional use-cases on the AUT through the GUI layer. Section \ref{sec:AutomatedGUITesting} gives a brief insight into these automated GUI testing mechanisms.
 
-In recent years, Selenium\cite{websiteSelenium} has been a popular browser test automation tool of choice among software developers and testers. Section \ref{sec:SeleniumTesting} gives the necessary background about Selenium framework, including its implementation techniques as well as salient features.
+As Selenium \cite{websiteSelenium} has been a popular browser test automation tool among software developers and testers in recent years, Section \ref{sec:SeleniumTesting} provides the necessary background about its implementation techniques as well as salient features.
 
 This research leverages existing Selenium tests to capture the behavior of the AUT in terms of finite state models. For this purpose, the tool \texttt{webmate} presented by Dallmeier et al.\cite{webmate} has been used. By leveraging existing Selenium tests, \texttt{webmate} can systematically explore the AUT to extract its behavioral usage model by implementing state-abstraction for comparing similar GUI states of the AUT. Further details about \texttt{webmate} are discussed in Section \ref{sec:WebMate}
 
@@ -216,13 +217,13 @@ State changing actions trigger a change the GUI state of the application. Such c
 \label{sssec:seleniumwaits}
 The Selenium \texttt{webdriver} API provides the possibility to introduce \textit{wait} conditions in the tests when the test needs to wait for a response from the AUT. These commands can instruct the \texttt{webdriver} to wait after loading a page or before locating a GUI element. The wait commands can be classified as implicit and explicit wait commands. 
 
-When locating an element in the DOM, implicit wait tells the \texttt{webdriver} to wait for a certain amount of time while locating an element. If the element is not found, \texttt{webdriver} waits for the amount of time specified by the implicit wait before throwing an exception. Implicit waits can be defined in the setup methods of the tests and are set for the entire duration of the browser session. Following example shows the usage of implicit wait:
+When locating an element in the DOM, implicit wait tells the \texttt{webdriver} to wait for a certain amount of time while locating an element. If the element is not found, \texttt{webdriver} waits for the amount of time specified by the implicit wait before throwing an exception, such as \texttt{NoSuchElementException}. Implicit waits can be defined in the setup methods of the tests and are set for the entire duration of the browser session. Following example shows the usage of implicit wait:
 \begin{footnotesize}
 \texttt{ driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS); 
 }
 \end{footnotesize}
 
-Explicit waits specify the test to wait until certain condition is satisfied. In comparison to implicit waits where the test halts for the specified time duration, test with explicit wait proceeds the next step of the test as soon as the expected condition is met. In the following example, the test would click the ``Login'' button as soon as the \texttt{webdriver} finds that the element is clickable.
+Explicit waits specify the test to wait until certain condition is satisfied. In comparison to implicit waits where the test halts for the specified time duration, test with explicit wait proceeds the next step of the test as soon as the expected condition is met. By default, the explicit wait condition is checked every 500 milliseconds. If the element is not found within the specified duration, exception such as \texttt{TimeoutException} is thrown. In the following example, the test would click the ``Login'' button as soon as the \texttt{webdriver} finds that the element is clickable.
 \begin{footnotesize}
 \begin{verbatim}
 WebDriverWait wait = new WebDriverWait(driver, 10);
