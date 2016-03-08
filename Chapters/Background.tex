@@ -4,32 +4,28 @@
 \lhead{Chapter 2. \emph{Background}}
 
 
-This chapter introduces the background necessary to understand the concepts and methods presented in this thesis. Important terminologies essential for the foundation of this thesis are explained in subsequent sections throughout this chapter.
+This chapter introduces the background necessary to understand the concepts and methods presented in this thesis. Different sections throughout this chapter will deal with important terminologies that are essential for the foundation of this research. 
+% Important terminologies essential for the foundation of this thesis are explained in subsequent sections throughout this chapter.
 
-As majority of web applications' functionality is accessed through the GUI layer, it is beneficial to test important functional use-cases on the AUT through the GUI layer. For this purpose, there exists different set of mechanisms. Section \ref{sec:AutomatedGUITesting} gives a brief insight into these automated GUI testing mechanisms.
+%  it is beneficial to test the important functional use-cases on the AUT through this layer. 
+Section \ref{sec:AutomatedGUITesting} gives a brief insight into the automated GUI testing mechanisms since a majority of web applications' functionality is accessed through the GUI layer. Moreover, this section discusses the challenges of GUI testing with existing automated testing approaches. 
 
-In recent years, Selenium\cite{websiteSelenium} has been a popular browser test automation tool of choice among software developers and testers. Section \ref{sec:SeleniumTesting} gives the necessary background about Selenium framework, including its implementation techniques as well as salient features.
+As Selenium \cite{websiteSelenium} has been a popular browser test automation tool among software developers and testers in recent years, Section \ref{sec:SeleniumTesting} provides the necessary background about its implementation techniques as well as salient features.
 
-This research leverages existing Selenium tests to capture the behavior of the AUT in terms of finite state models. For this purpose, the tool \texttt{webmate} presented by Dallmeier et al.\cite{webmate} has been used. By leveraging existing Selenium tests, \texttt{webmate} can systematically explore the AUT to extract its behavioral usage model by implementing state-abstraction for comparing similar GUI states of the AUT. Further details about \texttt{webmate} are discussed in Section \ref{sec:WebMate}
+This thesis utilizes existing Selenium tests to capture the behavior of the AUT in terms of behavioral state models, as mentioned in Chapter \ref{Chapter1}. For this purpose, the tool \texttt{webmate} presented by Dallmeier et al. \cite{webmate} has been used. By leveraging existing Selenium tests, \texttt{webmate} can systematically explore the AUT to extract its behavioral usage-model. Further details about \texttt{webmate} are, therefore, discussed in Section \ref{sec:WebMate}.
 
-Section \ref{sec:Statistical} presents the statistical background required to analyze the results and apply the evaluation metrics, as presented in Chapter \ref{Chapter3}.
-
-Section \ref{sec:relatedWork} discusses the state-of-the-art in automated testing and provides the literature review about important research publications directly or indirectly related to the research presented in this thesis. 
+Section \ref{sec:Statistical} elaborates the statistical background required to analyze the results and apply the evaluation metrics, as presented in Chapter \ref{Chapter3}, while Section \ref{sec:relatedWork} discusses the state-of-the-art in automated testing and provides the literature review about important research publications directly or indirectly related to the research presented in this thesis. 
 
 \section{Automated GUI Testing}
 \label{sec:AutomatedGUITesting}
-As mentioned in Section 1, testing web applications at GUI level abstracts away finer grained internal details and helps developers to identify the undesired functionality changes in the AUT.  In comparison to traditional command-line applications or Application Programming Interfaces (APIs), automated GUI testing of modern web 2.0 applications built with multiple languages, platforms and server-side technologies poses new challenges.
+As mentioned in Chapter \ref{Chapter1}, testing web applications at GUI level abstracts away finer grained internal details and helps developers to identify the undesired functionality changes in the AUT. In comparison to traditional command-line applications, automated GUI testing of modern web 2.0 applications built with multiple languages, platforms and server-side technologies poses new challenges.
 
-To begin with, automatically generating and selecting inputs for a GUI is difficult since different applications might require specific combinations of inputs and values. 
-Current practices for automated test input generation include techniques such as symbolic execution\cite{Ganovetal}, using random input generation\cite{godefroid2005dart} or search based techniques\cite{gross2012search}.
+First and foremost, automatically generating and selecting inputs for a GUI is difficult since different applications might require specific combinations of inputs and values. 
+Current practices for automated test input generation include techniques such as symbolic execution \cite{Ganovetal}, using random input generation \cite{godefroid2005dart} or search based techniques \cite{gross2012search}. Nevertheless, automated input generation is not trivial for a web application, since the GUI test automation tool needs to be aware of the context of the AUT. Thus, in many cases, input generation is often left to the test developer to explore the desired states of the AUT hidden behind input forms and elements.
 
-However, automated input generation is not trivial for a web applications, since the GUI test automation tool needs to be aware of the context of the AUT. Although test inputs can be generated using functional specifications, concrete specifications along with different input combinations may not be available in practice and desired functional coverage of the AUT is not achieved. Thus in many cases, input generation is often left to the test developer to explore the desired states of the AUT hidden behind input forms and elements.
+Secondly, even in cases when a testing tool can generate different input combinations automatically, it still needs to verify the correct behavior of the AUT. This is usually done by applying appropriate test assertions and oracles on the test outputs \cite{Baresi:Oracles}. The capture/replay tools \cite{joshi2006capture} require the tester to first manually capture the behavior of the AUT by performing different GUI-level events and recording the output. In the replay phase, recorded tests are replayed on the AUT and the output is checked against the captured \textit{expected output} for asserting the application behavior. This requires manual effort to record each test and is not suitable for regression testing as every time the AUT changes \cite{sjosten2006costs}, \cite{leotta2013capture}, there is a need of re-recording the tests in order to generate new expected outputs. 
 
-In addition, even in cases when a testing tool can generate different input combinations automatically, it still needs to verify the correct behavior of the AUT. This is usually done by applying appropriate test assertions and oracles on the test outputs\cite{Baresi:Oracles}. Using Capture/replay tools\cite{joshi2006capture} require the tester to first manually capture the behavior of the AUT by performing different GUI-level events, recording them and storing the expected output as a part of the test-case. In the replay phase, recorded tests are replayed on the AUT and the output is checked against the captured \textit{expected output} to assert the application behavior. This requires manual effort to record each test and is not suitable for regression testing as every time the AUT changes\cite{sjosten2006costs},\cite{leotta2013capture}, there is a need to re-record the tests in order to generate new expected outputs. 
-
-Moreover, as the size of the AUT increases, the number of possible actions on the GUI increases exponentially. This is especially an issue in case of regression testing because as the possible number of paths and sequences increases, covering the entire possible number of state space and executions becomes infeasible.
-
-In comparison to automated testing tools such as crawlers and test generators, humans possess the domain knowledge of the AUT required to generate valid test inputs and apply precise oracles on the test outputs. Thus, many developers often choose to identify the core functionality of the AUT and automate their regression tests using frameworks such as Selenium\cite{websiteSelenium}, as detailed in Section 2.2.
+Moreover, as the size of the AUT increases, the number of possible actions on the GUI increases as well. This leads to the fact that covering the entire possible number of state space becomes infeasible. In comparison to automated testing tools, such as crawlers and test generators, humans possess the domain knowledge of the AUT required to generate valid test inputs and apply precise oracles on the test outputs. Thus, many developers often choose to identify the core functionality of the AUT and automate their regression tests using frameworks such as Selenium \cite{websiteSelenium}, as detailed in Section \ref{sec:SeleniumTesting}.
 
 \section{Test Automation with Selenium}
 \label{sec:SeleniumTesting}
@@ -94,7 +90,7 @@ The resultant URL is :\\
 \end{small}
 \end{enumerate}
 
-Each browser specific driver implementation such as the \texttt{Firefox Driver}\footnote{\url{https://code.google.com/p/selenium/wiki/FirefoxDriver}} or the \texttt{RemoteWebDriver}\footnote{\url{https://code.google.com/p/selenium/wiki/RemoteWebDriver}} has its own mechanism for carrying out the above-mentioned communication. 
+Each browser specific driver implementation such as the \texttt{Firefox Driver} or the \texttt{RemoteWebDriver} has its own mechanism for carrying out the above-mentioned communication. 
 
 The \texttt{RemoteWebDriver} implementation provides the capability to run the Selenium tests against a remote machine. In essence, \texttt{RemoteWebDriver} is comprised of a client-server architecture, where client is the language specific test-case and and server is a simple Java servlet. The \texttt{RemoteWebDriver} servlet acts as a multiplexer, by connecting the client to the specific browser(s) and system configurations requested by the client. The browser and other configurations are provided in terms of capabilities, via command-line or directly from the language specific code.
 \subsection{Test Design and Composition}
@@ -216,13 +212,13 @@ State changing actions trigger a change the GUI state of the application. Such c
 \label{sssec:seleniumwaits}
 The Selenium \texttt{webdriver} API provides the possibility to introduce \textit{wait} conditions in the tests when the test needs to wait for a response from the AUT. These commands can instruct the \texttt{webdriver} to wait after loading a page or before locating a GUI element. The wait commands can be classified as implicit and explicit wait commands. 
 
-When locating an element in the DOM, implicit wait tells the \texttt{webdriver} to wait for a certain amount of time while locating an element. If the element is not found, \texttt{webdriver} waits for the amount of time specified by the implicit wait before throwing an exception. Implicit waits can be defined in the setup methods of the tests and are set for the entire duration of the browser session. Following example shows the usage of implicit wait:
+When locating an element in the DOM, implicit wait tells the \texttt{webdriver} to wait for a certain amount of time while locating an element. If the element is not found, \texttt{webdriver} waits for the amount of time specified by the implicit wait before throwing an exception, such as \texttt{NoSuchElementException}. Implicit waits can be defined in the setup methods of the tests and are set for the entire duration of the browser session. Following example shows the usage of implicit wait:
 \begin{footnotesize}
 \texttt{ driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS); 
 }
 \end{footnotesize}
 
-Explicit waits specify the test to wait until certain condition is satisfied. In comparison to implicit waits where the test halts for the specified time duration, test with explicit wait proceeds the next step of the test as soon as the expected condition is met. In the following example, the test would click the ``Login'' button as soon as the \texttt{webdriver} finds that the element is clickable.
+Explicit waits specify the test to wait until certain condition is satisfied. In comparison to implicit waits where the test halts for the specified time duration, test with explicit wait proceeds the next step of the test as soon as the expected condition is met. By default, the explicit wait condition is checked every 500 milliseconds. If the element is not found within the specified duration, exception such as \texttt{TimeoutException} is thrown. In the following example, the test would click the ``Login'' button as soon as the \texttt{webdriver} finds that the element is clickable.
 \begin{footnotesize}
 \begin{verbatim}
 WebDriverWait wait = new WebDriverWait(driver, 10);
@@ -272,8 +268,8 @@ return new HomePage(driver)
 @Test // loginTest test
 public void loginTest(){
 WebDriver driver;
-LoginPage loginpage = new LoginPage(driver);
-HomePage homepage = loginpage.performLogin("uname","passwd");
+LoginPage loginPage = new LoginPage(driver);
+HomePage homePage = loginPage.performLogin("uname","passwd");
 }}
 \end{lstlisting}
 \end{scriptsize} 
@@ -281,7 +277,7 @@ HomePage homepage = loginpage.performLogin("uname","passwd");
  
 As illustrated in Listing \ref{code2}, the page-object pattern allows us to model the UI in the test cases in an object-oriented manner. Although such an approach seems verbose at first, it helps to reduce the possible duplication of the test code. As an example, in situations when user login is to be performed multiple times, which is typically required for many websites performing user validation, page-object backed \texttt{loginTest} serves a more modular implementation. 
 
-Moreover, page-object pattern contributes towards the maintainability and robustness of tests\cite{leottaPObs}, as mentioned in Chapter \ref{Chapter3}.
+Moreover, page-object pattern contributes towards the maintainability and robustness of tests \cite{leottaPObs}, as mentioned in Chapter \ref{Chapter3}.
 
 
 \section{WebMate}
@@ -337,10 +333,10 @@ Feature\smallskip Matrix_{i,j} =
 \label{fig:featurematrix}
 \end{figure}
 
-\subsection*{Correlation}
+\subsection{Correlation}
 It would be interesting to know which of the presented metrics has highest influence on the robustness of Selenium tests. The term \textit{`correlation'} indicates a statistical relationship between two experimental variables. It is important to note that \textit{`correlation'} does not necessarily imply causation. For the  purpose of statistical evaluation of this thesis, \textit{rank correlation} is a suitable method for estimating the correlation between the features (robustness metrics) and the solution vector (ground truth).
 
-We use \textit{Spearman rank correlation} as the method for estimating correlation (see Definition \ref{def:spearman}). For estimating the Spearman's correlation coefficient between two variables, a monotonic relationship is sufficient. The value of Spearman's correlation coefficient falls in the range [-1,1]. A high positive correlation coefficient indicates that when value of one experimental variable increases, value of other variable increases as well. On the other hand, a high negative value (absolute) indicates that when value of one variable increases, value of other variable decreases. A value close to zero indicates that the two variables are statistically independent. 
+We use \textit{Spearman rank correlation} as the method for estimating correlation (see Definition \ref{def:spearman}). For estimating the Spearman's correlation coefficient between two variables, a monotonic relationship is sufficient. The value of Spearman's correlation coefficient falls in the range [-1,1]. A high positive correlation coefficient (approaching "1") indicates that when value of one experimental variable increases, value of other variable increases as well. On the other hand, a high negative value (approaching "-1") indicates that when value of one variable increases, value of other variable decreases. Whereas a value close to zero indicates that the two variables are statistically independent. 
 \theoremstyle{definition}
 \begin{definition}{Spearman rank correlation coefficient $\rho$ for a sample size \textit{n} is calculated by converting \textit{n} data points \textit{$X_n,Y_n$} to ranks \textit{$x_n,y_n$} as follows:}
 
@@ -350,7 +346,7 @@ $\rho = \frac{\sum\limits_{i=1}^{n}(x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum\li
 \label{def:spearman}
 \end{definition}
 
-\subsection*{Standard Deviation}
+\subsection{Standard Deviation}
 Standard deviation $\sigma$ of a variable represents the extent of variation of values the variable takes (Definition \ref{def:sd}). In other words, it indicates how far the individual data points \textit{deviate} from the mean. Standard deviation can be used to assess the nature distribution of given metrics. 
 \theoremstyle{definition}
 \begin{definition}{For a sample size of \textit{n} raw data points \textit{$x_1,...,x_n$} with arithmetic mean of $\bar{x}$, the standard deviation is expressed as follows:  }
@@ -360,7 +356,7 @@ $\sigma = \sqrt\frac{\sum\limits_{i=1}^{n}(x_i - \bar{x})^2} {n - 1}$
 \end{center}
 \end{definition}
 
-\subsection*{Data Set Standardization}
+\subsection{Data Set Standardization}
 In statistical analysis, standardization is often used as a pre-processing step before performing linear regression. As each predictor (metric) can differ in terms of units and scales, standardizing data sets helps us to compare the regression coefficients of these predictors. In the feature matrix, each column is standardized according to Definition \ref{def:standardization}.
 
 \theoremstyle{definition}
@@ -375,14 +371,14 @@ $\begin{tiny}
 \end{center}
 \end{definition}
 
-\subsection*{Linear Regression}
+\subsection{Linear Regression}
 % Correlation quantifies the degree to which two variables are statistically related. 
 
-Linear regression models a predictive relationship between a dependent variable (response) and one or more independent variables (predictors). The given feature matrix can be expressed as a \textit{linear model} on which regression is to be applied to discard highly correlated features and the for better interpretation of the model. In the scope of this thesis, the solution vector of the feature matrix represents the dependent variable and \textit{j} features represent predictors. 
+Linear regression models a predictive relationship between a dependent variable (response) and one or more independent variables (predictors). The given feature matrix can be expressed as a \textit{linear model} on which regression is to be applied to remove highly correlated features and for the better interpretation of the model. In the scope of this thesis, the solution vector of the feature matrix represents the dependent variable and \textit{j} features represent the predictors. 
 
-To identify which of the metrics have the highest impact on the robustness, a \textit{shrinkage method} can be applied. In regression analysis, a \textit{shrinkage method} is used for identifying the most influential predictors as well as identifying the correlation between the predictors. It is not possible to provide a detailed description of these methods. The relevant details can be found in \textit{Chapter 3, ``Elements of Statistical Learning''} by Hastie et al. \cite{hastie01statisticallearning}. This thesis implements \textit{lasso} (least absolute shrinkage and selection operator) shrinkage method \cite{tibshirani1996regression}. Such a shrinkage method tells us which subset of the presented metrics has highest impact on robustness of Selenium tests.
+To identify which of the metrics have the highest impact on the robustness, a \textit{shrinkage method} can be applied. A \textit{shrinkage method} is used for identifying the most influential predictors as well as identifying the correlation between the predictors. It is not possible to provide a detailed description of these methods. The relevant details can be found in \textit{Chapter 3, ``Elements of Statistical Learning''} by Hastie et al. \cite{hastie01statisticallearning}. This thesis implements \textit{lasso} (least absolute shrinkage and selection operator) shrinkage method \cite{tibshirani1996regression}. Such a shrinkage method tells us which subset of the presented metrics has highest impact on robustness of Selenium tests.
 
-\subsection*{Statistical Evaluation Tools}
+\subsection{Statistical Evaluation Tools}
 For conducting the statistical experiments, this thesis uses the tool \textit{R} \cite{Rtool} which provides an environment for statistical computing. For computing \textit{lasso} regression, package \texttt{lars} \cite{larspack} is used. 
 \section{Related Work}
 \label{sec:relatedWork}

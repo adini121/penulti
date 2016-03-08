@@ -7,36 +7,36 @@
 % \HRule \\[0cm]
 
 
-1. Why use state-models, why not just check stack trace? 
--> Tells us at which step failure occured. 
-- tells us the extent to which certain functionality is covered. 
-- don't write large tests, just do small ones. Often, when functional tests fail, they tell you something failed, but they don't tell you what failed. The shortest possible functional tests help reduce the scope of where a problem can be. Other benefits of short tests are they're easier to read and easier to write.
--> use combination of locators, preferably structure independent locators. 
--> None of the failures is because NoSuchElementException ID !! 
-RQ2 - remind people that you're doing it at test level. How each test reacts as a combination of all building blocks.
+% 1. Why use state-models, why not just check stack trace? 
+% -> Tells us at which step failure occured. 
+% - tells us the extent to which certain functionality is covered. 
+% - don't write large tests, just do small ones. Often, when functional tests fail, they tell you something failed, but they don't tell you what failed. The shortest possible functional tests help reduce the scope of where a problem can be. Other benefits of short tests are they're easier to read and easier to write.
+% -> use combination of locators, preferably structure independent locators. 
+% -> None of the failures is because NoSuchElementException ID !! 
+% RQ2 - remind people that you're doing it at test level. How each test reacts as a combination of all building blocks.
 
--- Reasons behind NoSuchElement etc if it happens randomly: 
-1. Failed to invoke a constructor of class 
-2. Timeout: Explicit wait is set and no element is found then it gives timeout error
-3. 
+% -- Reasons behind NoSuchElement etc if it happens randomly: 
+% 1. Failed to invoke a constructor of class 
+% 2. Timeout: Explicit wait is set and no element is found then it gives timeout error
+% 3. 
 
-\subsubsection*{Background}
-Add implicitWait
-\subsubsection*{RQ1 tips}
-1. Discuss how each test suite is at the end
-2. Discuss page objects
-3. Extra long Xpaths
-4. Test dependencies Esp. moodle
-5. Discuss that AMO,Fireplace,Bedrock all have small tests. Jenkins creates huge slaves, memory allocation, multitude of Sendkeys. Jenkins uses Guice, Jenkins has long running jobs, creation of big files, Moodle has lots of form data validation but all locators are relative 
-6. Discuss tests which were added or removed 
-7. Look and feel does not affect robustness 
-8. Why Jenkins tests pass -> Uses xpath but still ? Relative vs absolute xpath expressions. 
+% \subsubsection*{Background}
+% Add implicitWait
+% \subsubsection*{RQ1 tips}
+% 1. Discuss how each test suite is at the end
+% 2. Discuss page objects
+% 3. Extra long Xpaths
+% 4. Test dependencies Esp. moodle
+% 5. Discuss that AMO,Fireplace,Bedrock all have small tests. Jenkins creates huge slaves, memory allocation, multitude of Sendkeys. Jenkins uses Guice, Jenkins has long running jobs, creation of big files, Moodle has lots of form data validation but all locators are relative 
+% 6. Discuss tests which were added or removed 
+% 7. Look and feel does not affect robustness 
+% 8. Why Jenkins tests pass -> Uses xpath but still ? Relative vs absolute xpath expressions. 
 
-\subsection*{ROBUSTNESS}
-Include: If a test fails due to assertion error but reaches the desired state, it is robust, since it tests the given functinoality. 
-\textbf{IMPORTANT: A test is robust if it gives Assertion error -> because its functionality still works, just the page change, its not the tests' fault.. }
-\newpage
-In recent years, web applications have become a popular alternative to traditional desktop applications.
+% \subsection*{ROBUSTNESS}
+% Include: If a test fails due to assertion error but reaches the desired state, it is robust, since it tests the given functinoality. 
+% \textbf{IMPORTANT: A test is robust if it gives Assertion error -> because its functionality still works, just the page change, its not the tests' fault.. }
+% \newpage
+% In recent years, web applications have become a popular alternative to traditional desktop applications.
 % To access a web application, the end-user is only required to maintain a functioning web-browser, whereas the application vendor can deploy and update the application independent of end-users’ system configurations. 
 During the evolution of a web application, it is repeatedly modified to add new functionalities, fix bugs or adapt the GUI (Graphical User Interface) to improve the user experience. After such modifications, it is not uncommon to encounter side effects manifested in the form of new bugs or re-emergence of old bugs. Such side effects usually occur as a result of changing system or component configurations, improper version control, applying incorrect or incomplete bug fixes, etc. and can therefore negatively affect the quality of the existing functionality. 
 
