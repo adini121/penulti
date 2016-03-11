@@ -11,7 +11,7 @@ For the evaluation of the proposed approach, our goal was to select candidates t
 
 Among the experimental candidates, Moodle\footnote{\url{https://moodle.org/}} is a widely used open-source Course Management System. Mozilla Addons\footnote{\url{https://addons.mozilla.org/}} web application hosts web-browser extensions. Mozilla Marketplace\footnote{\url{https://marketplace.firefox.com/}} is an online app portal for desktop and mobile platforms, while Mozilla.org\footnote{\url{https://www.mozilla.org/}} serves as the home for the Mozilla project. Our last candidate Jenkins\footnote{\url{https://jenkins-ci.org/}} is a popular open-source continuous integration tool. 
   
-Each of these applications is installed as per the automated deployment process explained in Section \ref{sec:autoDeployment}. As mentioned in Chapter \ref{Chapter4}, our approach considers different major and minor versions of candidate web applications. This setup allows us to evaluate small, incremental changes to the AUT in the form of minor revisions as well as  significant changes to the AUT in the form of major releases. 
+Each of these applications is installed as per the automated deployment process explained in Section \ref{sec:autoDeployment}. The automated deployment process ensures that the AUT is always installed to a `clean' state. As mentioned in Chapter \ref{Chapter4}, our approach considers different major and minor versions of candidate web applications. This setup allows us to evaluate small, incremental changes to the AUT in the form of minor revisions as well as  significant changes to the AUT in the form of major releases. 
 Since different applications have different development and release cycles, we have considered approximately one year of development time-frame for each application. 
 
   \begin{table}
@@ -23,8 +23,8 @@ Since different applications have different development and release cycles, we h
   Application              & Domain &  Major Versions & Minor Versions \\
   \hline
   Moodle            & Course Management System & 1 & 11  \\
-  Addons           & Browser Add-ons portal & 3 & 20  \\
   Marketplace     & Software Apps portal  & 4 & 22   \\
+  Addons           & Browser Add-ons portal & 3 & 20  \\
   Mozilla.org     & Mozilla Project Homepage & 2 & 18   \\
   Jenkins (Weekly/ LTS) & Continuous Integration tool & 4/ 4 & 12/ 23   \\
   % Jenkins  & Continuous Integration tool & 4 & 23  \\
@@ -34,63 +34,255 @@ Since different applications have different development and release cycles, we h
   \label{appcandidates}
   \end{table}
 
-The approach illustrated in Section \ref{selectingCandidates} has been followed for selecting the major and minor releases of candidate web applications. Out of the selected web applications, only Moodle follows explicit Major-minor version classification, on the lines of Semantic versioning\footnote{\url{http://semver.org/}}. All other applications do not identify their releases in this manner. Mozilla Addons and Marketplace follow weekly release cycles. Mozilla.org does not adhere to any specific release cycle and delivers important features and bug fixes by pushing necessary commits to its version control repository. Jenkins has two different release cycles -- Long Term Support (LTS) and weekly releases. The weekly cycle releases a new Jenkins version on weekly basis and frequently introduces new features as well as bug fixes. The LTS cycle on the other hand has relatively fewer but more stable monthly releases. Both of these release lines have been considered for the evaluation, since it would be interesting to compare how does the development process of the AUT affect the results. The chosen major and minor versions for all candidate web applications are listed in Appendix \ref{AppendixA}.
+The approach illustrated in Section \ref{selectingCandidates} has been followed for selecting the major and minor releases of candidate web applications. Out of the selected web applications, only Moodle classifies the releases in terms of major-minor versions. All other applications do not identify their releases in this manner. Mozilla Addons and Marketplace follow weekly release cycles. Mozilla.org does not adhere to any specific release cycle and delivers important features and bug fixes by pushing necessary commits to its version control repository. Jenkins has two different release cycles -- Long Term Support (LTS) and weekly releases. The weekly cycle releases a new Jenkins version on weekly basis and frequently introduces new features as well as bug fixes. The LTS cycle on the other hand has relatively fewer but more stable monthly releases. Both of these release lines have been considered for the evaluation, since it would be interesting to compare how does the development process of the AUT affect the results. The chosen major and minor versions for all candidate web applications are listed in Appendix \ref{AppendixA}.
 
 Table \ref{testcandidates} gives an overview about the test-suites of these open-source web applications. Each test-suite repository has several hundreds of commits from various contributors. The instructions for running these test-suites are also provided by the respective organizations. All of the selected web applications follow the Page-object pattern for developing their Selenium test-suites. While Jenkins\footnote{\url{https://github.com/jenkinsci/acceptance-test-harness}} and Moodle\footnote{\url{https://git.in.moodle.com/tomb/functional-test-suite}} test-suites are primarily written in Java, the Mozilla Addons\footnote{\url{https://github.com/mozilla/Addon-Tests}}, Marketplace{\footnote{\url{https://github.com/mozilla/marketplace-tests}}} and Mozilla.org\footnote{\url{https://github.com/mozilla/mcom-tests}} test-suites are written in Python.
 Excluding Moodle, all other test-suites have been maintained in parallel to the development of chosen web application revisions 
 % for the entire duration of the experimental phase of this thesis 
-(as of March 2016, Moodle and Mozilla.org test-suite repositories have been archived and are no longer actively maintained). The `Size' column in Table \ref{testcandidates} indicates the average number of tests per test-suite. Apart from Mozilla Marketplace, all other test-suites have fairly comparable sizes.
+(as of March 2016, Moodle and Mozilla.org test-suite repositories have been archived and are no longer actively maintained). The `Size' column in Table \ref{testcandidates} indicates the average number of tests per test-suite. Apart from Mozilla Marketplace, all other test-suites have fairly comparable sizes. For Moodle test-suite, 38 out of 45 tests are parameterized. A parameterized test denotes a test case executed with different input values. 
 
-We selected these tests by executing the test-suite for the initial major version of each application over multiple runs and identifying the number of ``passed'' tests, as per the approach described in Section \ref{selectingCandidates}. Correspondingly, the entries in the `Page-objects' and `LOC'\footnote{Excluding comments and blank lines, using the tool CLOC (\url{cloc.sourceforge.net})} columns have been measured for the selected tests.
+We selected these tests by executing the test-suite for the major versions of each application over multiple runs and identifying the number of ``passed'' tests, as per the approach described in Section \ref{selectingCandidates}. As a consequence, these ``passed'' tests represent a subset of the total number of available tests from the chosen candidate test-suites. The reason for selecting this subset is that the test which were marked as ``failed'' were not suitable to be considered for the robustness analysis, as they did not cover the intended functionality for the major versions in the first place. 
+% There could be myriad of reasons behind this behavior, which have been briefly mentioned in Section \ref{selectingCandidates} since investigation of this behavior is beyond the scope of this thesis.
+Therefore, it is important to note that throughout this chapter, the data and information presented about the Selenium test-suites refers to the selected tests alone. Correspondingly, the entries in the `Page-objects' and `LOC'\footnote{Excluding comments and blank lines, using the tool CLOC (\url{cloc.sourceforge.net})} columns have been measured for these tests.
 
 In case of Moodle, the test-suite uses JUNIT 4.10\footnote{\url{http://junit.org/}} as a testing framework. With this test-suite we encountered different results on each test-run. In other words, the number of tests passed during each run varied significantly. Upon further investigation, we discovered that each test in the test-suite depended upon a \textit{login} test method for bringing the application in the required state of a logged-in user. This test method had a \texttt{@Test} annotation, as opposed to a setup method annotation, such as \texttt{@BeforeClass}. By default, the JUNIT 4.10 based tests were executed in random and unpredictable order assigned by the Java Virtual Machine. Hence, the \textit{login} method was not always executed before other tests and this was the reason behind the difference in the test results. In order to circumvent this issue, we executed the tests with JUNIT 4.12 which allowed the \textit{login} method to be executed as a setup method. 
-
 
 Each of the test-suites have been integrated with the \texttt{webmate} tool by using the \texttt{RemoteWebdriver} capabilities for the extraction of the behavioral state models, as detailed in Section \ref{stateModelExtraction}. This automated testing setup insures that the results are reproducible. 
 \begin{table}
 \centering
-\resizebox{12.5cm}{!}{
+\resizebox{8.5cm}{!}{
 \begin{tabular}{l*{6}{l}r}
 \hline
 Test-Suite              & Language & Page-objects & Size &LOC \\
 \hline
-Jenkins Test-suite & Java & 35 & 52 & 8755  \\
-Moodle Test-suite          & Java & 13 & 45 & 2103  \\
-Mozilla Addons Test-suite          & Python & 17  & 55 & 3335
+Moodle           & Java & 13 & 43 & 2103  \\
+Marketplace     & Python & 12 & 10 & 981
  \\
-Mozilla Marketplace Test-suite    & Python & 12 & 10 & 981
+Addons           & Python & 17  & 55 & 3335
  \\
-Mozilla.org Test-suite    & Python & 16 & 60 & 2419 \\
+Mozilla.org    & Python & 16 & 60 & 2419 \\
+Jenkins  & Java & 35 & 52 & 8755  \\
 \hline
-\end{tabular}} 
-\caption{Overview of test-suit distribution of evaluation candidates}
+\end{tabular}}
+\caption{Overview of Selenium test-suites for candidate web applications}
 \label{testcandidates}
 \end{table}
 
 \section{Experimental Evaluation}
 \label{expeval}
 This section discusses the results of the conducted experiments and presents the answer to the research questions. 
-\subsection{Robustness of Selenium test-suites}
-\label{robustnessresults} 
+
+\subsubsection*{{\bfseries RQ1.} How robust are selenium tests against changes of the application under test?}
+% \subsection{Robustness of Selenium test-suites}
+% \label{robustnessresults} 
 To measure the robustness of Selenium tests over the version history of web applications, the implementation steps detailed in Section \ref{toolimplementation} have been followed. 
 % The independent variables for this experiment are the candidate applications (major-minor versions) and the test-suites of these applications. The dependent variable is the robustness grade of the test-suite measured across the minor versions of a major release. 
-For all the applications discussed above, the
+For all of the applications discussed above, the
 % each major version has a corresponding test-suite. This 
-test-suite is executed on the major as well as minor versions and the behavioral state-models have been extracted. The robustness grade for the tests as well as test-suites has been measured using the definitions in Section \ref{robustnessOfSeleniumTests}. 
+test-suite is executed on the major as well as minor versions and the behavioral state-models have been extracted. 
 
-Figure \ref{fig:robustnessplots} depicts the trends for robustness grade of a test-suites. In all graphs, each point on x-axis represents a software revision. The filled dots (black color) denote the robustness grade of the test-suite  ($R_{TS_{V_{0}V_{1}}}$) for that software revision and the line joining these dots reflects the changes in the trend for robustness grade. The dashed vertical lines (black color) on the x-axis indicate major versions of an application, which is also depicted in the legend for each graph. 
+As detailed in section \ref{toolimplementation}, a behavioral state model captures the actions executed by the test on the AUT, such as GUI element locators. Table \ref{testsuitedistri} gives an overview of the composition of the selected candidate test-suites. The composition can be classified terms of the building blocks of the test-suite -- the type and number of GUI Element locators used, number of \texttt{wait} commands implemented and the number of primary \texttt{webdriver} actions emulated within the test-suite. Since each major version has a corresponding test-suite version, the columns in Table \ref{testsuitedistri} represent the average number of entries for all test-suites of each application.  
+
+
+\newcommand*\rot{\rotatebox{90}}
+% \newcommand*\OK{\ding{51}}
+\begin{table} [ht]
+\centering
+% \begin{tabular}{@{} cl*{12}c @{}}
+\begin{tabular}{cl*{12}c}
+%         & & \multicolumn{8}{c}{GUI Element Locators} & \multicolumn{4}{c}{Actions emulated on AUT}\\[2ex]
+% \hline
+        & Application & \rot{\textit{id}} & \rot{\textit{xpath}} & \rot{\textit{cssSelector}} & \rot{\textit{name}} & \rot{\textit{tagName}} & \rot{\textit{className}} & \rot{\textit{linkText}} & \rot{\textit{partialLinkText}} &  \rot{\textit{waits}} & \rot{\textit{sendKeys}}  & \rot{\textit{gets}} & \rot{\textit{clicks}}  \\
+%         \cmidrule{2-12}
+\hline
+		& Moodle             & 10  & 59  & 15  & 0  & 0  &  0 &  1 & 1  & 170 & 90& 6  & 177 \\
+        & Marketplace        & 5   & 0   & 32  &  0 &  1 &   4&  0 &  0  &  30 & 10& 12  & 22\\
+        & Addons             & 12  & 5   & 94  &  0 &   0&   0& 0  &  0  &   25& 20&56  & 44\\
+        & Mozilla.org        & 33  & 0   & 180  &  0 &   0&  0 &  0 & 0  &  6 & 2&66  & 60\\
+        & Jenkins            & 0   & 130  &  100  & 4  &  1 & 0  &  0 & 0  &104 &200 & 280  & 430  \\
+        \hline
+%         \cmidrule[1pt]{2-12}
+\end{tabular}
+  \captionsetup{justification=justified,
+singlelinecheck=false}
+\caption{Statistical overview of the test-suite composition for candidate web applications. The first eight columns show the distribution of GUI Element locators. The ninth column shows the number of \texttt{wait} commands. The last three columns show the total number of \texttt{webdriver} actions emulated within each test-suite. }
+\label{testsuitedistri}
+\end{table}
+
+% Therefore, a same GUI element locator-value pair (e.g. \texttt{findElement {using="id", value="uname"}}) from a page-object can be used for executing different actions in different tests. The behavioral state model captures each and every occurrence of the GUI element locator-value pair. To represent the number of GUI element locators faithfully in case of multiple occurrences, only unique GUI element locator-value pairs has been considered. 
+
+  
+For all candidate applications, the robustness grades of the test-suites for the minor versions of each major version have been measured using the definitions in Section \ref{robustnessOfSeleniumTests}. Figure \ref{fig:robustnessplots} reveals how a test-suite's robustness changes over the number of software revisions. In all graphs, each point on x-axis represents a software revision. The black dots denote the robustness grade of the test-suite ($R_{TS_{V_{0}V_{i}}}$) for each minor version \textit{`i'} measured against its major version. The robustness grade lies between the interval [0.0,1.0]. Recalling from Chapter \ref{Chapter3}, the robustness grade of a test-suite for a minor version indicates the ratio of the number of robust tests for that version to the number of robust test for a reference (major) version. A value of robustness grade close to 1.0 indicates that the test-suite is relatively robust and that it can achieve the same functional coverage across the minor version as it does for the reference version; such a test-suite can be deemed fit for regression testing. As mentioned in Section \ref{robustnessOfSeleniumTests}, for each major version, there exists a different test-suite, hence the robustness grade for each major version as a software revision corresponds to 1.0. The line drawn through the black dots reflects the overall robustness trend while the dashed vertical lines (black color) on the x-axis indicate the major version(s) of an application. The size of each test-suite (average number of tests) is as described in Table \ref{testcandidates}.
+
+As depicted in Figure \ref{fig:robustnessplots}, for all the candidate web applications the robustness of test-suites appears to decline to a certain extent as newer software revisions are introduced over time. Depending upon the application and the underlying Selenium test-suites, the reasons behind the changes in the robustness vary accordingly, which are discussed in subsequent paragraphs. 
+
+\begin{figure}[!htbp] 
+\centering     %%% not \center
+\vspace{-3mm}\subfigure[Moodle]{\label{rob:moodle}\includegraphics[width=13cm,height=3.05cm]{./Figures/moodle-rq1}}
+\vspace{-2mm}\subfigure[Mozilla Marketplace]{\label{rob:fireplace}\includegraphics[width=13cm,height=3.05cm]{./Figures/fireplace-rq1}}
+\subfigure[Mozilla Addons]{\label{rob:amo}\includegraphics[width=13cm,height=3.05cm]{./Figures/amo-rq1}}
+\vspace{-2mm}\subfigure[Mozilla.org]{\label{rob:bedrock}\includegraphics[width=13cm,height=3.05cm]{./Figures/bedrock-rq1}}
+\captionsetup{justification=justified,
+singlelinecheck=false}
+\vspace{-2mm}\subfigure[Jenkins LTS Release Line]{\label{rob:LTS}\includegraphics[width=13cm,height=3.05cm]{./Figures/jenkinsLTS-rq1.png}}
+\vspace{-2mm}\subfigure[Jenkins Weekly Release Line]{\label{rob:weekly}\includegraphics[width=13cm,height=3.05cm]{./Figures/jenkinsWeekly-rq1.png}}
+  \captionsetup{justification=justified,
+singlelinecheck=false}
+\caption{Robustness trend across different revisions of candidate web applications. The x-axis represents software revisions (approximately one year of development history). The dashed vertical line represents major versions. The y-axis represents the robustness grade of the test-suite.}
+\label{fig:robustnessplots}
+\end{figure} 
+
+A closer look at Figure \ref{rob:moodle} shows that out of all the applications, the robustness grade for Moodle declines the most -- almost 90\% tests were broken from seventh software revision onward. Upon investigation, it was observed that all of these tests used on \texttt{xpath} expressions to locate the \texttt{HTML} title attributes of the GUI elements. 
+Figure \ref{fig:moodleDOM} depicts this change in the structural markup of Moodle between the sixth and seventh software revisions, along with the example of missing \texttt{HTML} title attribute (\texttt{title="Add a new user"}). From the seventh revision onward, the \texttt{title} attributes were unavailable and as a consequence all the tests using \texttt{xpath} locators with \texttt{title} attributes were unable to locate these GUI elements. 
+% Remembering from Section \ref{challengesSelenium}, that changes the structural markup of a web-page can affect the robustness of tests. 
+% Unfortunately such changes can happen during the evolution of the AUT. 
+We also noticed that for the remaining 10\% robust tests for Moodle implemented only the \texttt{id} element locators. This is probably the reason why these tests were not broken due to changes in the \texttt{HTML} attributes of the page.
+% Upon investigation, it was observed that  due to unavailable \texttt{xpath} expressions (\texttt{NoSuchElementException - xpath}). 
+% Remembering from Section \ref{challengesSelenium}, that changing the structural markup of a web-page can affect the robustness of tests. 
+
+% Another 
+
+% \begin{table} 
+% \centering
+% \begin{tabular}{@{} cl*{12}c @{}}
+% %         & & \multicolumn{10}{c}{Test-suite composition} \\[2ex]
+% % \hline
+%         & & \rot{\textit{id}} & \rot{\textit{xpath}} & \rot{\textit{cssSelector}} & \rot{\textit{name}} & \rot{\textit{tagName}} & \rot{\textit{className}} & \rot{\textit{linkText}} & \rot{\textit{partialLinkText}} & \rot{\textit{sendKeys}} & \rot{\textit{waits}} & \rot{\textit{gets}} & \rot{\textit{clicks}}  \\
+% %         \cmidrule{2-12}
+% \hline
+% 		& Moodle             &w&   &   &   &   &   &  &   &   &  & &w \\
+%         & Marketplace               &  &  &  &  &  &  &  &  &  &  & & \\
+%         & Addons              &  &   &   &   &  &  &  &   &  &  & & \\
+%         & Mozilla.org  &  &  &  &  &  &   &  &  &  &  & & \\
+%  \rot{\rlap{~Application}}
+%         & Jenkins                & w &   &   &   &   &   &  &   &  &  & &w \\
+%         \hline
+% %         \cmidrule[1pt]{2-12}
+% \end{tabular}
+% \caption{Some caption}
+% \label{testsuitedistri}
+% \end{table}
+
+\begin{figure}[ht!] 
+\centering     %%% not \center
+\subfigure[Moodle Revision No. 6]{\label{rob:moodleDOm1}\includegraphics[width=\linewidth]{./Figures/moodle1}}
+\subfigure[Moodle Revision No. 7]{\label{rob:moodleDOm2}\includegraphics[width=\linewidth]{./Figures/moodle2}}
+  \captionsetup{justification=justified,
+singlelinecheck=false}
+\caption{DOM level differences between two successive software revisions of Moodle. The red arrow highlights the missing \texttt{title="Add a new user"} in Figure (b). }
+\label{fig:moodleDOM}
+\end{figure} 
+
+% Another interesting observation was in case of Mozilla Marketplace. Between the fourth and the fifth revision, the GUI of the application underwent some design changes, as depicted in Figure \ref{fig:fireplacechanges}. In this case, the tests were unable to explore the desired functionality, as they could not detect the presence of certain GUI fields before performing an action on them. As an example the `search' functionality state in the aforementioned figure was not reached in Figure \ref{rob:fire2}.
+
+
+
+% \begin{figure}[ht!] 
+% \centering     %%% not \center
+% \subfigure[Marketplace Revision No. 3]{\label{rob:fire1}\includegraphics[width=\linewidth]{./Figures/fireplace1}}
+% \subfigure[Marketplace Revision No. 4]{\label{rob:fire2}\includegraphics[width=\linewidth]{./Figures/fireplace2}}
+%   \captionsetup{justification=justified,
+% singlelinecheck=false}
+% \caption{Changes in the GUI design between two successive software revisions of Marketplace. }
+% \label{fig:fireplacechanges}
+% \end{figure} 
+
+Changing in the manner in which functionality is accessed  also had an effect on the robustness grade of the test-suite. As shown in \ref{fig:bedrockchanges}, between two revisions of Mozilla.org (revision six and seven), a particular `Products' page was no longer accessible through the same URL. This can happen when certain functionality is moved to another part of the application. Clearly, due to such change the tests are not able to cover the same functionality. 
+
+\begin{figure}[ht!] 
+\centering     %%% not \center
+{\label{rob:bedrock1}\includegraphics[width=\linewidth]{./Figures/bedrock1}}
+\captionsetup{justification=justified,
+singlelinecheck=false}
+\caption{`Products' page for Mozilla.org was no longer accessible through the same URL.}
+\label{fig:bedrockchanges}
+\end{figure} 
+
+These examples can be an indication of how GUI level changes in the AUT affects the robustness of tests. Additionally, the composition of the test-suites could also have contributed towards the robustness. From Table \ref{testsuitedistri}, it can be observed that for all the applications, the use of \texttt{xpath, css selector} and \texttt{id} locators outnumbers the other locator types. Jenkins and Moodle test-suites use high number of \texttt{xpath} locators, while the three Mozilla test-suites primarily use \texttt{id} and \texttt{css selectors}. Although \texttt{xpath} expressions turned out to be not so robust in case of Moodle, Jenkins test-suites implement `conditional' \texttt{xpath} expressions (as shown in Listing \ref{jenkinsxpath}) which provide the possibility of locating the same element using different methods. 
+
+\begin{center}
+\begin{scriptsize}
+\centering
+\lstset{
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  keepspaces=true,
+%   frame=none,
+}
+% \verb|basicstyle=\ttfamily, columns=fullflexible, keepspaces=true|
+  
+\begin{lstlisting}[caption=Jenkins conditional \texttt{xpath} expression,label=jenkinsxpath]
+findElements {using="xpath", value=" .//input[@type='radio'][./@id ='Delegate to servlet container' 
+or ./@name = 'Delegate to servlet container' 
+or ./@value = 'Delegate to servlet container' 
+or ./@placeholder = 'Delegate to servlet container']
+}
+\end{lstlisting}
+\end{scriptsize} 
+\end{center}
+
+% As mentioned in Section \ref{stateModelExtraction}, the behavioral state model can only capture \texttt{wait} commands which have a measurable duration. Jenkins test-suite implements two kinds of \texttt{wait} commands -- implicit waits and page-load timeouts\footnote{\url{https://w3c.github.io/webdriver/webdriver-spec.html\#dfn-session-page-load-timeout}}. All other applications use implicit waits in their test-suites. In case of number of \texttt{sendKeys} inputs, the Addons, Marketplace and Mozilla.org test-suites use relatively fewer text inputs. 
+
+The development process of the candidate applications also appears to have an effect on the robustness trend, applications such as Jenkins LTS release line were relatively robust. As mentioned earlier, the LTS releases had less frequent changes and more stable development cycle. Such a development process can indicate that the Selenium tests are less susceptible to the volatility of the GUI changes in the AUT.  
+
+% \begin{sidewaysfigure}[ht!] 
+% % \centering     %%% not \center
+% \subfigure[Moodle Revision 6]{\label{rob:amo}\includegraphics[width=7cm,height=6.2cm]{./Figures/fireplacelasso}}
+% \subfigure[Moodle Revision 7]{\label{rob:fireplace}\includegraphics[width=7cm,height=6.2cm]{./Figures/amolasso}}
+% \subfigure[Moodle Revision 6]{\label{rob:amo}\includegraphics[width=7cm,height=6.2cm]{./Figures/fireplacelasso}}
+% \subfigure[Moodle Revision 7]{\label{rob:fireplace}\includegraphics[width=7cm,height=6.2cm]{./Figures/amolasso}}
+% \subfigure[Moodle Revision 7]{\label{rob:fireplace}\includegraphics[width=7cm,height=6.2cm]{./Figures/amolasso}}
+%   \captionsetup{justification=justified,
+% singlelinecheck=false}
+% \caption{DOM level differences between two successive software revisions of Moodle. The red arrow highlights the missing \texttt{title="Add a new user"} in Figure (b). }
+% \label{fig:moodleDOM}
+% \end{sidewaysfigure} 
+
+\subsubsection*{{\bfseries RQ2.} Is robustness correlated to the design and composition of the tests?}
+
+By following the implementation approach described in Section \ref{toolimplementation}, the robustness metrics proposed in Chapter \ref{Chapter3} have been extracted from the behavioral state models and the ground truth has been established using \texttt{webmate}. Using the metrics and the ground truth in the subsequent steps, the statistical analyses have been performed.
+
+The box plot in Figure \ref{fig:spearman} represents the Spearman rank correlation between the robustness of Selenium tests and the proposed robustness metrics. The x-axis represents the robustness metrics described in Section \ref{} This representation provides us an idea of the 
 
 
 \begin{figure}[ht!] 
 \centering     %%% not \center
-\vspace{-2mm}\subfigure[AUT version $V_{1}$]{\label{rob:amo}\includegraphics[width=12cm,height=3cm]{./Figures/moodle-rq1}}
-\vspace{-2mm}\subfigure[AUT version $V_{1}$]{\label{rob:fireplace}\includegraphics[width=12cm,height=3cm]{./Figures/fireplace-rq1}}
-\subfigure[AUT version $V_{0}$]{\label{rob:moodle}\includegraphics[width=12cm,height=3cm]{./Figures/amo-rq1}}
-\vspace{-2mm}\subfigure[AUT version $V_{1}$]{\label{rob:amo}\includegraphics[width=12cm,height=3cm]{./Figures/bedrock-rq1}}
-\captionsetup{justification=justified,
+\includegraphics[width=14cm,height=8cm]{./Figures/spearman-rq2}
+ \captionsetup{justification=justified,
 singlelinecheck=false}
-\vspace{-2mm}\subfigure[AUT version $V_{1}$]{\label{rob:amo}\includegraphics[width=12cm,height=3cm]{./Figures/jenkinsLTS-rq1.jpg}}
-\vspace{-2mm}\subfigure[AUT version $V_{1}$]{\label{rob:fireplace}\includegraphics[width=12cm,height=3cm]{./Figures/jenkinsWeekly-rq1.png}}
-\caption{Robustness grade $R_{TS_{V_{0}V_{1}}}$ of a test-suit measured across different revisions of AUT. The x-axis represents a software revision, the filled dots (black color) represent }
-\label{fig:robustnessplots}
+\caption{Spearman correlation box plot. The x-axis represents the robustness metrics and the y-axis represents the Spearman's correlation coefficient.}
+\label{fig:spearman}
 \end{figure} 
+
+% \subsection{Design and Composition of tests}
+% \label{robustnessresults} 
+\begin{figure}[ht!] 
+\centering     %%% not \center
+{\label{rob:amo}\includegraphics[width=13cm,height=10cm]{./Figures/moodlelasso}}
+  \captionsetup{justification=justified,
+singlelinecheck=false}
+\caption{DOM level differences between two successive software revisions of Moodle. The red arrow highlights the missing \texttt{title="Add a new user"} in Figure (b). }
+\label{fig:lasso1}
+\end{figure} 
+
+
+\begin{figure}[ht!] 
+\centering     %%% not \center
+\subfigure[Mozilla Marketplace]{\label{rob:amo}\includegraphics[width=13cm,height=10cm]{./Figures/fireplacelasso}}
+\subfigure[Mozilla Addons]{\label{rob:fireplace}\includegraphics[width=13cm,height=10cm]{./Figures/amolasso}}
+  \captionsetup{justification=justified,
+singlelinecheck=false}
+\caption{DOM level differences between two successive software revisions of Moodle. The red arrow highlights the missing \texttt{title="Add a new user"} in Figure (b). }
+\label{fig:lasso2}
+\end{figure} 
+
+\begin{figure}[ht!] 
+\centering     %%% not \center
+\subfigure[Moodle]{\label{rob:amo}\includegraphics[width=13cm,height=10cm]{./Figures/moodlelasso}}
+\subfigure[Mozilla Addons]{\label{rob:fireplace}\includegraphics[width=13cm,height=10cm]{./Figures/bedrocklasso}}
+  \captionsetup{justification=justified,
+singlelinecheck=false}
+\caption{DOM level differences between two successive software revisions of Moodle. The red arrow highlights the missing \texttt{title="Add a new user"} in Figure (b). }
+\label{fig:lasso3}
+\end{figure} 
+
