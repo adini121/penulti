@@ -6,7 +6,7 @@
 
 This chapter presents the scope and approach behind the research questions raised earlier and develops a set of metrics for answering these questions.
 
-\section{Challenges of Selenium Test Automation}
+\section{Challenges of Selenium Test Automation - RENAME THIS}
 \label{challengesSelenium}
 The purpose of test automation using Selenium framework is to spare the time and effort involved in executing regression tests manually. However, as with every test automation techniques, test automation with Selenium has its own limitations. This section gives a brief overview about the commonly faced challenges in Selenium testing.
 
@@ -63,7 +63,7 @@ $(R_{T_{V_{0}V_{1}}}) = \displaystyle \frac{\#\thinspace of \thinspace same \thi
 
 As a starting point, we assume that the state extraction points for the reference version as well as subsequent versions remain the same as the test-suites remain unchanged. Consequently, \textit{
 robustness grade} lies in the interval [0,1]. A value of \textit{
-robustness grade} equal to one ($R_{T_{V_{0}V_{1}}}=1$) indicates that the test covers same functionality across versions \textit{$V_{0}$} and \textit{$V_{1}$}. A value other than one ($R_{T_{V_{0}V_{1}}}\neq 1$) indicates that the test is not robust, as it does not cover same states across two different versions. The details of our approach to identify the states reached and functionalities covered across different versions are explained in Chapter \ref{Chapter4}.
+robustness grade} equal to one ($R_{T_{V_{0}V_{1}}}=1$) indicates that the test covers same functionality across versions \textit{$V_{0}$} and \textit{$V_{1}$}. A value other than one ($R_{T_{V_{0}V_{1}}}\neq 1$) indicates that the test is not robust, as it does not cover same states across two different versions. Intuitively, the robustness grade of a reference version $V_{0}$ compared against itself would be one ($R_{T_{V_{0}V_{0}}}=1$). The details of our approach to identify the states reached and functionalities covered across different versions are explained in Chapter \ref{Chapter4}.
 
 Additionally, it would be interesting to know the \textit{
 robustness grade} at test-suite level. Correspondingly, Definition \ref{test-suite-robustness} formulates the \textit{
@@ -81,7 +81,7 @@ $(R_{TS_{V_{0}V_{1}}}) = \displaystyle \frac{\#\thinspace of \thinspace robust \
 If the result of executing \textit{TS} on \textit{$V_{1}$} yields the same number of robust tests as it does for \textit{$V_{0}$}, test-suite \textit{TS} is fully robust ($R_{TS_{V_{0}V_{1}}} =1$). On the contrary, \textit{
 robustness grade} less than one ($R_{TS_{V_{0}V_{1}}} < 1$) deems that one or more tests in \textit{TS} are not be fully robust and that the test-suite might be unable to cover the same application behavior for different versions. 
 
-For measuring the robustness of Selenium tests, our approach considers two kinds of versions of the AUT, as follows: (i) major versions (stable releases) where significant changes are made in the functionality of the AUT and (ii) minor revisions (e.g. commits to the version control repository) where minor feature changes and bug fixes have been implemented. Throughout this thesis, the major versions of the AUT are treated as a \textit{reference versions} against which robustness of Selenium tests for software revisions (minor versions) is compared. 
+For measuring the robustness of Selenium tests, our approach considers two kinds of versions of the AUT, as follows: (i) major versions (stable releases) where significant changes are made in the functionality of the AUT and (ii) minor versions (e.g. software revisions, commits to the version control repository etc.) where minor feature changes and bug fixes have been implemented. Throughout this thesis, the major versions of the AUT are treated as a \textit{reference versions} against which robustness of Selenium tests for software revisions (minor versions) is compared. In other words, each reference (major) version would have a corresponding reference test-suite version. The rationale behind this approach is, when the software evolves from one major version to another, there can be significant changes made to it which could have a severe impact on the robustness. Therefore the robustness is measured over the incremental changes in the AUT, in terms of minor software revisions.  
 
 % In a traditional software development environment, there can be multiple minor revisions for each major version. 
 
@@ -96,11 +96,10 @@ robustness grade} ${R_{T_{V_1,...,V_n}}}$ of test \textit{T} across \textit{n} m
 \vspace{0.5cm}
 ${R_{T_{V_1,...,V_n}}} = \displaystyle \frac{R_{T_{V_{0}V_{1}}} + R_{T_{V_{0}V_{2}}} + ... + R_{T_{V_{0}V_{n}}}}{n}$ \normalsize
 % \vspace{3cm}
-\newline
-\newline
-\newline
-% \textit{$R_{T_{V_{0}V_{1}}},..,R_{T_{V_{0}V_{n}}}$ = \textit{
-% robustness grades} of \textit{$V_1,...,V_n$}} (see Definition \ref{test-case-robustness})
+% \newline
+% \newline
+% \newline
+
 \end{center}
 \label{robustness-ground-truth}  
 % \vspace{0.5cm}
@@ -133,7 +132,7 @@ The number of actions executed by a test can be an indication of how \textit{ato
 
 Recalling from Section \ref{sssec:emulatingActions}, a state-changing action such as a \texttt{click} event or a \texttt{get} request to a URL\footnote{Uniform Resource Locator} causes the AUT to load into a new state (e.g. new web page). After loading the AUT to a new state, a next action can be executed by the test. Consider the versatile \texttt{click} action as an example -- a \texttt{click} action can be used on various GUI elements, such as buttons, check-boxes, drop-down lists etc. Due to such versatility, triggering a \texttt{click} event on the AUT can invoke multiple underlying functionality layers such as input validation, database operations etc. A \texttt{get} request navigates the AUT to a web page, which might involve steps such as starting the browser window, loading the web page etc. Although Selenium \texttt{webdriver} provides the possibility of setting page loading times, it introduces additional delays. Nevertheless, after the state-changing actions the AUT needs to have all the GUI elements present before executing the next action. If the new state of the application is not loaded in a timely manner or not loaded at all, the next action would not be executed, and as a result the test is broken. In this manner as the number of state-changing actions can affect the robustness of a test. Table \ref{rq2metrics} represents these two metrics as \textit{\#gets} and \textit{\#clicks}.
 
-Text input testing with Selenium, e.g. form filling, involves multiple actions on the AUT such as locating the input field, sending input to the field (e.g. using \texttt{sendKeysToElement} command) and submitting the input data. Different text input fields can have different requirements for the input type. A telephone number input field might not allow any letters. Multilingual websites using \textit{localization} can have different input restrictions depending upon the locale. According to the input field, each test can require specific mechanism to verify the correctness of the input text. This process is further complicated with web 2.0 applications using Ajax and JQuery technologies. Text fields with \textit{autocomplete} feature can rely on dynamically created DOM elements. To avoid race conditions, a \texttt{webdriver} test needs to make assure that the element is initialized before clicking. Due to the sheer number of possible input combinations, form data submission using Selenium is not trivial and can significantly influence the robustness of Selenium tests. The number of text inputs as a robustness metric is expressed as \textit{\#textInputs} in Table \ref{rq2metrics}. 
+Text input testing with Selenium, e.g. form filling, involves multiple actions on the AUT such as locating the input field, sending input to the field (e.g. using \texttt{sendKeys} command) and submitting the input data. Different text input fields can have different requirements for the input type. A telephone number input field might not allow any letters. Multilingual websites using \textit{localization} can have different input restrictions depending upon the locale. According to the input field, each test can require specific mechanism to verify the correctness of the input text. This process is further complicated with web 2.0 applications using Ajax and JQuery technologies. Text fields with \textit{autocomplete} feature can rely on dynamically created DOM elements. To avoid race conditions, a \texttt{webdriver} test needs to make assure that the element is initialized before clicking. Due to the sheer number of possible input combinations, form data submission using Selenium is not trivial and can significantly influence the robustness of Selenium tests. The number of text inputs as a robustness metric is expressed as \textit{\#sendKeys} in Table \ref{rq2metrics}. 
 \begin{center}
 \begin{table}
 \centering
@@ -144,7 +143,7 @@ Robustness Metric              &Description \\
 \hline
 \textit{\#actions} & Total number of \textit{actions} on AUT \\
 \textit{\#gets}      & Number of \texttt{get} requests\\
-\textit{\#textInputs} & Number of text inputs   \\
+\textit{\#sendKeys} & Number of \texttt{sendKeys} text inputs   \\
 \textit{\#clicks}     & Number of \texttt{click} actions  \\
 \hline
 \textit{\#waits}    & Number of \texttt{wait} requests   \\
