@@ -240,10 +240,14 @@ The development process of the candidate applications also appears to have an ef
 
 \subsubsection*{{\bfseries RQ2.} Is robustness correlated to the design and composition of the tests?}
 
-By following the implementation approach described in Section \ref{toolimplementation}, the robustness metrics proposed in Chapter \ref{Chapter3} have been extracted from the behavioral state models and the ground truth has been established using \texttt{webmate}. Using the metrics and the ground truth in the subsequent steps, the statistical analyses have been performed.
+By following the implementation approach described in Section \ref{toolimplementation}, the robustness metrics proposed in Chapter \ref{Chapter3} have been extracted from the behavioral state models and the ground truth has been established using \texttt{webmate}. The metrics are the independent variables and the ground truth is the dependent variable; using these variables in the subsequent steps, the statistical analysis has been performed.
 
-The box plot in Figure \ref{fig:spearman} represents the Spearman rank correlation between the robustness of Selenium tests and the proposed robustness metrics. The x-axis represents the robustness metrics described in Section \ref{} This representation provides us an idea of the 
+The box plot in Figure \ref{fig:spearman} represents the Spearman rank correlation between the robustness of Selenium tests and the proposed robustness metrics which have been developed in Chapter \ref{Chapter3}. Remember that the robustness metrics represent the building blocks of a test's design and composition. The x-axis represents the robustness metrics, while the y-axis reflects the Spearman's rank correlation coefficient for candidate web applications. As mentioned in Section \ref{sec:Statistical}, a monotonic relationship between two variables is sufficient for estimating Spearman rank correlation. 
+% It should be noted that correlation does not imply causation. 
 
+Each box also represents the `spread' of the Spearman's correlation coefficient for each metric across the candidate applications (data sets). The horizontal lines inside the boxes represent `median' correlation coefficient. The vertical bars (`whiskers') stretching out on both sides of the box represent the `range' of the values of the correlation coefficient. The stand-alone point indicates `outlier' i.e. value which lies outside the `range' -- farther than one and half times the length of the box. 
+
+A closer look at the box plot reveals that the median correlation coefficient for the metrics. Notice that the metrics `name' and `tagName' only have one and two coefficient values, respectively. This is due to the fact that the \texttt{name} GUI element locator is used only in Jenkins test-suite, while \texttt{tag name} locator is used only by Mozilla Marketplace and Jenkins (this can be observed in Table \ref{testsuitedistri}). Similarly, not all metrics are applicable on all applications. Metrics where the standard deviation is zero, are not included during the statistical computation. This is because a standard deviation of zero indicates that the metric has no spread and therefore would not have any influence on the dependent variable. As it can be observed, out of all the metrics, `name' and `tagName' correlation coefficients are very close to zero. This indicates that these metrics may have a very weak influence on the robustness grade. 
 
 \begin{figure}[ht!] 
 \centering     %%% not \center
@@ -264,7 +268,7 @@ singlelinecheck=false}
 \caption{DOM level differences between two successive software revisions of Moodle. The red arrow highlights the missing \texttt{title="Add a new user"} in Figure (b). }
 \label{fig:lasso1}
 \end{figure} 
-
+A median value closer to the center of the box indicates a more `normal' distribution of the values. In statistics, a p-value can be used to determine the `strength' of correlation. A small p-value can discard the possibility of correlation due to random sampling. In the observed correlation coefficients, the metric `xpath' has overall `strong' negative correlation of -0.63. Whereas the metric `id' has strongest positive correlation of +0.59. Both of these values are observed for 
 
 \begin{figure}[ht!] 
 \centering     %%% not \center
