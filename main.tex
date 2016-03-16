@@ -25,19 +25,23 @@
 %	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
 %----------------------------------------------------------------------------------------
 
-\documentclass[12pt, a4paper, twoside]{Thesis} % Paper size, default font size and one-sided paper
+\documentclass[12pt, a4paper, oneside]{Thesis} % Paper size, default font size and one-sided paper
 \usepackage{pdfpages}
 \usepackage{footnote}
 \usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amsmath}
+\usepackage{tabto}
 \usepackage{xcolor}
 \usepackage{xparse}
 \usepackage{listings}
 \usepackage{rotating}
-
+\usepackage{listliketab}
 % \usepackage{arydshln}
 % \usepackage{subfig}
 \usepackage{hyperref}
-\usepackage{tabularx}
+\usepackage{tabularx} 
 % \usepackage{subcaption}
 \usepackage{caption}
 \usepackage{capt-of}
@@ -113,7 +117,7 @@
 \begin{minipage}{0.4\textwidth}
 \begin{flushleft} 
 \emph{Supervisor:}\\
-{Dr. Andreas Zeller} % Author name - remove the \href bracket to remove the link
+{Prof. Dr. Andreas Zeller} % Author name - remove the \href bracket to remove the link
 
 \end{flushleft}
 \end{minipage}
@@ -127,8 +131,8 @@
 
 \begin{center}
 \emph{Reviewers:}\\
-{Dr. Andreas Zeller}\\
-{Dr. Helmut Horacek}
+{Prof. Dr. Andreas Zeller}\\
+{Prof. Dr. Helmut Horacek}
 \end{center}
 
 \vspace{1.5cm}
@@ -238,8 +242,9 @@ Saarbrücken, $\rule{3cm}{0.15mm}$\hspace{4cm}$\rule{5cm}{0.15mm}$ \newline
 % Add the "Abstract" page entry to the Contents
 \abstract{\vspace{1em} % Add a gap in the Contents, for aesthetics
 
-The Thesis Abstract is written here (and usually kept to just this page). The page is kept centered vertically so can expand into the blank space above the title too\ldots
-}
+In recent years, many software environments have started automating their web application regression tests using tools such as Selenium. However, as the application continues to evolve, existing Selenium tests might not achieve the same behavioral coverage as they do for the version the tests are originally written for. Such Selenium tests can be deemed to be non-robust. The robustness of Selenium tests decreases over time due to factors such as changed functionality, modified GUI elements, etc. Such tests can be less effective in covering the existing functional specifications while maintaining them requires additional efforts. Currently there is no technique to analyze the robustness of Selenium tests to facilitate their assessment and maintenance. 
+
+This Master’s thesis evaluates the robustness of Selenium tests over the version history of web applications. The approach consists of employing Selenium tests to capture the application's behavior as a finite-state model and to detect GUI level differences for different versions of a web application. This thesis establishes \textit{robustness grade} as a quantitative measurement for the robustness. In addition, a set of metrics are derived to establish which factors affect the robustness of Selenium tests the most.
 
 \clearpage % Start a new page
 
@@ -257,9 +262,9 @@ The Thesis Abstract is written here (and usually kept to just this page). The pa
 
 My sincere words of thanks to express my gratitude for all the support, help and guidance during these last few months go to my supervisor Prof. Dr. Andreas Zeller and advisor Andreas Rau. It was a real pleasure to have you on the journey towards my next academic achievement and am grateful to be able to share my ideas, struggles and success with you.
 
-Expressing my gratitude with words for all the support, efforts and encouragement would never reflect the actual thankfulness I feel for my family and friends who had actively participated in my studies and thesis related obligations. Thank you, Igor, for all the suggestions, time and positive words you had for me during difficult times. Thank you, Safwan, for all the help and creative brainstorming that enriched my thesis. Thank you Prabhav for the Stat-lessons. Thank you, Shubkirti, Amey and Maria, for lifting my spirits and making my work more enjoyable in general. 
+Expressing my gratitude with words for all the support, efforts and encouragement would never reflect the actual thankfulness I feel for my family and friends who had actively participated in my studies and thesis related obligations. Thank you, Igor, for all the suggestions, time and positive words you had for me during difficult times. Thank you, Safwan, for all the help and creative brainstorming that enriched my thesis. Thank you, Prabhav, for the Stat-lessons. Thank you, Shubkirti, Amey and Maria, for lifting my spirits and making my work more enjoyable in general. 
 
-A special thank you goes to my parents and family, without whom I would not be able to come to this point in my life, who have always been there and believed in my skills unquestionably. I am truly grateful for all the sacrifices you have made for me and looking forward to share my happiness with you soon. 
+A special thank you goes to my parents and family, without whom I would not be able to come to this point in my life, who have always been there and believed in my skills unquestionably. I am truly grateful for all the sacrifices you have made for me and looking forward to share my happiness with you soon. The most special thanks goes to Tina, for always being there with me through thick and thin and everything.
 
 Thank you everyone - for inspiring me, motivating me and supporting me generously during the whole process!
 
@@ -379,7 +384,7 @@ Thank you everyone - for inspiring me, motivating me and supporting me generousl
 % Uncomment the lines as you write the Appendices
 
 \input{./Appendices/AppendixA}
-\input{./Appendices/AppendixB}
+% \input{./Appendices/AppendixB}
 %\input{./Appendices/AppendixC}
 
 \addtocontents{toc}{\vspace{2em}} % Add a gap in the Contents, for aesthetics
