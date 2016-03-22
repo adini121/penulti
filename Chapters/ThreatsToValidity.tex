@@ -1,5 +1,13 @@
 \chapter{Threats to validity} % Main chapter title
 
-\label{Chapter7} % For referencing the chapter elsewhere, use \ref{Chapter1} 
+\label{Chapter6} % For referencing the chapter elsewhere, use \ref{Chapter1} 
 
-\lhead{Chapter 7. \emph{Threats to validity}}
+\lhead{Chapter 6. \emph{Threats to validity}}
+
+As in case of any empirical evaluation, the research presented in this thesis faces certain threats to its validity. This section identifies the threats to the external and internal validity of the research.
+
+This thesis relies upon open-source web applications which have publicly available Selenium test-suites. The first external threat to validity is posed by the selection of these web applications and their test-suites. To begin with, obtaining open-source Selenium test-suites and applications that satisfy the research requirements was not trivial. For this research, five popular, large open-source web applications were selected. All of these applications have multiple years of development history. The Selenium test-suites of these applications are well maintained as well. Although it is possible to apply the presented metrics on other Selenium test-suites, it might be difficult to generalize the results as testing our approach on small-scale test-suites with less sophisticated development might yield different results. This possible threat is discussed in Chapter \ref{Chapter7}.
+
+Another threat to validity is posed by the automated testing tool \texttt{webmate}. This thesis uses \texttt{webmate} to generate behavioral state models of the Selenium test executions. As mentioned earlier, it is not possible to record certain properties such as \texttt{explicitlyWait} conditions using this tool. 
+
+Threats to internal validity involves the design and evaluation decisions, along with the imprecision of the implementation process. Within this thesis, the first threat to internal validity is the choice of the evaluation metrics. Although this thesis attempted to incorporate the best possible metrics, there are still ways to improve the scope, as discussed in Chapter \ref{Chapter7}. The second threat is the choice of major-minor versions for the Selected applications. As mentioned earlier, apart from Moodle, none of the applications identify their releases in this manner. Therefore selecting a different set of versions for these applications and their test-suites might yield different results. To minimize the human error, a large part of the implementation setup has been automated, so that the results are reproducible.

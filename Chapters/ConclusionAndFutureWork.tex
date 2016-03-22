@@ -6,6 +6,44 @@
 
 \section{Conclusion}
 \label{conclusion}
+An application's quality relies on continuous testing of its functionality while the success of the testing depends upon the robustness of the underlying tests. This thesis was able to formally define \textit{robustness} in the area of Selenium test automation and establish \textit{robustness grade} as a quantitative measurement for the robustness. 
 
+The experimental results have shown that the Selenium tests are robust enough to stay functional during the first few new releases of an application. This leads to the conclusion that there are ways of prolonging the potential robustness level of the Selenium tests, although they will have to be repaired at some later point.
+
+In addition, this thesis presented a set of metrics to establish which factors affect the robustness of Selenium tests the most and identified that none of the observed metrics solely is able to predict that the Selenium test will remain robust. Therefore, it can be concluded, after all, that a combination of certain metrics in the composition of particular tests definitely can contribute to robustness and may result in a less frequent maintenance process of the tests.
+
+Overall, this research has successfully introduced and performed in practice one of the possible definitions for the robustness of Selenium tests and ways to measure it. This thesis can serve to developers as an additional source for handling the problems regarding the Selenium testing as well as to future researchers as a starting point for broadening the topic.
+% In the area of automated regression testing using Selenium framework,  \textit{robustness} of a Selenium test implies the degree of its stability and effectiveness to cover the intended functionality across different versions of the application.
+
+
+
+
+% During the development cycle of a web application, its features and functionalities are constantly being modified in order to maintain or improve its quality. Application's quality directly relies on continuous testing of its functioning and, in the end, results in desired performance at the GUI (Graphical User Interface) level appropriate for the users. The quality, therefore, depends upon testing while the success of the testing depends upon the robustness of the performed tests.
+
+% Instead of manual testing, the developers often opt for automation of the whole process through Selenium framework. Selenium tests can be run automatically and repeatedly on an Application Under Test (AUT) as well as they would be later on rerun on the newer versions of the application in order to analyze its effectiveness. If the test has achieved the same functional coverage as it did for the original version it had been written for, the test can be considered \textit{robust}.
+
+% The \textit{robustness} of a Selenium test implies the degree of its stability and effectiveness to cover the intended functionality across different versions of the AUT. It is numerically expressed through the \textit{robustness grade} in the interval [0,1], where a positive outcome indicates a robust test and any other a non-robust one. The research has been conducted on carefully picked open-source web application in order to determine how robust are Selenium tests against the changes of the AUT (RQ1), to determine if the robustness is correlated to the design and composition of the tests (RQ2) and if the design of the test-suite influence the maintenance effort (RQ3).
+
+
+% The experimental results have shown that the tests are robust enough to stay functional during the first few new releases of an AUT which leads to the conclusion that there are ways of prolonging the potential robustness level although they will have to be repaired at some later point. Moreover, it has been seen that no specific metric in the design and composition of the test correlates directly with the robustness grade, however, we have also observed that compositions of some tests were more robust than the other ones. Therefore, it can be concluded, after all, that a combination of certain metrics in the composition of particular tests definitely can contribute to robustness.
+% THIIIIIIIIIRRRDDD QQQQQQQQQQQQQQQQQQ CONCLUSION in short like previous ones.....
+
+% The overall research has successfully introduced and performed in practice one of the possible definitions for the robustness of Selenium tests and ways to measure it. The thesis provides a concise overview of related works to this date about this topic and uses their conclusions to broaden it on a concrete level. The research has also, therefore, presented concrete results and problems which are to be expected when defining the robustness level of open-source applications' tests. The statistical analysis of the collected data has also resulted in defining a set of metrics which could potentially be considered as important contributors towards the robustness.
+
+% The thesis can, therefore, serve as an additional source of handling the problems regarding the Selenium testing to developers as well as a starting point for broadening the topic to future researchers. 
+% .................................. 
+
+
+\newpage
 \section{Future Work}
 \label{futurework}
+As this thesis is among the first ones of this kind, there are a many of ways in which the work presented in this research could be extended.
+
+As mentioned in Chapter \ref{Chapter6}, the proposed approach is also transferable to other projects. Following this approach, the presented robustness metrics as well as maintenance metrics can be evaluated on other projects. From the presented metrics, the metrics \textit{\#partialLinkText},\textit{\#linkText} were not applicable in any project and hence their influence could not be studied. Given that majority of selected evaluation applications were industrial, it seems interesting to evaluate these metrics on applications and test-suites of different scales and development cycles to assess the outcome of the presented metrics. 
+
+Furthermore, there are possibilities to include additional evaluation metrics in the research. It seems reasonable to apply the metrics this thesis was not able to cover. As an example, as a part of the \textit{\#waits} metric, only \texttt{implicitWait} and \texttt{SetTimeout} wait types were tested. Actions such as drag-drops, mouse-overs have also not been evaluated within this thesis. Additionally, in the area of Selenium testing for touch-enabled applications, the user-actions on such devices such as swipes, touch-gestures offers a richer set of metrics and hence it would be beneficial to assess them. 
+
+In addition, for the metrics where no significant and consistent correlation could be estimated, as well as for reaching a concrete conclusion about the impact of the metrics, including larger sample size combined with more common metrics could improve the statistical results. 
+
+% Overall, this thesis 
+
